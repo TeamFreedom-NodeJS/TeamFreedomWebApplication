@@ -1,0 +1,19 @@
+include _hero-info
+
+mixin superheroes-list(superheroes, currentPage, pages)
+    ul.list.list-horizontal.list-pages.text-center
+        - for(let i = 1; i <= pages; i+=1 )
+            li
+                if currentPage === i
+                    a.btn.btn-danger.disabled(href="/superheroes?page=" + i)
+                        = i
+                else
+                    a.btn.btn-danger(href="/superheroes?page=" + i)
+                        = i
+
+    ul.list.text-center
+        each superhero in superheroes
+            li
+                .list-item-container
+                    +hero-info(superhero)
+                    
