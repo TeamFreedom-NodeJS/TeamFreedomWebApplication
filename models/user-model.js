@@ -15,9 +15,11 @@ module.exports = modelRegistrator.register("User", {
     passHash: {
         type: String,
         required: true
+    },
+    facebook: {
+        id: String,
+        token: String,
+        email: String,
+        name: String
     }
-    // password: {
-    //     type: String,
-    //     required: true
-    // }
 });

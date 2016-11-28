@@ -21,5 +21,15 @@ module.exports = function({ app, data }) {
 
     app.use("/auth", router);
 
+    app.get("/auth/facebook",
+        passport.authenticate("facebook", { scope: ["emails"] }));
+
+    app.get("/auth/facebook/callback",
+        passport.authenticate("facebook", { failureRedirect: "/login" }),
+        (req, res) => {
+            // Successful authentication, redirect home.
+            res.redirect("/");
+        });
+
     return router;
 };
