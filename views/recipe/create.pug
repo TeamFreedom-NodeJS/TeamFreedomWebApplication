@@ -1,0 +1,20 @@
+extends ../_layout
+include ../_mixins/_ingredient
+
+block content
+    form(action="/recipes" method="post")
+        input.form-control(type="text" name="title" placeholder="Title")
+        input.form-control(type="text" name="cookingTimeInMinutes" placeholder="Cooking Time [in Minutes]")
+        input.form-control(type="text" name="imageUrls" placeholder="Link To ready Dish Image")
+        textarea.form-control(name="preparation" placeholder="Describe Preparation")
+        select(name="categories" multiple="multiple")
+            each category in categories
+                option(value=category.id)
+                    = category.name
+            
+        
+        // TO DO: Make ingredients in a cycle with button 'Add INgredient
+        +ingredient(name="ingredients")
+        
+        button.btn
+            | Карай нататък

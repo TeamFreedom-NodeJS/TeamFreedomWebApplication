@@ -8,18 +8,40 @@
 
 module.exports = function(models) {
     let {
-        Recipte
+        Recipe
         // User,
         // Category
     } = models;
 
     return {
-        createRecipe() {
+        createRecipe(title, categories, imageUrls, ingredients, preparation,
+            cookingTimeInMinutes, author, comments) {
 
+            let recipe = new Recipe({
+                title,
+                categories,
+                imageUrls,
+                ingredients,
+                preparation,
+                cookingTimeInMinutes,
+                author,
+                comments
+            });
+
+            console.log(ingredients);
+            return new Promise((resolve, reject) => {
+                recipe.save(err => {
+                    if (err) {
+                        return reject(err);
+                    }
+
+                    return resolve(recipe);
+                });
+            });
         },
         getRecipeById(id) {
             return new Promise((resolve, reject) => {
-                Recipte.findOne({ _id: id }, (err, recipe) => {
+                Recipe.findOne({ _id: id }, (err, recipe) => {
                     if (err) {
                         return reject(err);
                     }

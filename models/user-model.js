@@ -10,11 +10,11 @@ module.exports = modelRegistrator.register("User", {
     },
     salt: {
         type: String,
-        required: true
+        // required: true
     },
     passHash: {
         type: String,
-        required: true
+        // required: true
     },
     facebook: {
         id: String,

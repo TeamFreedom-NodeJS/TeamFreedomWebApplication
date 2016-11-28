@@ -13,28 +13,28 @@ module.exports = modelRegistrator.register("Recept", {
     imageUrls: {
         type: [{}],
         limit: 3,
-        require: true
+        required: true
     },
     ingredients: [{
         name: {
             type: String,
-            require: true
+            required: true
         },
         quantity: {
             type: Number,
-            require: true
+            // required: true
         },
         unit: { enum: { units } }
     }],
     preparation: {
         type: String,
-        require: true,
+        required: true,
         min: 10,
         max: 2000
     },
     cookingTimeInMinutes: {
         type: Number,
-        require: true
+        required: true
     },
     created: {
         type: Date,
@@ -51,7 +51,7 @@ module.exports = modelRegistrator.register("Recept", {
         },
         content: {
             type: String,
-            require: true,
+            required: true,
             min: 10,
             max: 200
         }

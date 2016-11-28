@@ -1,0 +1,16 @@
+mixin ingredient
+    .ingredient-container.text-center
+        .ingredient
+            input(type="text" name="name" placeholder="Име на съставка")
+            input(type="text" name="quantity" placeholder="Количество")
+            select(name="unit")
+                option(value="1" selected="true")
+                    | грам
+                option(value="2")
+                    | мл
+                option(value="3")
+                    | брой
+                option(value="4")
+                    | ч.л.
+                option(value="5")
+                    | с.л.
