@@ -9,33 +9,37 @@ block content
         each category in model.categories
             li
                 a(href="/category/" + category.id)= category.name
-    if user
-        div= "Автор: " + user.username
+    if model.author
+        div= "Автор: " + model.author.name
     else 
         div= "Автор: Админ" 
-        div= "Добвена на " + model.created
-            each img in model.imageUrls
-                 img(src=img)
-        strong 
-            | Необходими продукти
-        ul
-            each ingridient in model.ingredients
-                li= ingridient.name
-                span= ingridient.quantity
-                span= ingridient.unit
-            strong
-                | Начин на приготвяне:
-            div= model.preparation
-            div= "Време за готвене: " + model.cookingTimeInMinutes + " мин."
-            a.btn.btn-danger
-                    | Добави към любими
-            h3
-                | Коментари
-            ul
-                each comment in model.comments
-                    li
-                        strong= comment.author.username
-                        span= "Добавен на  " + comment.created
-                        p= comment.content
-            a.btn.btn-danger(href="#")
-                    | Добави коментар                    
+    div= "Добвена на " + model.created
+        each img in model.imageUrls
+                img(src=img)
+    br
+    strong 
+        | Необходими продукти
+    ul
+        each ingridient in model.ingredients
+            li= ingridient.name
+            span= ingridient.quantity
+            span= ingridient.unit
+            br
+    strong
+        | Начин на приготвяне:
+    div= model.preparation
+    div= "Време за готвене: " + model.cookingTimeInMinutes + " мин."
+    br
+    a.btn.btn-danger
+            | Добави към любими
+    br
+    h3
+        | Коментари
+    ul
+        each comment in model.comments
+            li
+                strong= comment.author.username
+                span= "Добавен на  " + comment.created
+                p= comment.content
+    a.btn.btn-danger(href="#")
+            | Добави коментар                    

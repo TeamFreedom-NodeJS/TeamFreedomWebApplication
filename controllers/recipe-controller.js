@@ -50,17 +50,16 @@ module.exports = function(data) {
             });
         },
         createRecipe(req, res) {
-            let comments = [],
-                author = {
-                    id: req.user._id,
-                    name: req.user.username
-                };
+            let author = {
+                id: req.user._id,
+                name: req.user.username || req.user.profile.name,
+                imageUrl: req.user.profile.picture || "no picture"
+            };
+
             let {
                 title,
                 categories,
-                ingredientsNames,
-                ingredientsQuantities,
-                ingredientsUnits,
+                ingredientsAll,
                 preparation,
                 imageUrls,
                 cookingTimeInMinutes
@@ -74,19 +73,15 @@ module.exports = function(data) {
                 imageUrls = [imageUrls];
             }
 
-            if (!Array.isArray(comments)) {
-                comments = [comments];
-            }
-
             let ingredients = [];
-            let ingredientsNamesArr = ingredientsNames.split(",");
-            let ingredientsQuantitiesArr = ingredientsQuantities.split(",");
-            let ingredientsUnitsArr = ingredientsUnits.split(",");
-            for (let i = 0; i < ingredientsNamesArr.length; i += 1) {
+            let ingredientsArr = ingredientsAll.split(",");
+
+            for (let i = 0; i < ingredientsArr.length; i += 1) {
+                let ingredientInfo = ingredientsArr[i].split("-");
                 ingredients.push({
-                    name: ingredientsNamesArr[i],
-                    quantity: +ingredientsQuantitiesArr[i],
-                    unit: ingredientsUnitsArr[i]
+                    name: ingredientInfo[0],
+                    quantity: +ingredientInfo[1],
+                    unit: ingredientInfo[2]
                 });
             }
 
@@ -97,10 +92,9 @@ module.exports = function(data) {
                     ingredients,
                     preparation,
                     cookingTimeInMinutes,
-                    author,
-                    comments)
+                    author)
                 .then(recipe => {
-                    return res.redirect(`/recipes/${recipe.id}`);
+                    return res.redirect(`/recipes/recipe/${recipe.id}`);
                 })
                 .catch(err => {
                     res.status(400)

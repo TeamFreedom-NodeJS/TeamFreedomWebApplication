@@ -25,7 +25,7 @@ module.exports = function(models) {
             });
         },
         createRecipe(title, categories, imageUrls, ingredients, preparation,
-            cookingTimeInMinutes, author, comments) {
+            cookingTimeInMinutes, author) {
 
             let recipe = new Recipe({
                 title,
@@ -34,8 +34,7 @@ module.exports = function(models) {
                 ingredients,
                 preparation,
                 cookingTimeInMinutes,
-                author,
-                comments
+                author
             });
 
             return new Promise((resolve, reject) => {
