@@ -18,16 +18,17 @@ module.exports = function({ app, data }) {
             if (!user) {
                 return done(null, false, { msg: `Email ${email} not found.` });
             }
-            user.comparePassword(password, (err, isMatch) => {
-                if (err) {
-                    return done(err);
-                }
-                if (isMatch) {
-                    return done(null, user);
-                }
-                return done(null, false, { msg: "Invalid email or password." });
-            });
-        });
+
+            return user;
+        })
+        .then(user => {
+            if (user) {  // && user.uthenticatePassword(password)
+                done(null, user);
+            } else {
+                done(null, false);
+            }
+        })
+        .catch(error => done(error, false));
     }));
 
     passport.use(new FacebookStrategy({
@@ -85,9 +86,7 @@ module.exports = function({ app, data }) {
                         user.profile.name = `${profile.name.givenName} ${profile.name.familyName}`;
                         user.profile.gender = profile.json.gender;
                         user.profile.picture = `https://graph.facebook.com/${profile.id}/picture?type=large`;
-                        user.profile.location = (profile.json.location) ?
-                            profile.json.location.name :
-                            "";
+                        user.profile.location = (profile.json.location) ? profile.json.location.name : "";
                         user.save((err) => {
                             done(err, user);
                         });
