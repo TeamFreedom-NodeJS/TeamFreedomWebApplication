@@ -14,10 +14,9 @@ module.exports = function({ app, data }) {
         .get("/sign-up", controller.getSignUpForm)
         .get("/sign-in", controller.getSignInForm)
         .post("/sign-up", controller.signUp)
-        .post("/sign-in",
-            passport.authenticate("local", { failureRedirect: "/auth/sign-in" }),
-            (req, res) => res.redirect("/"))
-        .post("/sign-out", controller.signOut);
+        .post("/sign-in", controller.signIn)
+        .get("/sign-out", controller.signOut)
+        .get("/profile", controller.getProfile);
 
     app.use("/auth", router);
 
@@ -25,9 +24,8 @@ module.exports = function({ app, data }) {
         passport.authenticate("facebook"));
 
     app.get("/auth/facebook/callback",
-        passport.authenticate("facebook", { failureRedirect: "/login" }),
+        passport.authenticate("facebook", { failureRedirect: "/auth/sign-in" }),
         (req, res) => {
-            // Successful authentication, redirect home.
             res.redirect("/");
         });
 

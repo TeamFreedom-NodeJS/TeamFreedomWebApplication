@@ -10,20 +10,25 @@ module.exports = function({ app, data }) {
     app.use(passport.initialize());
     app.use(passport.session());
 
-    passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
+    passport.use(new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
         User.findOne({ email: email.toLowerCase() }, (err, user) => {
-            if (err) { return done(err); }
+            if (err) {
+                return done(err);
+            }
             if (!user) {
                 return done(null, false, { msg: `Email ${email} not found.` });
             }
-            user.comparePassword(password, (err, isMatch) => {
-                if (err) { return done(err); }
-                if (isMatch) {
-                    return done(null, user);
-                }
-                return done(null, false, { msg: 'Invalid email or password.' });
-            });
-        });
+
+            return user;
+        })
+        .then(user => {
+            if (user) {  // && user.uthenticatePassword(password)
+                done(null, user);
+            } else {
+                done(null, false);
+            }
+        })
+        .catch(error => done(error, false));
     }));
 
     passport.use(new FacebookStrategy({
@@ -49,7 +54,7 @@ module.exports = function({ app, data }) {
                     user.facebook = profile.id;
                     user.tokens.push({ kind: "facebook", accessToken });
                     user.profile.name = user.profile.name || `${profile.name.givenName} ${profile.name.familyName}`;
-                    user.profile.gender = user.profile.gender || profile._json.gender;
+                    user.profile.gender = user.profile.gender || profile.json.gender;
                     user.profile.picture = user.profile.picture || `https://graph.facebook.com/${profile.id}/picture?type=large`;
                     user.save((err) => {
                         req.flash("info", { msg: "Facebook account has been linked." });
@@ -66,7 +71,7 @@ module.exports = function({ app, data }) {
                 if (existingUser) {
                     return done(null, existingUser);
                 }
-                User.findOne({ email: profile._json.email }, (err, existingEmailUser) => {
+                User.findOne({ email: profile.json.email }, (err, existingEmailUser) => {
                     if (err) {
                         return done(err);
                     }
@@ -75,13 +80,13 @@ module.exports = function({ app, data }) {
                         done(err);
                     } else {
                         const user = new User();
-                        user.email = profile._json.email;
+                        user.email = profile.json.email;
                         user.facebook = profile.id;
                         user.tokens.push({ kind: "facebook", accessToken });
                         user.profile.name = `${profile.name.givenName} ${profile.name.familyName}`;
-                        user.profile.gender = profile._json.gender;
+                        user.profile.gender = profile.json.gender;
                         user.profile.picture = `https://graph.facebook.com/${profile.id}/picture?type=large`;
-                        user.profile.location = (profile._json.location) ? profile._json.location.name : "";
+                        user.profile.location = (profile.json.location) ? profile.json.location.name : "";
                         user.save((err) => {
                             done(err, user);
                         });
@@ -91,16 +96,13 @@ module.exports = function({ app, data }) {
         }
     }));
 
-    // passport.use(strategy);
-
     passport.serializeUser((user, done) => {
         if (user) {
-            done(null, user._id);
+            done(null, user.id);
         }
     });
 
     passport.deserializeUser((id, done) => {
-        // use the id serialized in the session to retrieve the use from the database
         data.findUserById(id)
             .then(user => {
                 if (user) {
