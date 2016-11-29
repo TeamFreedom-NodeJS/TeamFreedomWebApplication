@@ -10,51 +10,88 @@ module.exports = function({ app, data }) {
     app.use(passport.initialize());
     app.use(passport.session());
 
-    const strategy = new LocalStrategy((username, password, done) => {
-        data.findUserByCredentials(username, password)
-            .then(user => {
-                if (user) {
+    passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
+        User.findOne({ email: email.toLowerCase() }, (err, user) => {
+            if (err) { return done(err); }
+            if (!user) {
+                return done(null, false, { msg: `Email ${email} not found.` });
+            }
+            user.comparePassword(password, (err, isMatch) => {
+                if (err) { return done(err); }
+                if (isMatch) {
                     return done(null, user);
                 }
-
-                return done(null, false);
-            })
-            .catch(error => done(error, null));
-    });
+                return done(null, false, { msg: 'Invalid email or password.' });
+            });
+        });
+    }));
 
     passport.use(new FacebookStrategy({
-            clientID: OAth.facebookOath.cliendID,
-            clientSecret: OAth.facebookOath.clientSecret,
-            callbackURL: OAth.facebookOath.callbackURL
-        },
-        (accessToken, refreshToken, profile, done) => {
-            process.nextTick(() => {
-                User.findOne({ "facebook.id": profile.id }, (err, user) => {
+        clientID: OAth.facebookOath.clientID,
+        clientSecret: OAth.facebookOath.clientSecret,
+        callbackURL: OAth.facebookOath.callbackURL,
+        profileFields: ["name", "email", "link", "locale", "timezone"],
+        passReqToCallback: true
+    }, (req, accessToken, refreshToken, profile, done) => {
+        if (req.user) {
+            User.findOne({ facebook: profile.id }, (err, existingUser) => {
+                if (err) {
+                    return done(err);
+                }
+                if (existingUser) {
+                    req.flash("errors", { msg: "There is already a Facebook account that belongs to you. Sign in with that account or delete it, then link it with your current account." });
+                    done(err);
+                }
+                User.findById(req.user.id, (err, user) => {
                     if (err) {
                         return done(err);
                     }
-                    if (user) {
-                        return done(null, user);
+                    user.facebook = profile.id;
+                    user.tokens.push({ kind: "facebook", accessToken });
+                    user.profile.name = user.profile.name || `${profile.name.givenName} ${profile.name.familyName}`;
+                    user.profile.gender = user.profile.gender || profile._json.gender;
+                    user.profile.picture = user.profile.picture || `https://graph.facebook.com/${profile.id}/picture?type=large`;
+                    user.save((err) => {
+                        req.flash("info", { msg: "Facebook account has been linked." });
+                        done(err, user);
+                    });
+                });
+
+            });
+        } else {
+            User.findOne({ facebook: profile.id }, (err, existingUser) => {
+                if (err) {
+                    return done(err);
+                }
+                if (existingUser) {
+                    return done(null, existingUser);
+                }
+                User.findOne({ email: profile._json.email }, (err, existingEmailUser) => {
+                    if (err) {
+                        return done(err);
+                    }
+                    if (existingEmailUser) {
+                        req.flash("errors", { msg: "There is already an account using this email address. Sign in to that account and link it with Facebook manually from Account Settings." });
+                        done(err);
                     } else {
-                        const newUser = new User();
-                        newUser.facebook.id = profile.id;
-                        newUser.facebook.token = profile.accessToken;
-                        newUser.facebook.name = profile.name.giveName + " " + profile.name.familyName;
-                        newUser.facebook.email = profile.emails[0].value;
-
-                        newUser.save(err => {
-                            if (err) {
-                                throw err;
-                            }
-
-                            return done(null, newUser);
+                        const user = new User();
+                        user.email = profile._json.email;
+                        user.facebook = profile.id;
+                        user.tokens.push({ kind: "facebook", accessToken });
+                        user.profile.name = `${profile.name.givenName} ${profile.name.familyName}`;
+                        user.profile.gender = profile._json.gender;
+                        user.profile.picture = `https://graph.facebook.com/${profile.id}/picture?type=large`;
+                        user.profile.location = (profile._json.location) ? profile._json.location.name : "";
+                        user.save((err) => {
+                            done(err, user);
                         });
                     }
                 });
             });
-        }));
+        }
+    }));
 
-    passport.use(strategy);
+    // passport.use(strategy);
 
     passport.serializeUser((user, done) => {
         if (user) {

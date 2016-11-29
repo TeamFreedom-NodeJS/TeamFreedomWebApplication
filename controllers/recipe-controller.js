@@ -19,6 +19,18 @@ module.exports = function(data) {
                     });
                 });
         },
+        // getRecipeDetailsTitle(req, res) {
+        //     // To check if user is registered
+        //     let title = req.params.title;
+        //     data.getRecipeByTitle(title)
+        //         .then(recipe => {
+        //             return res.render("recipe/details", {
+        //                 model: recipe,
+        //                 user: req.user
+        //             });
+        //         });
+        // },
+
         getCreateRecipeForm(req, res) {
             if (!req.isAuthenticated()) {
                 return res.redirect("/");

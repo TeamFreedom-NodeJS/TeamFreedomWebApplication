@@ -7,7 +7,7 @@ module.exports = function(models) {
     } = models;
 
     return {
-        createUser(username, password) {
+        createUser(email, password) {
             let salt;
 
             return hash.generateSalt()
@@ -16,7 +16,7 @@ module.exports = function(models) {
                     return hash.generatePassHash(password, sl);
                 })
                 .then(passHash => {
-                    let user = new User({ username, salt, passHash });
+                    let user = new User({ email, salt, passHash });
                     return user;
                 })
                 .then(user => {

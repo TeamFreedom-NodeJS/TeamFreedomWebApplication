@@ -3,13 +3,14 @@
 const express = require("express"),
     bodyParser = require("body-parser"),
     cookieParser = require("cookie-parser"),
-    session = require("express-session");
+    session = require("express-session"),
+    expressStatusMonitor = require("express-status-monitor");
 
 module.exports = function({ data }) {
     let app = express();
 
     app.set("view engine", "pug");
-
+    app.use(expressStatusMonitor());
     app.use("/static", express.static("public"));
 
     app.use(cookieParser());

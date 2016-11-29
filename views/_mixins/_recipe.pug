@@ -1,0 +1,12 @@
+mixin hero-info(recipe)
+    .hero-info-container.text-center
+        img.superhero-avatar(src=recipe.imageUrls[0])
+        .hero-info
+            strong
+                =   recipe.title
+            br
+           
+           
+            if user
+                a.btn.btn-danger
+                    | Add to favorites
