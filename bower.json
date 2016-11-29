@@ -1,9 +1,9 @@
 {
-  "name": "superheroes-universe",
+  "name": "TeamFreedomWebApplication",
   "description": "",
   "main": "app.js",
   "authors": [
-    "Doncho Minkov (DonchoMinkov@gmail.com)"
+    "TeamFreedom"
   ],
   "license": "MIT",
   "homepage": "",
@@ -15,6 +15,7 @@
     "tests"
   ],
   "dependencies": {
-    "bootstrap": "^3.3.7"
+    "bootstrap": "^3.3.7",
+    "jquery-modal": "^0.8.0"
   }
 }

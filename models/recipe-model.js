@@ -21,10 +21,12 @@ module.exports = modelRegistrator.register("Recept", {
             required: true
         },
         quantity: {
-            type: Number,
-            // required: true
+            type: Number
         },
-        unit: { enum: { units } }
+        unit: {
+            type: String,
+            enum: units
+        }
     }],
     preparation: {
         type: String,
@@ -56,5 +58,4 @@ module.exports = modelRegistrator.register("Recept", {
             max: 200
         }
     }]
-
 });

@@ -12,6 +12,7 @@ module.exports = function({ app, data }) {
     router
     // .get("/newest", controller.getNewestSuperheroesAjax)
     // .get("/", controller.getSuperheroes)
+        .get("/:id", controller.getRecipeDetails)
         .get("/create", controller.getCreateRecipeForm)
         .post("/", controller.createRecipe);
     // .post("/update", controller.updateSuperhero);

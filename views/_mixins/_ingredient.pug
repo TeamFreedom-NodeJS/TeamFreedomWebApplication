@@ -3,14 +3,14 @@ mixin ingredient
         .ingredient
             input(type="text" name="name" placeholder="Име на съставка")
             input(type="text" name="quantity" placeholder="Количество")
-            select(name="unit")
-                option(value="1" selected="true")
+            select(name="units")
+                option(value="грам" selected="true")
                     | грам
-                option(value="2")
+                option(value="мл")
                     | мл
-                option(value="3")
+                option(value="брой")
                     | брой
-                option(value="4")
+                option(value="чл")
                     | ч.л.
-                option(value="5")
+                option(value="сл")
                     | с.л.

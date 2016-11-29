@@ -1,5 +1,5 @@
 extends ../_layout
-include ../_mixins/_ingredient
+//- include ../_mixins/_ingredient
 
 block content
     form(action="/recipes" method="post")
@@ -14,7 +14,21 @@ block content
             
         
         // TO DO: Make ingredients in a cycle with button 'Add INgredient
-        +ingredient(name="ingredients")
-        
+        //- +ingredient(name="ingredients")
+        input.ingredients-names-list(type="text" name="ingredientsNames")
+        input.ingredients-quantities-list(type="text" name="ingredientsQuantities")
+        input.ingredients-units-list(type="text" name="ingredientsUnits")
+        a#btn-add-ingredient-option(href="#")
+            | Add ingredient
+
+
+        //- input(type="text" name="ingredients" placeholder="Име на съставка")
+        //- input(type="text" name="ingredients" placeholder="Количество")
+        //- select(name="ingredients.units")
+        //-     option(value="грам" selected="true")
+        //-         | грам
+        //-     option(value="мл")
+        //-         | мл
+
         button.btn
-            | Карай нататък
+            | Хайде
