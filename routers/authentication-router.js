@@ -22,7 +22,7 @@ module.exports = function({ app, data }) {
     app.use("/auth", router);
 
     app.get("/auth/facebook",
-        passport.authenticate("facebook", { scope: ["emails"] }));
+        passport.authenticate("facebook"));
 
     app.get("/auth/facebook/callback",
         passport.authenticate("facebook", { failureRedirect: "/login" }),

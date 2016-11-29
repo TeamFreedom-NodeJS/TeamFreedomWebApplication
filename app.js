@@ -1,4 +1,4 @@
-/* globals require console*/
+/* globals require console */
 const config = require("./config");
 
 // let data = require("./data")(config.connectionString["prod"]);
