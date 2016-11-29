@@ -3,7 +3,7 @@
 // const dataUtils = require("./utils/data-utils");
 // const mapper = require("../utils/mapper");
 
-// const MIN_PATTERN_LENGTH = 3;
+const MIN_PATTERN_LENGTH = 3;
 // const DELTA = 1;
 
 module.exports = function(models) {
@@ -14,6 +14,16 @@ module.exports = function(models) {
     } = models;
 
     return {
+        getRecipeById(id) {
+            return new Promise((resolve, reject) => {
+                Recipe.findOne({ _id: id }, (err, recipe) => {
+                    if (err) {
+                        return reject(err);
+                    }
+                    return resolve(recipe);
+                });
+            });
+        },
         createRecipe(title, categories, imageUrls, ingredients, preparation,
             cookingTimeInMinutes, author, comments) {
 
@@ -28,7 +38,6 @@ module.exports = function(models) {
                 comments
             });
 
-            console.log(ingredients);
             return new Promise((resolve, reject) => {
                 recipe.save(err => {
                     if (err) {
@@ -39,7 +48,6 @@ module.exports = function(models) {
                 });
             });
         },
-
         searchRecipes({ pattern, page, pageSize }) {
             let query = {};
             if (typeof pattern === "string" && pattern.length >= MIN_PATTERN_LENGTH) {
@@ -65,18 +73,6 @@ module.exports = function(models) {
 
                         return resolve(recipes || []);
                     });
-            });
-},
-
-        getRecipeById(id) {
-            return new Promise((resolve, reject) => {
-                Recipe.findOne({ _id: id }, (err, recipe) => {
-                    if (err) {
-                        return reject(err);
-                    }
-                    console.log(recipe);
-                    return resolve(recipe);
-                });
             });
         }
 

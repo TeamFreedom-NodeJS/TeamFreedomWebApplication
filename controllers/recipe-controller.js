@@ -45,7 +45,8 @@ module.exports = function(data) {
                     id: 2,
                     name: "Мезета"
                 }],
-                user: req.user
+                user: req.user,
+                ingredients: [{}]
             });
         },
         createRecipe(req, res) {
@@ -57,7 +58,9 @@ module.exports = function(data) {
             let {
                 title,
                 categories,
-                ingredients,
+                ingredientsNames,
+                ingredientsQuantities,
+                ingredientsUnits,
                 preparation,
                 imageUrls,
                 cookingTimeInMinutes
@@ -71,12 +74,20 @@ module.exports = function(data) {
                 imageUrls = [imageUrls];
             }
 
-            if (!Array.isArray(ingredients)) {
-                ingredients = [ingredients];
-            }
-
             if (!Array.isArray(comments)) {
                 comments = [comments];
+            }
+
+            let ingredients = [];
+            let ingredientsNamesArr = ingredientsNames.split(",");
+            let ingredientsQuantitiesArr = ingredientsQuantities.split(",");
+            let ingredientsUnitsArr = ingredientsUnits.split(",");
+            for (let i = 0; i < ingredientsNamesArr.length; i += 1) {
+                ingredients.push({
+                    name: ingredientsNamesArr[i],
+                    quantity: +ingredientsQuantitiesArr[i],
+                    unit: ingredientsUnitsArr[i]
+                });
             }
 
             return data.createRecipe(
