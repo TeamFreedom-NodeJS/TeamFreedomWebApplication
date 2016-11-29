@@ -1,0 +1,41 @@
+extends ../_layout
+
+//- include ../_mixins/_ingredient
+//- include ../_
+
+block content
+    h2=   model.title
+    ul
+        each category in model.categories
+            li
+                a(href="/category/" + category.id)= category.name
+    if user
+        div= "Автор: " + user.username
+    else 
+        div= "Автор: Админ" 
+        div= "Добвена на " + model.created
+            each img in model.imageUrls
+                 img(src=img)
+        strong 
+            | Необходими продукти
+        ul
+            each ingridient in model.ingredients
+                li= ingridient.name
+                span= ingridient.quantity
+                span= ingridient.unit
+            strong
+                | Начин на приготвяне:
+            div= model.preparation
+            div= "Време за готвене: " + model.cookingTimeInMinutes + " мин."
+            a.btn.btn-danger
+                    | Добави към любими
+            h3
+                | Коментари
+            ul
+                each comment in model.comments
+                    li
+                        strong= comment.author.username
+                        span= "Добавен на  " + comment.created
+                        p= comment.content
+            a.btn.btn-danger(href="#")
+                    | Добави коментар                    

@@ -4,6 +4,9 @@ const config = require("./config");
 // let data = require("./data")(config.connectionString["prod"]);
 let data = require("./data")(config.connectionString["dev"]);
 console.log(data);
+
+
+
 const app = require("./config/application")({ data });
 
 require("./routers")({ app, data });

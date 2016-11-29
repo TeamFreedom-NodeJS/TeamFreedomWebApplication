@@ -1,7 +1,7 @@
 /* globals require module */
 
 const modelRegistrator = require("./utils/model-registrator");
-const units = ["грама", "милилитри", "чаена лъжичка", "супена лъжица", "щипка", "брой", "броя"];
+const units = ["гр.", "мл.", "ч. л.", "с. л.", "щипка", "бр."];
 
 module.exports = modelRegistrator.register("Recept", {
     title: {
@@ -21,10 +21,10 @@ module.exports = modelRegistrator.register("Recept", {
             required: true
         },
         quantity: {
-            type: Number,
-            // required: true
+            type: Number
+                // required: true
         },
-        unit: { enum: { units } }
+        unit: { type: String }
     }],
     preparation: {
         type: String,
@@ -42,7 +42,7 @@ module.exports = modelRegistrator.register("Recept", {
         default: Date.now
     },
     author: {},
-    coments: [{
+    comments: [{
         author: {},
         created: {
             type: Date,
@@ -56,5 +56,4 @@ module.exports = modelRegistrator.register("Recept", {
             max: 200
         }
     }]
-
 });

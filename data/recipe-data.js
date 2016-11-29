@@ -45,9 +45,22 @@ module.exports = function(models) {
                     if (err) {
                         return reject(err);
                     }
+                    console.log(recipe);
                     return resolve(recipe);
                 });
             });
         }
+
+        // getRecipeByTitle(title) {
+        //     return new Promise((resolve, reject) => {
+        //         Recipe.find({ title: title }, (err, recipe) => {
+        //             if (err) {
+        //                 return reject(err);
+        //             }
+        //             return resolve(recipe);
+        //         });
+        //     });
+        // }
+
     };
 };
