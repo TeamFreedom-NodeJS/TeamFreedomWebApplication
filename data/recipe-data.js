@@ -39,6 +39,35 @@ module.exports = function(models) {
                 });
             });
         },
+
+        searchRecipes({ pattern, page, pageSize }) {
+            let query = {};
+            if (typeof pattern === "string" && pattern.length >= MIN_PATTERN_LENGTH) {
+                query.$or = [{
+                    title: new RegExp(`.*${pattern}.*`, "gi")
+                }, {
+                    category: new RegExp(`.*${pattern}.*`, "gi")
+                }];
+            }
+
+            let skip = (page - 1) * pageSize,
+                limit = page * pageSize;
+
+            return new Promise((resolve, reject) => {
+                Recipe.find()
+                    .where(query)
+                    .skip(skip)
+                    .limit(limit)
+                    .exec((err, recipes) => {
+                        if (err) {
+                            return reject(err);
+                        }
+
+                        return resolve(recipes || []);
+                    });
+            });
+},
+
         getRecipeById(id) {
             return new Promise((resolve, reject) => {
                 Recipe.findOne({ _id: id }, (err, recipe) => {

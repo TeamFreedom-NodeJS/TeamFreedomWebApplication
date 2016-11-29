@@ -1,0 +1,18 @@
+include _recipe-info
+
+mixin recipes-list(recipes, currentPage, pages)
+    ul.list.list-horizontal.list-pages.text-center
+        - for(let i = 1; i <= pages; i+=1 )
+            li
+                if currentPage === i
+                    a.btn.btn-danger.disabled(href="/recipes?page=" + i)
+                        = i
+                else
+                    a.btn.btn-danger(href="/recipes?page=" + i)
+                        = i
+
+    ul.list.text-center
+        each recipe in recipes
+            li
+                .list-item-container
+                    +hero-info(recipe)
