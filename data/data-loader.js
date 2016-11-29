@@ -12,8 +12,9 @@ module.exports = function(connectionString) {
 
     let User = require("../models/user-model.js");
     let Recipe = require("../models/recipe-model");
+    let Category = require("../models/category-model.js");
 
-    let models = { User, Recipe };
+    let models = { User, Recipe, Category };
 
     let data = {};
 

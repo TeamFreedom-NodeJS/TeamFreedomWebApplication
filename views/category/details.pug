@@ -1,0 +1,16 @@
+extends ../_layout
+
+block content
+    if model
+        h2= model.name
+
+        ul
+            each recipe in model.recipes
+                li
+                    if recipe.image
+                        img(src=recipe.image)
+                    else
+                        strong Няма снимка.
+                        
+                    a(href="/recipes/" + recipe.id)= recipe.name
+                       
