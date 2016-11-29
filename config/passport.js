@@ -10,17 +10,21 @@ module.exports = function({ app, data }) {
     app.use(passport.initialize());
     app.use(passport.session());
 
-    const strategy = new LocalStrategy((username, password, done) => {
-        data.findUserByCredentials(username, password)
-            .then(user => {
-                if (user) {
+    passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
+        User.findOne({ email: email.toLowerCase() }, (err, user) => {
+            if (err) { return done(err); }
+            if (!user) {
+                return done(null, false, { msg: `Email ${email} not found.` });
+            }
+            user.comparePassword(password, (err, isMatch) => {
+                if (err) { return done(err); }
+                if (isMatch) {
                     return done(null, user);
                 }
-
-                return done(null, false);
-            })
-            .catch(error => done(error, null));
-    });
+                return done(null, false, { msg: 'Invalid email or password.' });
+            });
+        });
+    }));
 
     passport.use(new FacebookStrategy({
         clientID: OAth.facebookOath.clientID,
@@ -87,7 +91,7 @@ module.exports = function({ app, data }) {
         }
     }));
 
-    passport.use(strategy);
+    // passport.use(strategy);
 
     passport.serializeUser((user, done) => {
         if (user) {
