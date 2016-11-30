@@ -11,28 +11,28 @@ module.exports = function(data) {
                 });
         },
         signIn(req, res, next) {
-            const auth = passport.authenticate('local', function (error, user) {
-                if(error) {
+            const auth = passport.authenticate("local", function(error, user) {
+                if (error) {
                     next(error);
                     return;
                 }
 
-                if(!user) {
+                if (!user) {
                     res.status(400);
                     res.json({
                         success: false,
-                        message: 'Invalid name or password!'
+                        message: "Invalid name or password!"
                     });
                 }
 
                 req.login(user, error => {
-                    if(error) {
+                    if (error) {
                         next(error);
                         return;
                     }
 
                     res.status(200)
-                        .send({ redirectRoute: '/auth/profile' });
+                        .send({ redirectRoute: "/auth/profile" });
                 });
             });
 
@@ -45,7 +45,7 @@ module.exports = function(data) {
             return Promise.resolve()
                 .then(() => {
                     req.logout();
-                    res.redirect('/');
+                    res.redirect("/");
                 });
         },
         getSignUpForm(req, res) {
@@ -58,12 +58,12 @@ module.exports = function(data) {
             return Promise.resolve()
                 .then(() => {
                     if (!req.isAuthenticated()) {
-                        res.status(401).redirect('/unauthorized');
+                        res.status(401).redirect("/unauthorized");
                     } else {
-                        res.render('authentication/profile', { user: req.user });
+                        res.render("authentication/profile", { user: req.user });
                     }
                 });
-            //return res.render("authentication/profile");
+            // return res.render("authentication/profile");
         }
     };
 };
