@@ -90,7 +90,7 @@ module.exports = function(data) {
                     cookingTimeInMinutes,
                     author)
                 .then(recipe => {
-                    return res.redirect(`/recipes/recipe/${recipe.id}`);
+                    return res.redirect(`/recipes/${recipe.id}`);
                 })
                 .catch(err => {
                     res.status(400)

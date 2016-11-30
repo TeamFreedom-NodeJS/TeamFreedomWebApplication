@@ -7,8 +7,9 @@ block content
             input.form-control(type="text" name="imgUrl" placeholder="Category image url.")
             button.btn.btn-danger(type="submit") Create
 
-        h3 Categories
-        if model
+    h3 Categories
+    if model
+        ol
             each category in model
-                div
-                    div Name: #{category.name}
+                li
+                    div= category.name
