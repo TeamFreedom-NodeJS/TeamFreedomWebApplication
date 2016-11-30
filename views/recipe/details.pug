@@ -8,7 +8,7 @@ block content
     ul
         each category in model.categories
             li
-                a(href="/category/" + category.id)= category.name
+                a(href="/categories/" + category.id)= category.name
     if model.author
         div= "Автор: " + model.author.name
     else 

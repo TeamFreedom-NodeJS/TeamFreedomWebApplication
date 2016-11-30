@@ -15,7 +15,7 @@ module.exports = function({
         .get("/list", controller.getAllCategories)
         .get("/create", controller.getCreateCategoryForm)
         .post("/", controller.createCategory)
-        .get("/category/:id", controller.getCategoryById);
+        .get("/:id", controller.getCategoryById);
 
     app.use("/categories", router);
 
