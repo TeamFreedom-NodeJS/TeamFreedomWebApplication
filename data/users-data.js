@@ -9,7 +9,6 @@ module.exports = function(models) {
     return {
         createUser(email, password) {
             let salt;
-
             return hash.generateSalt()
                 .then(sl => {
                     salt = sl;
@@ -24,7 +23,6 @@ module.exports = function(models) {
                         if (err) {
                             return err;
                         }
-
                         return user;
                     });
                 })

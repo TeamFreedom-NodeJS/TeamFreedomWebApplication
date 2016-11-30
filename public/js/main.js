@@ -1,13 +1,16 @@
 /* globals $ prompt*/
 
 $(() => {
-    const $ingredientsNamesList = $(".ingredients-names-list"),
-        $ingredientsQuantityList = $(".ingredients-quantities-list"),
-        $ingredientsUnitsList = $(".ingredients-units-list");
-    const allIngredientsNames = [],
-        allIngredientsQuantities = [],
-        allIngredientsUnits = [];
-    const units = ["грама", "милилитри", "чаена лъжичка", "супена лъжица", "щипка", "брой", "броя"];
+    // const $ingredientsNamesList = $(".ingredients-names-list"),
+    //     $ingredientsQuantityList = $(".ingredients-quantities-list"),
+    //     $ingredientsUnitsList = $(".ingredients-units-list");
+    // const allIngredientsNames = [],
+    //     allIngredientsQuantities = [],
+    //     allIngredientsUnits = [];
+
+    const $ingredientsList = $(".ingredients-list"),
+        allIngredients = [];
+    const units = ["гр.", "мл.", "ч. л.", "с. л.", "щипка", "бр."];
 
     // let modalForm = $("<form>")
     //     .attr("class", "modal")
@@ -58,32 +61,43 @@ $(() => {
     $("#btn-add-ingredient-option").on("click", ev => {
         ev.preventDefault();
 
-        let ingredientName = prompt("Enter ingredient name");
-        if (ingredientName === "") {
+        let ingredient = prompt("Enter ingredient: {name-quantity-units}");
+        // Validate ingredients
+        if (ingredient === "") {
             return false;
         }
 
-        let ingredientQuantity = prompt("Enter ingredient quantity");
-        if (isNaN(Number(ingredientQuantity))) {
-            return false;
-        }
-
-        let ingredientUnit = prompt("Enter ingredient units");
-        if (units.indexOf(ingredientUnit) < 0) {
-            return false;
-        }
-
-        allIngredientsNames.push(ingredientName);
-        $ingredientsNamesList.attr("value", allIngredientsNames.join(","));
-
-        allIngredientsQuantities.push(ingredientQuantity);
-        $ingredientsQuantityList.attr("value", allIngredientsQuantities.join(","));
-
-        allIngredientsUnits.push(ingredientUnit);
-        $ingredientsUnitsList.attr("value", allIngredientsUnits.join(","));
+        allIngredients.push(ingredient);
+        $ingredientsList.attr("value", allIngredients.join(","));
     });
 
+    // $("#btn-add-ingredient-option").on("click", ev => {
+    //     ev.preventDefault();
 
+    //     let ingredientName = prompt("Enter ingredient name");
+    //     if (ingredientName === "") {
+    //         return false;
+    //     }
+
+    //     let ingredientQuantity = prompt("Enter ingredient quantity");
+    //     if (isNaN(Number(ingredientQuantity))) {
+    //         return false;
+    //     }
+
+    //     let ingredientUnit = prompt("Enter ingredient units");
+    //     if (units.indexOf(ingredientUnit) < 0) {
+    //         return false;
+    //     }
+
+    //     allIngredientsNames.push(ingredientName);
+    //     $ingredientsNamesList.attr("value", allIngredientsNames.join(","));
+
+    //     allIngredientsQuantities.push(ingredientQuantity);
+    //     $ingredientsQuantityList.attr("value", allIngredientsQuantities.join(","));
+
+    //     allIngredientsUnits.push(ingredientUnit);
+    //     $ingredientsUnitsList.attr("value", allIngredientsUnits.join(","));
+    // });
 
 
     // $("#btn-add-ingredient-option").on("click", ev => {
