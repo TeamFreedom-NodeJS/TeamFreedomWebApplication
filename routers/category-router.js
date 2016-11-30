@@ -12,10 +12,10 @@ module.exports = function({
     let router = new Router();
 
     router
-        .get("/", controller.getAllCategories)
-        .get("/createForm", controller.getCreateCategoryForm)
-        .post("/create", controller.createCategory)
-        .get("/:id", controller.getCategoryById);
+        .get("/list", controller.getAllCategories)
+        .get("/create", controller.getCreateCategoryForm)
+        .post("/", controller.createCategory)
+        .get("/category/:id", controller.getCategoryById);
 
     app.use("/categories", router);
 

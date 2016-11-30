@@ -4,6 +4,6 @@ block content
     ul
         each category in model
             li.col-xs-4
-                a(href="/categories/" + category.id)= category.name
+                a(href="/categories/list" + category.id)= category.name
                 img(src=category.imgUrl)
                     

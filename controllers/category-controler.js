@@ -10,7 +10,7 @@ module.exports = function(data) {
 
             return data.createCategory(name, imgUrl)
                 .then(category => {
-                    return res.redirect("/categories");
+                    return res.redirect("/categories/list");
                 })
                 .catch(err => {
                     res.status(400)
