@@ -10,7 +10,7 @@ module.exports = function(data) {
 
             return data.createCategory(name, imgUrl)
                 .then(category => {
-                    return res.redirect("/categories/list");
+                    return res.redirect("/categories/create");
                 })
                 .catch(err => {
                     res.status(400)
@@ -60,7 +60,12 @@ module.exports = function(data) {
             //     return res.redirect("/");
             // }
 
-            return res.render("category/create");
+            return data.getAllCategories()
+                .then(categories => {
+                    return res.render("category/create", {
+                        model: categories
+                    });
+                });
         },
         updateCategory(req, res) {
 
