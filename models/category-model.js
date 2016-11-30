@@ -9,8 +9,10 @@ module.exports = modelRegistrator.register("Category", {
         unique: true
     },
     imgUrl: {
-        type: String,
-        required: true
+        type: String
+    },
+    desription: {
+        type: String
     },
     recipes: [{}]
 });

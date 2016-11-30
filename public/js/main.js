@@ -7,10 +7,10 @@ $(() => {
     // const allIngredientsNames = [],
     //     allIngredientsQuantities = [],
     //     allIngredientsUnits = [];
+    // const units = ["гр.", "мл.", "ч. л.", "с. л.", "щипка", "бр."];
 
     const $ingredientsList = $(".ingredients-list"),
         allIngredients = [];
-    const units = ["гр.", "мл.", "ч. л.", "с. л.", "щипка", "бр."];
 
     // let modalForm = $("<form>")
     //     .attr("class", "modal")

@@ -35,19 +35,24 @@ module.exports = function(data) {
             if (!req.isAuthenticated()) {
                 return res.redirect("/");
             }
-            return res.render("recipe/create", {
 
-                // TO DO: Get Categories from DB
-                categories: [{
-                    id: 1,
-                    name: "Салати"
-                }, {
-                    id: 2,
-                    name: "Мезета"
-                }],
-                user: req.user,
-                ingredients: [{}]
-            });
+            data.getAllCategories()
+                .then(categories => {
+                    return res.render("recipe/create", {
+
+                        // TO DO: Get Categories from DB
+                        // categories: [{
+                        //     id: 1,
+                        //     name: "Салати"
+                        // }, {
+                        //     id: 2,
+                        //     name: "Мезета"
+                        // }],
+                        categories,
+                        user: req.user,
+                        ingredients: [{}]
+                    });
+                });
         },
         createRecipe(req, res) {
             let author = {

@@ -12,23 +12,23 @@ module.exports = function({ app, data }) {
 
     passport.use(new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
         User.findOne({ email: email.toLowerCase() }, (err, user) => {
-            if (err) {
-                return done(err);
-            }
-            if (!user) {
-                return done(null, false, { msg: `Email ${email} not found.` });
-            }
+                if (err) {
+                    return done(err);
+                }
+                if (!user) {
+                    return done(null, false, { msg: `Email ${email} not found.` });
+                }
 
-            return user;
-        })
-        .then(user => {
-            if (user) {  // && user.uthenticatePassword(password)
-                done(null, user);
-            } else {
-                done(null, false);
-            }
-        })
-        .catch(error => done(error, false));
+                return user;
+            })
+            .then(user => {
+                if (user) { // && user.uthenticatePassword(password)
+                    done(null, user);
+                } else {
+                    done(null, false);
+                }
+            })
+            .catch(error => done(error, false));
     }));
 
     passport.use(new FacebookStrategy({
