@@ -3,18 +3,13 @@ extends ../_layout
 //- include ../_mixins/_ingredient
 //- include ../_
 block content
-    h2= model.title
+    h2=   model.title
     ul
         each category in model.categories
             li
-                a(href="/categories/" + category._id)= category.name
-        //- if user
-        //-     div
-        //-         img.img-circle.img-responsive(src= user.profile.picture)
-        //-         span="Автор: " + user.profile.name
-        //- else 
-        //- div= "Автор: Админ" 
-    div= model.author
+                a(href="/categories/" + category.id)= category.name
+    
+    div="Автор: " +model.author
     div= "Добвена на " + model.created
     each img in model.imageUrls
         img.img-responsive.col-xs-4(src= img)
@@ -34,14 +29,16 @@ block content
     div= "Време за готвене: " + model.cookingTimeInMinutes + " мин."
     a.btn.btn-danger
         | Добави към любими
-    h3
-        | Коментари
-        ul
-             each comment in model.comments
-                li
-                    strong= comment.author.username
-                    span= "Добавен на  " + comment.created
-                    p= comment.content
-    form(method="post" action="/recipes/recipe")
-        textarea.form-control(name="comment" placeholder="Коментар")
-        input(type="submit" value ="Добави")
+    div
+        h3
+            | Коментари
+            ul
+                each comment in model.comments
+                    li
+                        strong= comment.author.username
+                        span= "Добавен на  " + comment.created
+                        p= comment.content
+        
+        form(method="post" action="/recipes")
+            textarea.form-control(name="comment" placeholder="Коментар")
+            input(type="submit" value ="Добави")
