@@ -11,9 +11,8 @@ module.exports = modelRegistrator.register("Category", {
     imgUrl: {
         type: String
     },
-    desription: {
+    description: {
         type: String
     },
-    desctription: String,
     recipes: [{}]
 });
