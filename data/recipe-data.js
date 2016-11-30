@@ -26,20 +26,26 @@ module.exports = function(models) {
         },
         createRecipe(title, categoriesIds, imageUrls, ingredients, preparation,
             cookingTimeInMinutes, author) {
-            let recipe;
 
             return new Promise((resolve, reject) => {
                 Category.find({ _id: { $in: categoriesIds } })
                     .select("name")
-                    .exec((err, categories) => {
-                        if (err) {
-                            return Promise.reject(err);
+                    .then(categories => {
+                        let recipeCategories = [];
+
+                        for (let categ of categories) {
+                            let categInRecipe = {
+                                name: categ.name,
+                                id: categ._id
+                            };
+
+                            recipeCategories.push(categInRecipe);
                         }
 
-                        return Promise.resolve(categories);
+                        return recipeCategories;
                     })
                     .then(categories => {
-                        recipe = new Recipe({
+                        let recipe = new Recipe({
                             title,
                             categories,
                             imageUrls,
@@ -49,13 +55,35 @@ module.exports = function(models) {
                             author
                         });
 
-                        return recipe.save(err => {
-                            if (err) {
-                                return err;
-                            }
+                        return new Promise((resolve, reject) => {
+                            recipe.save(err => {
+                                if (err) {
+                                    return reject(err);
+                                }
 
-                            return resolve(recipe);
+                                return resolve(recipe);
+                            });
                         });
+                    })
+                    .then(recipe => {
+                        if (categoriesIds[0]) {
+                            let recipeInfo = {
+                                id: recipe._id,
+                                title: recipe.title
+                            };
+                            categoriesIds.forEach(categId => {
+                                Category.findByIdAndUpdate(
+                                    categId, { $push: { recipes: recipeInfo } }, { safe: true, upsert: true },
+                                    err => {
+                                        if (err) {
+                                            console.log(err);
+                                            return reject(err);
+                                        }
+                                    });
+                            });
+                        }
+
+                        return resolve(recipe);
                     })
                     .catch(err => {
                         return reject(err);
