@@ -7,7 +7,7 @@ block content
     ul
         each category in model.categories
             li
-                a(href="/categories/" + category.id)= category.name
+                a(href="/categories/" + category._id)= category.name
         //- if user
         //-     div
         //-         img.img-circle.img-responsive(src= user.profile.picture)
