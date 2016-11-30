@@ -8,9 +8,9 @@ const MIN_PATTERN_LENGTH = 3;
 
 module.exports = function(models) {
     let {
-        Recipe
+        Recipe,
         // User,
-        // Category
+        Category
     } = models;
 
     return {
@@ -24,27 +24,42 @@ module.exports = function(models) {
                 });
             });
         },
-        createRecipe(title, categories, imageUrls, ingredients, preparation,
+        createRecipe(title, categoriesIds, imageUrls, ingredients, preparation,
             cookingTimeInMinutes, author) {
-
-            let recipe = new Recipe({
-                title,
-                categories,
-                imageUrls,
-                ingredients,
-                preparation,
-                cookingTimeInMinutes,
-                author
-            });
+            let recipe;
 
             return new Promise((resolve, reject) => {
-                recipe.save(err => {
-                    if (err) {
-                        return reject(err);
-                    }
+                Category.find({ _id: { $in: categoriesIds } })
+                    .select("name")
+                    .exec((err, categories) => {
+                        if (err) {
+                            return Promise.reject(err);
+                        }
 
-                    return resolve(recipe);
-                });
+                        return Promise.resolve(categories);
+                    })
+                    .then(categories => {
+                        recipe = new Recipe({
+                            title,
+                            categories,
+                            imageUrls,
+                            ingredients,
+                            preparation,
+                            cookingTimeInMinutes,
+                            author
+                        });
+
+                        return recipe.save(err => {
+                            if (err) {
+                                return err;
+                            }
+
+                            return resolve(recipe);
+                        });
+                    })
+                    .catch(err => {
+                        return reject(err);
+                    });
             });
         },
         searchRecipes({ pattern, page, pageSize }) {
@@ -74,17 +89,5 @@ module.exports = function(models) {
                     });
             });
         }
-
-        // getRecipeByTitle(title) {
-        //     return new Promise((resolve, reject) => {
-        //         Recipe.find({ title: title }, (err, recipe) => {
-        //             if (err) {
-        //                 return reject(err);
-        //             }
-        //             return resolve(recipe);
-        //         });
-        //     });
-        // }
-
     };
 };

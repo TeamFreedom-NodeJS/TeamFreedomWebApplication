@@ -1,0 +1,8 @@
+mocha
+chai
+sinon
+chai-http
+node-mocks-http - не знаем как работи
+
+
+Start mocha from package.json - from "test": "./node-modules/.bin/mocha tests tests/**/*.js"
