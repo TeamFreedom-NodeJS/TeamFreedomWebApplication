@@ -4,18 +4,18 @@ module.exports = function(data) {
     return {
         createCategory(req, res) {
             let {
-                name
+                name,
+                imgUrl
             } = req.body;
 
-            return data.createCategory(name)
+            return data.createCategory(name, imgUrl)
                 .then(category => {
-                    return res.send(category.name);
+                    return res.redirect("/categories");
                 })
                 .catch(err => {
                     res.status(400)
                         .send(err);
                 });
-
         },
         getAllCategories(req, res) {
             data.getAllCategories()
@@ -55,11 +55,12 @@ module.exports = function(data) {
                         .send(err);
                 });
         },
-        addRecieptToCategory(req, res) {
+        getCreateCategoryForm(req, res) {
+            // if (!req.isAuthenticated()) {
+            //     return res.redirect("/");
+            // }
 
-        },
-        removeResieptByCategory(req, res) {
-
+            return res.render("category/create");
         },
         updateCategory(req, res) {
 

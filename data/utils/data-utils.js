@@ -1,6 +1,6 @@
 /* globals module */
 module.exports = {
-    loadOrCreateCategory(Category, name) {
+    loadOrCreateCategory(Category, name, imgUrl) {
         return new Promise((resolve, reject) => {
             Category.findOne({ name }, (err, dbCategory) => {
                 let category = dbCategory;
@@ -13,7 +13,7 @@ module.exports = {
                     return resolve(category);
                 }
 
-                category = new Category({ name });
+                category = new Category({ name, imgUrl });
                 return this.save(category)
                     .then(resolve)
                     .catch(reject);
