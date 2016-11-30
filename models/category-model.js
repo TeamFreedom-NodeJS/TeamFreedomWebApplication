@@ -14,5 +14,6 @@ module.exports = modelRegistrator.register("Category", {
     desription: {
         type: String
     },
+    desctription: String,
     recipes: [{}]
 });

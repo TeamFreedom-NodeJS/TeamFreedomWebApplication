@@ -10,8 +10,8 @@ module.exports = function(models) {
     } = models;
 
     return {
-        createCategory(name) {
-            return dataUtils.createCategory(name);
+        createCategory(name, imgUrl) {
+            return dataUtils.loadOrCreateCategory(Category, name, imgUrl);
         },
         getAllCategories() {
             return new Promise((resolve, reject) => {
@@ -51,19 +51,32 @@ module.exports = function(models) {
                 });
             });
         },
-        // addRecieptToCategory(Category, reciepts) {
+        // updateCategory(categoryName, newName, imgUrl) {
+        //     return new Promise((resolve, reject) => {
+        //         Category.findOne({
+        //         name: categoryName
+        //     }, function(err, doc) {
+        //         if (err) {
+        //             reject(err)
+        //         }
+
+        //         doc.name = newName;
+        //         doc.visits.$inc();
+        //         doc.save();
+
+        //         return resolve(doc);
+        //     })
+        //     });
+        // }
+        // },
+        // deleteCategory(name) {
 
         // },
-        // removeResieptByCategory(Category, id) {
-
-        // },
-        // updateCategory() {
-
-        // },
-        // deleteCategory() {
-
-        // },
-        searchCategories({ pattern, page, pageSize }) {
+        searchCategories({
+            pattern,
+            page,
+            pageSize
+        }) {
             let query = {};
             if (typeof pattern === "string" && pattern.length >= MIN_PATTERN_LENGTH) {
                 query.$or = [{

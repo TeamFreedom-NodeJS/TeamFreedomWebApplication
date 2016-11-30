@@ -13,6 +13,8 @@ module.exports = function({
 
     router
         .get("/", controller.getAllCategories)
+        .get("/createForm", controller.getCreateCategoryForm)
+        .post("/create", controller.createCategory)
         .get("/:id", controller.getCategoryById);
 
     app.use("/categories", router);
