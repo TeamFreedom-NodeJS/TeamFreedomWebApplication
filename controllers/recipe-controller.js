@@ -45,19 +45,21 @@ module.exports = function(data) {
                     id: 2,
                     name: "Мезета"
                 }],
-                user: req.user
+                user: req.user,
+                ingredients: [{}]
             });
         },
         createRecipe(req, res) {
-            let comments = [],
-                author = {
-                    id: req.user._id,
-                    name: req.user.username
-                };
+            let author = {
+                id: req.user._id,
+                name: req.user.username || req.user.profile.name,
+                imageUrl: req.user.profile.picture || "no picture"
+            };
+
             let {
                 title,
                 categories,
-                ingredients,
+                ingredientsAll,
                 preparation,
                 imageUrls,
                 cookingTimeInMinutes
@@ -71,12 +73,16 @@ module.exports = function(data) {
                 imageUrls = [imageUrls];
             }
 
-            if (!Array.isArray(ingredients)) {
-                ingredients = [ingredients];
-            }
+            let ingredients = [];
+            let ingredientsArr = ingredientsAll.split(",");
 
-            if (!Array.isArray(comments)) {
-                comments = [comments];
+            for (let i = 0; i < ingredientsArr.length; i += 1) {
+                let ingredientInfo = ingredientsArr[i].split("-");
+                ingredients.push({
+                    name: ingredientInfo[0],
+                    quantity: +ingredientInfo[1],
+                    unit: ingredientInfo[2]
+                });
             }
 
             return data.createRecipe(
@@ -86,10 +92,9 @@ module.exports = function(data) {
                     ingredients,
                     preparation,
                     cookingTimeInMinutes,
-                    author,
-                    comments)
+                    author)
                 .then(recipe => {
-                    return res.redirect(`/recipes/${recipe.id}`);
+                    return res.redirect(`/recipes/recipe/${recipe.id}`);
                 })
                 .catch(err => {
                     res.status(400)

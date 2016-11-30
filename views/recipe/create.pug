@@ -1,5 +1,5 @@
 extends ../_layout
-include ../_mixins/_ingredient
+//- include ../_mixins/_ingredient
 
 block content
     form(action="/recipes" method="post")
@@ -14,7 +14,9 @@ block content
             
         
         // TO DO: Make ingredients in a cycle with button 'Add INgredient
-        +ingredient(name="ingredients")
-        
+        input.ingredients-list(type="text" name="ingredientsAll")
+        a#btn-add-ingredient-option(href="#")
+            | Add ingredient
+
         button.btn
-            | Карай нататък
+            | Добави

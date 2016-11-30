@@ -7,16 +7,15 @@ module.exports = function(models) {
     } = models;
 
     return {
-        createUser(username, password) {
+        createUser(email, password) {
             let salt;
-
             return hash.generateSalt()
                 .then(sl => {
                     salt = sl;
                     return hash.generatePassHash(password, sl);
                 })
                 .then(passHash => {
-                    let user = new User({ username, salt, passHash });
+                    let user = new User({ email, salt, passHash });
                     return user;
                 })
                 .then(user => {
@@ -24,7 +23,6 @@ module.exports = function(models) {
                         if (err) {
                             return err;
                         }
-
                         return user;
                     });
                 })

@@ -22,9 +22,11 @@ module.exports = modelRegistrator.register("Recept", {
         },
         quantity: {
             type: Number
-                // required: true
         },
-        unit: { type: String }
+        unit: {
+            type: String,
+            enum: units
+        }
     }],
     preparation: {
         type: String,
