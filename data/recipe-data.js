@@ -13,6 +13,61 @@ module.exports = function(models) {
         Category
     } = models;
 
+    function findCategoriesByIds(categoriesIds) {
+        return new Promise((resolve, reject) => {
+            Category.find({ _id: { $in: categoriesIds } })
+                .select("name")
+                .then(categories => {
+                    let recipeCategories = [];
+
+                    for (let categ of categories) {
+                        let categInRecipe = {
+                            name: categ.name,
+                            id: categ._id
+                        };
+
+                        recipeCategories.push(categInRecipe);
+                    }
+
+                    return resolve(recipeCategories);
+                })
+                .catch(err => {
+                    return reject(err);
+                });
+        });
+    }
+
+    function updateCategoriesWithRecipe(categoriesIds, recipe) {
+        return new Promise((resolve, reject) => {
+            if (categoriesIds[0]) {
+                let recipeInfo = {
+                    id: recipe._id,
+                    title: recipe.title
+                };
+                // Category.update({ _id: { $in: categoriesIds } }, { $push: { recipes: recipeInfo } }, { safe: true, upsert: true },
+                //     err => {
+                //         if (err) {
+                //             console.log(err);
+                //             return reject(err);
+                //         }
+                //     });
+                categoriesIds.forEach(categId => {
+                    Category.findByIdAndUpdate(
+                        categId, { $push: { recipes: recipeInfo } }, { safe: true, upsert: true },
+                        err => {
+                            if (err) {
+                                console.log(err);
+                                return reject(err);
+                                // return err;
+                            }
+                        });
+                });
+            }
+
+            return resolve(recipe);
+        });
+    }
+
     return {
         getRecipeById(id) {
             return new Promise((resolve, reject) => {
@@ -28,22 +83,7 @@ module.exports = function(models) {
             cookingTimeInMinutes, author) {
 
             return new Promise((resolve, reject) => {
-                Category.find({ _id: { $in: categoriesIds } })
-                    .select("name")
-                    .then(categories => {
-                        let recipeCategories = [];
-
-                        for (let categ of categories) {
-                            let categInRecipe = {
-                                name: categ.name,
-                                id: categ._id
-                            };
-
-                            recipeCategories.push(categInRecipe);
-                        }
-
-                        return recipeCategories;
-                    })
+                findCategoriesByIds(categoriesIds)
                     .then(categories => {
                         let recipe = new Recipe({
                             title,
@@ -66,24 +106,44 @@ module.exports = function(models) {
                         });
                     })
                     .then(recipe => {
-                        if (categoriesIds[0]) {
-                            let recipeInfo = {
-                                id: recipe._id,
-                                title: recipe.title
-                            };
-                            categoriesIds.forEach(categId => {
-                                Category.findByIdAndUpdate(
-                                    categId, { $push: { recipes: recipeInfo } }, { safe: true, upsert: true },
-                                    err => {
-                                        if (err) {
-                                            console.log(err);
-                                            return reject(err);
-                                        }
-                                    });
-                            });
-                        }
+                        updateCategoriesWithRecipe(categoriesIds, recipe)
+                            .then(resolve)
+                            .catch(reject);
+                    })
+                    .catch(err => {
+                        return reject(err);
+                    });
+            });
+        },
+        editRecipeById(id, title, categoriesIds, imageUrls, ingredients, preparation,
+            cookingTimeInMinutes, author) {
+            return new Promise((resolve, reject) => {
+                findCategoriesByIds(categoriesIds)
+                    .then(categories => {
+                        return new Promise((resolve, reject) => {
+                            Recipe.findByIdAndUpdate(id, {
+                                    title,
+                                    categories,
+                                    imageUrls,
+                                    ingredients,
+                                    preparation,
+                                    cookingTimeInMinutes,
+                                    author
+                                }, { safe: true, upsert: true, new: true },
+                                (err, recipe) => {
+                                    if (err) {
+                                        console.log(err);
+                                        return reject(err);
+                                    }
 
-                        return resolve(recipe);
+                                    return resolve(recipe);
+                                });
+                        });
+                    })
+                    .then(recipe => {
+                        updateCategoriesWithRecipe(categoriesIds, recipe)
+                            .then(resolve)
+                            .catch(reject);
                     })
                     .catch(err => {
                         return reject(err);

@@ -13,7 +13,8 @@ module.exports = function({ app, data }) {
     // .get("/newest", controller.getNewestSuperheroesAjax)
         .get("/create", controller.getCreateRecipeForm)
         .get("/:id", controller.getRecipeDetails)
-        .post("/", controller.createRecipe);
+        .post("/", controller.createRecipe)
+        .post("/edit/:id", controller.createRecipe);
 
     // .post("/update", controller.updateSuperhero);
 
