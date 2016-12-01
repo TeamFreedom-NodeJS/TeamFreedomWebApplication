@@ -1,10 +1,6 @@
 /* globals module require Promise */
 
-// const dataUtils = require("./utils/data-utils");
-// const mapper = require("../utils/mapper");
-
 const MIN_PATTERN_LENGTH = 3;
-// const DELTA = 1;
 
 module.exports = function(models) {
     let {
@@ -37,7 +33,7 @@ module.exports = function(models) {
         });
     }
 
-    function updateCategoriesWithRecipe(categoriesIds, recipe) {
+    function addRecipeToCategories(categoriesIds, recipe) {
         return new Promise((resolve, reject) => {
             if (categoriesIds[0]) {
                 let recipeInfo = {
@@ -116,7 +112,7 @@ module.exports = function(models) {
                         });
                     })
                     .then(recipe => {
-                        updateCategoriesWithRecipe(categoriesIds, recipe)
+                        addRecipeToCategories(categoriesIds, recipe)
                             .then(resolve)
                             .catch(reject);
                     })
@@ -126,7 +122,7 @@ module.exports = function(models) {
             });
         },
         editRecipeById(id, title, categoriesIds, imageUrls, ingredients, preparation,
-            cookingTimeInMinutes, author) {
+            cookingTimeInMinutes) {
             return new Promise((resolve, reject) => {
                 findCategoriesByIds(categoriesIds)
                     .then(categories => {
@@ -137,9 +133,8 @@ module.exports = function(models) {
                                     imageUrls,
                                     ingredients,
                                     preparation,
-                                    cookingTimeInMinutes,
-                                    author
-                                }, { safe: true, upsert: true, new: true },
+                                    cookingTimeInMinutes
+                                }, { safe: true, new: true },
                                 (err, recipe) => {
                                     if (err) {
                                         console.log(err);
@@ -151,7 +146,7 @@ module.exports = function(models) {
                         });
                     })
                     .then(recipe => {
-                        updateCategoriesWithRecipe(categoriesIds, recipe)
+                        addRecipeToCategories(categoriesIds, recipe)
                             .then(resolve)
                             .catch(reject);
                     })
