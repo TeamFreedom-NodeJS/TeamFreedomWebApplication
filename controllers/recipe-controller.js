@@ -13,10 +13,18 @@ module.exports = function(data) {
             let id = req.params.id;
             data.getRecipeById(id)
                 .then(recipe => {
+                    if (!recipe) {
+                        return res.redirect("/");
+                    }
+
                     return res.render("recipe/details", {
                         model: recipe,
                         user: req.user
                     });
+                })
+                .catch(err => {
+                    console.log("Error finding recipe by ID " + err);
+                    return res.redirect("/");
                 });
         },
         addComment(req, res) {
@@ -46,7 +54,7 @@ module.exports = function(data) {
         createRecipe(req, res) {
             let author = {
                 id: req.user._id,
-                name: req.user.username || req.user.profile.name,
+                name: req.user.email || req.user.profile.name,
                 imageUrl: req.user.profile.picture || "no picture"
             };
 
@@ -88,6 +96,9 @@ module.exports = function(data) {
                     cookingTimeInMinutes,
                     author)
                 .then(recipe => {
+                    // TO DO Edit Recipe
+                    // TO DO Delete Recipe
+                    console.log(recipe);
                     return res.redirect(`/recipes/${recipe.id}`);
                 })
                 .catch(err => {
