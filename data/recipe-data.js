@@ -44,7 +44,7 @@ module.exports = function(models) {
 
                 categoriesIds.forEach(categId => {
                     Category.findByIdAndUpdate(
-                        categId, { $push: { recipes: recipeInfo } }, { safe: true, upsert: true },
+                        categId, { $push: { recipes: recipeInfo } }, { safe: true },
                         err => {
                             if (err) {
                                 console.log(err);
@@ -53,6 +53,23 @@ module.exports = function(models) {
                         });
                 });
             }
+
+            return resolve(recipe);
+        });
+    }
+
+    function removeRecipeFromItsCategories(recipe) {
+        return new Promise((resolve, reject) => {
+            recipe.categories.forEach(categ => {
+                Category.findByIdAndUpdate(
+                    categ.id, { $pull: { recipes: { id: recipe._id } } }, { safe: true, new: true },
+                    (err, c) => {
+                        if (err) {
+                            console.log(err);
+                            return reject(err);
+                        }
+                    });
+            });
 
             return resolve(recipe);
         });
@@ -124,34 +141,45 @@ module.exports = function(models) {
         editRecipeById(id, title, categoriesIds, imageUrls, ingredients, preparation,
             cookingTimeInMinutes) {
             return new Promise((resolve, reject) => {
-                findCategoriesByIds(categoriesIds)
-                    .then(categories => {
-                        return new Promise((resolve, reject) => {
-                            Recipe.findByIdAndUpdate(id, {
-                                    title,
-                                    categories,
-                                    imageUrls,
-                                    ingredients,
-                                    preparation,
-                                    cookingTimeInMinutes
-                                }, { safe: true, new: true },
-                                (err, recipe) => {
-                                    if (err) {
-                                        console.log(err);
-                                        return reject(err);
-                                    }
+                Recipe.findById(id, (err, recipe) => {
+                        if (err) {
+                            console.log(err);
+                            return err;
+                        }
 
-                                    return resolve(recipe);
+                        return recipe;
+                    })
+                    .then(removeRecipeFromItsCategories)
+                    .then(() => {
+                        findCategoriesByIds(categoriesIds)
+                            .then(categories => {
+                                return new Promise((resolve, reject) => {
+                                    Recipe.findByIdAndUpdate(id, {
+                                            title,
+                                            categories,
+                                            imageUrls,
+                                            ingredients,
+                                            preparation,
+                                            cookingTimeInMinutes
+                                        }, { safe: true, new: true },
+                                        (err, recipe) => {
+                                            if (err) {
+                                                console.log(err);
+                                                return reject(err);
+                                            }
+
+                                            return resolve(recipe);
+                                        });
                                 });
-                        });
-                    })
-                    .then(recipe => {
-                        addRecipeToCategories(categoriesIds, recipe)
-                            .then(resolve)
-                            .catch(reject);
-                    })
-                    .catch(err => {
-                        return reject(err);
+                            })
+                            .then(recipe => {
+                                addRecipeToCategories(categoriesIds, recipe)
+                                    .then(resolve)
+                                    .catch(reject);
+                            })
+                            .catch(err => {
+                                return reject(err);
+                            });
                     });
             });
         },
