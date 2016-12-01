@@ -27,18 +27,16 @@ module.exports = function(data) {
                     return res.redirect("/");
                 });
         },
-        // getRecipeDetailsTitle(req, res) {
-        //     // To check if user is registered
-        //     let title = req.params.title;
-        //     data.getRecipeByTitle(title)
-        //         .then(recipe => {
-        //             return res.render("recipe/details", {
-        //                 model: recipe,
-        //                 user: req.user
-        //             });
-        //         });
-        // },
-
+        addComment(req, res) {
+            let id = req.params.id;
+            let content = req.body.content;
+            console.log(content);
+            let author = "Anonimus";
+            data.addCommentToRecipe(id, content, author)
+                .then(recipe => {
+                    return res.redirect(`/recipes/${id}`);
+                });
+        },
         getCreateRecipeForm(req, res) {
             if (!req.isAuthenticated()) {
                 return res.redirect("/");

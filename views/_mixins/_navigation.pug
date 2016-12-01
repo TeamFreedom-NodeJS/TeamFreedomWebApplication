@@ -12,6 +12,11 @@ mixin site-navigation
                 ul.nav.navbar-nav
                     li
                         a(href="/categories/list") Categories
+                    li
+                        a(href="/categories/create") Add Category
+                    li
+                        a(href="/recipes/create") Add Recipe
+
                     if user
                         li.dropdown
                             a.dropdown-toggle(href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false")

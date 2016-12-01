@@ -9,7 +9,7 @@ const MIN_PATTERN_LENGTH = 3;
 module.exports = function(models) {
     let {
         Recipe,
-        // User,
+        //User,
         Category
     } = models;
 
@@ -42,15 +42,10 @@ module.exports = function(models) {
             if (categoriesIds[0]) {
                 let recipeInfo = {
                     id: recipe._id,
-                    title: recipe.title
+                    title: recipe.title,
+                    imageUrl: recipe.imageUrls[0]
                 };
-                // Category.update({ _id: { $in: categoriesIds } }, { $push: { recipes: recipeInfo } }, { safe: true, upsert: true },
-                //     err => {
-                //         if (err) {
-                //             console.log(err);
-                //             return reject(err);
-                //         }
-                //     });
+
                 categoriesIds.forEach(categId => {
                     Category.findByIdAndUpdate(
                         categId, { $push: { recipes: recipeInfo } }, { safe: true, upsert: true },
@@ -58,7 +53,6 @@ module.exports = function(models) {
                             if (err) {
                                 console.log(err);
                                 return reject(err);
-                                // return err;
                             }
                         });
                 });
@@ -76,6 +70,22 @@ module.exports = function(models) {
                         return reject(err);
                     }
                     return resolve(recipe);
+                });
+            });
+        },
+        addCommentToRecipe(id, content, author) {
+            return new Promise((resolve, reject) => {
+                let newComment = {
+                    content,
+                    author: { username: author }
+                };
+
+                Recipe.findByIdAndUpdate(id, { $push: { comments: newComment } }, { safe: true, upsert: true }, (err, recipe) => {
+                    if (err) {
+                        reject(err);
+                    }
+
+                    resolve(recipe);
                 });
             });
         },
