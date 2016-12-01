@@ -23,7 +23,7 @@ module.exports = function(data) {
                     });
                 })
                 .catch(err => {
-                    console.log("Error finding recipe by ID " + err);
+                    console.log("Error finding recipe by ID: " + err);
                     return res.redirect("/");
                 });
         },
@@ -96,14 +96,30 @@ module.exports = function(data) {
                     cookingTimeInMinutes,
                     author)
                 .then(recipe => {
-                    // TO DO Edit Recipe
                     // TO DO Delete Recipe
-                    console.log(recipe);
                     return res.redirect(`/recipes/${recipe.id}`);
                 })
                 .catch(err => {
                     res.status(400)
                         .send(err);
+                });
+        },
+        editRecipeById(req, res) {
+            let id = req.params.id;
+            data.editRecipeById(id)
+                .then(() => {
+                    if (!recipe) {
+                        return res.redirect("/");
+                    }
+
+                    return res.render("recipe/details", {
+                        model: recipe,
+                        user: req.user
+                    });
+                })
+                .catch(err => {
+                    console.log("Error finding and editing recipe by ID: " + err);
+                    return res.redirect("/");
                 });
         }
     };

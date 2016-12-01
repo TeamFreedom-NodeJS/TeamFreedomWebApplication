@@ -14,6 +14,7 @@ module.exports = function({ app, data }) {
         .get("/create", controller.getCreateRecipeForm)
         .get("/:id", controller.getRecipeDetails)
         .post("/", controller.createRecipe)
+        // .post("/edit/:id", controller.createRecipe)
         .post("/:id", controller.addComment);
 
     app.use("/recipes", router);
