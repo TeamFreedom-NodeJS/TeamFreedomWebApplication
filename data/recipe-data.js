@@ -9,7 +9,7 @@ const MIN_PATTERN_LENGTH = 3;
 module.exports = function(models) {
     let {
         Recipe,
-        // User,
+        //User,
         Category
     } = models;
 
@@ -21,6 +21,22 @@ module.exports = function(models) {
                         return reject(err);
                     }
                     return resolve(recipe);
+                });
+            });
+        },
+        addCommentToRecipe(id, content, author) {
+            return new Promise((resolve, reject) => {
+                let newComment = {
+                    content,
+                    author: { username: author }
+                };
+
+                Recipe.findByIdAndUpdate(id, { $push: { comments: newComment } }, { safe: true, upsert: true }, (err, recipe) => {
+                    if (err) {
+                        reject(err);
+                    }
+
+                    resolve(recipe);
                 });
             });
         },
