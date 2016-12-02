@@ -18,11 +18,24 @@ module.exports = function(data) {
                 });
         },
         getAllCategories(req, res) {
+            if (!req.isAuthenticated()) {
+                return res.redirect("/");
+            }
+
             data.getAllCategories()
                 .then(categories => {
-                    return res.render("category/all", {
-                        model: categories
-                    });
+                    if (req.isAuthenticated()) {
+                        return res.render("category/all", {
+                            categories,
+                            user: req.user
+                        });
+                    } else {
+                        return res.render('category/all', {
+                            categories,
+                            user: req.user
+                        });
+                    }
+
                 })
                 .catch(err => {
                     res.status(400)
