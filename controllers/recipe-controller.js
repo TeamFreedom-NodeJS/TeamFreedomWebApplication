@@ -4,7 +4,7 @@
 //     PAGE_SIZE = 10,
 //     NEWEST_SUPERHEROES_COUNT = 5;
 
-const units = require("../config/constants").units;
+const constants = require("../config/constants");
 
 function makeArray(item) {
     if (!Array.isArray(item)) {
@@ -55,12 +55,14 @@ module.exports = function(data) {
     const controller = {
         getRecipeDetails(req, res) {
             if (!req.isAuthenticated()) {
+                req.flash("error", { msg: "Достъп до тази информация имат само регистрирани потребители!" });
                 return res.redirect("/");
             }
             let id = req.params.id;
             data.getRecipeById(id)
                 .then(recipe => {
                     if (!recipe) {
+                        req.flash("error", { msg: "Рецептата не е намерена!" });
                         return res.redirect("/");
                     }
 
@@ -70,7 +72,7 @@ module.exports = function(data) {
                     });
                 })
                 .catch(err => {
-                    console.log("Error finding recipe by ID: " + err);
+                    req.flash("error", { msg: constants.errorMessage + err });
                     return res.redirect("/");
                 });
         },
@@ -96,6 +98,10 @@ module.exports = function(data) {
                         user: req.user,
                         ingredients: []
                     });
+                })
+                .catch(err => {
+                    req.flash("error", { msg: constants.errorMessage + err });
+                    return res.redirect("/");
                 });
         },
         createRecipe(req, res) {
@@ -123,9 +129,11 @@ module.exports = function(data) {
                     author)
                 .then(recipe => {
                     // TO DO Delete Recipe
+                    req.flash("success", { msg: "Успешно регистрирахте рецептата си!" });
                     return res.redirect(`/recipes/${recipe.id}`);
                 })
                 .catch(err => {
+                    req.flash("error", { msg: constants.errorMessage + err });
                     res.status(400)
                         .send(err);
                 });
@@ -151,10 +159,11 @@ module.exports = function(data) {
                         categories,
                         recipe,
                         user: req.user,
-                        units
+                        units: constants.units
                     });
                 })
                 .catch(err => {
+                    req.flash("error", { msg: constants.errorMessage + err });
                     return err;
                 });
         },
@@ -182,13 +191,14 @@ module.exports = function(data) {
                         return res.redirect("/");
                     }
 
+                    req.flash("success", { msg: "Успешно редактирахте рецептата!" });
                     return res.render("recipe/details", {
                         model: recipe,
                         user: req.user
                     });
                 })
                 .catch(err => {
-                    console.log("Error finding and editing recipe by ID: " + err);
+                    req.flash("error", { msg: constants.errorMessage + err });
                     return res.redirect("/");
                 });
         }
