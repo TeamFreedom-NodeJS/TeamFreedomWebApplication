@@ -10,19 +10,42 @@ module.exports = function(models) {
     } = models;
 
     return {
-        createArticle(name, imgUrl, content) {
-            return dataUtils.loadOrCreateArticle(Article, name, imgUrl, content);
+        createArticle(title, imgUrl, content) {
+            let article = new Article({ title, imgUrl, content });
+            if (3 > title.length || title.length > 50 ) {
+                console.log("--------------ïnvalid title length.", title.length);
+                return Promise.reject({ reason: "Title must be between 3 and 50 characters long." });
+            }
+            
+            if (3 > imgUrl.length) {
+                console.log("--------------ïnvalid imgUrl length.", imgUrl.length);
+                return Promise.reject({ reason: "Image url must be bigger than 3 charecters long." });
+            }
+
+            if (3 > content.length || content.length > 500) {
+                console.log("--------------ïnvalid content length.", content.length);
+                return Promise.reject({ reason: "Content length must be between 3 and 500 characters long." });
+            }
+
+            return new Promise((resolve, reject) => {
+                article.save(err => {
+                    if (err) {
+                        return reject(err);
+                    }
+
+                    return resolve(article);
+                });
+            });
         },
         getAllArticles() {
             return new Promise((resolve, reject) => {
-                Article.find()
-                    .exec((err, articles) => {
-                        if (err) {
-                            return reject(err);
-                        }
+                Article.find({}, (err, articles) => {
+                    if (err) {
+                        return reject(err);
+                    }
 
-                        return resolve(articles);
-                    });
+                    return resolve(articles);
+                });
             });
         },
         getArticleByName(name) {
@@ -47,7 +70,7 @@ module.exports = function(models) {
                         return reject(err);
                     }
 
-                    return resolve(article);
+                    return resolve(article || null);
                 });
             });
         },
@@ -58,7 +81,7 @@ module.exports = function(models) {
                         if (newName) {
                             article.name = newName;
                         }
-                        if(newImgUrl) {
+                        if (newImgUrl) {
                             article.imgUrl = newImgUrl;
                         }
 
@@ -67,6 +90,17 @@ module.exports = function(models) {
                     .catch(err => {
                         return reject(err);
                     });
+            });
+        },
+        save(model) {
+            return new Promise((resolve, reject) => {
+                model.save(err => {
+                    if (err) {
+                        return reject(err);
+                    }
+
+                    return resolve(model);
+                });
             });
         }
     };
