@@ -1,7 +1,7 @@
 extends ../_layout
 
 block content
-    form(action="/recipes/edit/"+recipe._id method="post")
+    form(action="/recipes/edit/"+recipe.id method="post")
         input.form-control(type="text" name="title" value= recipe.title)
         input.form-control(type="text" name="cookingTimeInMinutes" value= recipe.cookingTimeInMinutes)
         textarea.form-control(name="preparation" value= recipe.preparation)
@@ -24,12 +24,7 @@ block content
         ul.ingredients-list
             each ingredient in recipe.ingredients
                 li
-                    input.form-control(type="text" name="ingredientsName" value=ingredient.name)
-                    input(type="text" name="ingredientsQuantity" value=ingredient.quantity)
-                    select(name="ingredientsUnits" value=ingredient.unit)
-                        each unit in units
-                            option(value=unit selected= unit == ingredient.unit)
-                                =unit
+                    input.form-control(type="text" name="ingredients" value=ingredient.name+"-"+ingredient.quantity+"-"+ingredient.unit)
                     a.btn-remove-ingredient(href="#")
                         | Премахни съставка
         br
@@ -43,8 +38,7 @@ block content
                 li
                     label
                         = category.name
-                        - let checked = recipe.categories.find(c => c.name == category.name)
-                        input.form-control(type="checkbox" name="categories" value=category._id checked=checked)
+                        input.form-control(type="checkbox" name="categories" value=category._id)
 
         button.btn
             | Промени

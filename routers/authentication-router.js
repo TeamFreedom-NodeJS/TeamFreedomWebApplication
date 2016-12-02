@@ -1,4 +1,5 @@
 /* globals module require */
+"use strict";
 
 const express = require("express");
 const passport = require("passport");
@@ -11,23 +12,34 @@ module.exports = function({ app, data }) {
     let router = new Router();
 
     router
-        .get("/sign-up", controller.getSignUpForm)
-        .get("/sign-in", controller.getSignInForm)
-        .post("/sign-up", controller.signUp)
-        .post("/sign-in", controller.signIn)
-        .get("/sign-out", controller.signOut)
-        .get("/profile", controller.getProfile);
+        .get("/register", controller.getSignup)
+        .get("/login", controller.getLogin)
+        .post("/register", controller.postSignup)
+        .post("/login", controller.postLogin)
+        .get("/logout", controller.logout)
+        .get("/forgot", controller.getForgot)
+        .post("/forgot", controller.postForgot)
+        .get("/reset/:token", controller.getReset)
+        .post("/reset/:token", controller.postReset)
+        .get("/profile", controller.getAccount)
+        .post("/account/profile", controller.postUpdateProfile)
+        .post("/account/password", controller.postUpdatePassword)
+        .post("/account/delete", controller.postDeleteAccount);
 
-    app.use("/auth", router);
+    app.use("/", router);
 
-    app.get("/auth/facebook",
-        passport.authenticate("facebook"));
+    // app.get("/auth/facebook",
+    //     passport.authenticate("facebook"));
 
-    app.get("/auth/facebook/callback",
-        passport.authenticate("facebook", { failureRedirect: "/auth/sign-in" }),
-        (req, res) => {
-            res.redirect("/");
-        });
+    // app.get("/auth/facebook/callback",
+    //     passport.authenticate("facebook", { failureRedirect: "/login" }),
+    //     (req, res) => {
+    //         res.redirect("/");
+    //     });
 
+    app.get("/auth/facebook", passport.authenticate("facebook", { scope: ["email", "user_location"] }));
+    app.get("/auth/facebook/callback", passport.authenticate("facebook", { failureRedirect: "/login" }), (req, res) => {
+        res.redirect(req.session.returnTo || "/");
+    });
     return router;
 };

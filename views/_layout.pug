@@ -10,10 +10,13 @@ html(lang="en")
         block styles
 
     body
+        
         header
             +site-navigation
+        .container
+            include partials/flash
         #content.container
-            block content
+            block content        
         footer.text-center
             p TeamFreedom 2016(NodeJS)
     script(src="/static/bower_components/jquery/dist/jquery.js")

@@ -8,9 +8,9 @@ module.exports = function(models) {
     } = models;
 
     return {
-        findUserByCredentials(username, password) {
+        findUserByCredentials(email, password) {
             return new Promise((resolve, reject) => {
-                User.findOne({ username }, (err, user) => {
+                User.findOne({ email }, (err, user) => {
                     if (err) {
                         return reject(err);
                     }

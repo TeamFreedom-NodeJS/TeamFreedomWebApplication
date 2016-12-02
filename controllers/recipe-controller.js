@@ -3,47 +3,43 @@
 // const DEFAULT_PAGE = 1,
 //     PAGE_SIZE = 10,
 //     NEWEST_SUPERHEROES_COUNT = 5;
-const units = require("../config/constants").units;
-
-function makeArray(item) {
-    if (!Array.isArray(item)) {
-        item = [item];
-    }
-
-    return item;
-}
 
 function parseRecipeData(reqBody) {
     let {
         title,
         categories,
-        ingredientsName,
-        ingredientsQuantity,
-        ingredientsUnits,
+        ingredients,
         preparation,
         imageUrls,
         cookingTimeInMinutes
     } = reqBody;
 
-    categories = makeArray(categories);
-    ingredientsName = makeArray(ingredientsName);
-    ingredientsQuantity = makeArray(ingredientsQuantity);
-    ingredientsUnits = makeArray(ingredientsUnits);
-    imageUrls = makeArray(imageUrls);
+    if (!Array.isArray(categories)) {
+        categories = [categories];
+    }
 
-    let ingredients = [];
-    for (let i = 0; i < ingredientsName.length; i += 1) {
-        ingredients.push({
-            name: ingredientsName[i],
-            quantity: +ingredientsQuantity[i],
-            unit: ingredientsUnits[i]
+    if (!Array.isArray(imageUrls)) {
+        imageUrls = [imageUrls];
+    }
+
+    if (!Array.isArray(ingredients)) {
+        ingredients = [ingredients];
+    }
+
+    let ingreds = [];
+    for (let i = 0; i < ingredients.length; i += 1) {
+        let ingredientInfo = ingredients[i].split("-");
+        ingreds.push({
+            name: ingredientInfo[0],
+            quantity: +ingredientInfo[1],
+            unit: ingredientInfo[2]
         });
     }
 
     return {
         title,
         categories,
-        ingredients,
+        ingreds,
         preparation,
         imageUrls,
         cookingTimeInMinutes
@@ -105,7 +101,7 @@ module.exports = function(data) {
             let {
                 title,
                 categories,
-                ingredients,
+                ingreds,
                 preparation,
                 imageUrls,
                 cookingTimeInMinutes
@@ -114,7 +110,7 @@ module.exports = function(data) {
                     title,
                     categories,
                     imageUrls,
-                    ingredients,
+                    ingreds,
                     preparation,
                     cookingTimeInMinutes,
                     author)
@@ -133,23 +129,23 @@ module.exports = function(data) {
             }
 
             let id = req.params.id;
-            let recipe;
             data.getRecipeById(id)
-                .then(rcp => {
-                    if (!rcp) {
+                .then(recipe => {
+                    if (!recipe) {
                         return res.redirect("/");
                     }
 
-                    recipe = rcp;
-                })
-                .then(data.getAllCategories)
-                .then(categories => {
-                    return res.render("recipe/edit", {
-                        categories,
-                        recipe,
-                        user: req.user,
-                        units
-                    });
+                    data.getAllCategories()
+                        .then(categories => {
+                            return res.render("recipe/edit", {
+                                categories,
+                                recipe,
+                                user: req.user
+                            });
+                        })
+                        .catch(err => {
+                            return err;
+                        });
                 })
                 .catch(err => {
                     return err;
@@ -160,7 +156,7 @@ module.exports = function(data) {
             let {
                 title,
                 categories,
-                ingredients,
+                ingreds,
                 preparation,
                 imageUrls,
                 cookingTimeInMinutes
@@ -171,7 +167,7 @@ module.exports = function(data) {
                     title,
                     categories,
                     imageUrls,
-                    ingredients,
+                    ingreds,
                     preparation,
                     cookingTimeInMinutes)
                 .then(recipe => {

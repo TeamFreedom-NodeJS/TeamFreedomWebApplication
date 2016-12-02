@@ -1,3 +1,5 @@
+"use strict";
+
 module.exports = {
     "facebookOath": {
         "clientID": "1842325419316627",

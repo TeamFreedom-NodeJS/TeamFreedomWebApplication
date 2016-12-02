@@ -1,4 +1,6 @@
 /* globals require console */
+"use strict";
+
 const config = require("./config");
 
 // let data = require("./data")(config.connectionString["prod"]);

@@ -1,46 +1,73 @@
 /* globals $ prompt*/
 
 $(() => {
-    const units = ["гр.", "мл.", "ч. л.", "с. л.", "щипка", "бр."];
+    // const $ingredientsNamesList = $(".ingredients-names-list"),
+    //     $ingredientsQuantityList = $(".ingredients-quantities-list"),
+    //     $ingredientsUnitsList = $(".ingredients-units-list");
+    // const allIngredientsNames = [],
+    //     allIngredientsQuantities = [],
+    //     allIngredientsUnits = [];
+    // const units = ["гр.", "мл.", "ч. л.", "с. л.", "щипка", "бр."];
+    // const allIngredients = [];
+
+    // $("#btn-add-ingredient-option").on("click", ev => {
+    //     ev.preventDefault();
+
+    // $("<li/>")
+    //     .append($("<input />")
+    //         .attr("name", "name")
+    //         .attr("type", "text")
+    //         .attr("placeholder", "Име на съставка")
+    //     )
+    //     .append($("<input />")
+    //         .attr("name", "quantity")
+    //         .attr("type", "text")
+    //         .attr("placeholder", "Количество")
+    //     )
+    //     .append($("<select />")
+    //         .attr("name", "units")
+    //         .append($("<option />")
+    //             .attr("value", "грам")
+    //             .attr("selected", "true")
+    //             .text("грам"))
+    //         .append($("<option />")
+    //             .attr("value", "мл")
+    //             .text("мл"))
+    //         .append($("<option />")
+    //             .attr("value", "брой")
+    //             .text("брой"))
+    //     )
+    //     .appendTo($ingredientsList);
+    // });
+
 
     const $ingredientsList = $(".ingredients-list"),
         $imageUrlsList = $(".image-list");
 
-    function onClickRemoveParent(ev) {
+    $ingredientsList.on("click", ev => {
         ev.preventDefault();
-        let $target = $(ev.target);
-        $target
+
+        $(ev.target)
             .parent()
             .remove();
-    }
-
-    $ingredientsList.on("click", ".btn-remove-ingredient", onClickRemoveParent);
+    });
 
     $("#btn-add-ingredient").on("click", ev => {
         ev.preventDefault();
 
-        let $select = $("<select />")
-            .attr("name", "ingredientsUnits");
-
-        for (let unit of units) {
-            $select.append($("<option />")
-                .attr("value", unit)
-                .text(unit));
+        let ingredientPrompt = prompt("Въведете нова съставка (име-количество-мярка)");
+        if (ingredientPrompt === "") {
+            return false;
         }
 
         $("<li/>")
             .append($("<input />")
                 .addClass("form-control")
-                .attr("name", "ingredientsName")
+                .attr("name", "ingredients")
                 .attr("type", "text")
-                .attr("placeholder", "Име на съставката")
+                .attr("placeholder", "Име-количество-мярка")
+                .val(ingredientPrompt)
             )
-            .append($("<input />")
-                .attr("name", "ingredientsQuantity")
-                .attr("type", "text")
-                .attr("placeholder", "Количество")
-            )
-            .append($select)
             .append($("<a />")
                 .addClass("btn-remove-ingredient")
                 .attr("href", "#")
@@ -49,10 +76,21 @@ $(() => {
             .appendTo($ingredientsList);
     });
 
-    $imageUrlsList.on("click", ".btn-remove-image", onClickRemoveParent);
+    $imageUrlsList.on("click", ev => {
+        ev.preventDefault();
+
+        $(ev.target)
+            .parent()
+            .remove();
+    });
 
     $("#btn-add-image").on("click", ev => {
         ev.preventDefault();
+
+        let imageUrlsPrompt = prompt("Въведете линк към снимка");
+        if (imageUrlsPrompt === "") {
+            return false;
+        }
 
         $("<li/>")
             .append($("<input />")
@@ -60,6 +98,7 @@ $(() => {
                 .attr("name", "imageUrls")
                 .attr("type", "text")
                 .attr("placeholder", "Линк към снимка")
+                .val(imageUrlsPrompt)
             )
             .append($("<a />")
                 .addClass("btn-remove-image")
