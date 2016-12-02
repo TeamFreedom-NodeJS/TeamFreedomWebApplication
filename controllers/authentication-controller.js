@@ -7,7 +7,7 @@ const async = require("async");
 const nodemailer = require("nodemailer");
 const crypto = require("crypto");
 
-module.exports = function(data) {
+module.exports = function() {
     return {
         getLogin(req, res) {
             if (req.user) {
