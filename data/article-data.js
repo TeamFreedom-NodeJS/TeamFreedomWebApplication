@@ -15,14 +15,13 @@ module.exports = function(models) {
         },
         getAllArticles() {
             return new Promise((resolve, reject) => {
-                Article.find()
-                    .exec((err, articles) => {
-                        if (err) {
-                            return reject(err);
-                        }
+                Article.find({}, (err, articles) => {
+                    if (err) {
+                        return reject(err);
+                    }
 
-                        return resolve(articles);
-                    });
+                    return resolve(articles);
+                });
             });
         },
         getArticleByName(name) {
@@ -47,7 +46,7 @@ module.exports = function(models) {
                         return reject(err);
                     }
 
-                    return resolve(article);
+                    return resolve(article || null);
                 });
             });
         },
@@ -58,7 +57,7 @@ module.exports = function(models) {
                         if (newName) {
                             article.name = newName;
                         }
-                        if(newImgUrl) {
+                        if (newImgUrl) {
                             article.imgUrl = newImgUrl;
                         }
 
