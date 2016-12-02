@@ -18,10 +18,6 @@ module.exports = function(data) {
                 });
         },
         getAllCategories(req, res) {
-            if (!req.isAuthenticated()) {
-                return res.redirect("/");
-            }
-
             data.getAllCategories()
                 .then(categories => {
                     if (req.isAuthenticated()) {
