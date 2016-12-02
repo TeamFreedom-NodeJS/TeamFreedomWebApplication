@@ -2,9 +2,9 @@ extends ../_layout
 
 block content
     form(action="/recipes" method="post")
-        input.form-control(type="text" name="title" placeholder="Title")
-        input.form-control(type="text" name="cookingTimeInMinutes" placeholder="Cooking Time [in Minutes]")
-        textarea.form-control(name="preparation" placeholder="Describe Preparation")
+        input.form-control(type="text" name="title" placeholder="Име")
+        input.form-control(type="text" name="cookingTimeInMinutes" placeholder="Време за приготвяне [мин.]")
+        textarea.form-control(name="preparation" placeholder="Начин на приготвяне")
 
         h3
             | Снимки
