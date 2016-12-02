@@ -12,6 +12,7 @@ module.exports = function(data) {
             console.log("createArticle-controler: ", req.body);
             return data.createArticle(title, imgUrl, content)
                 .then(article => {
+                    console.log("in create controler", article);
                     return res.redirect("/articles/create");
                 })
                 .catch(err => {

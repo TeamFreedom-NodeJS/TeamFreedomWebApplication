@@ -5,8 +5,6 @@ const sinonModule = require("sinon");
 
 let expect = chai.expect;
 
-
-
 describe("Test articles data", () => {
     let sinon;
     beforeEach(() => {
@@ -43,7 +41,6 @@ describe("Test articles data", () => {
             data.getAllArticles()
                 .then(actualarticles => {
                     // assert
-                    console.log("in function", actualarticles);
                     expect(actualarticles).to.eql([]);
                     done();
                 })
@@ -54,7 +51,7 @@ describe("Test articles data", () => {
             sinon.restore();
         });
 
-        it("Expect to return 1 articles", done => {
+        it("Expect to return 1 article", done => {
             let articles = ["Предястия"];
             sinon.stub(Article, "find", (_, cb) => {
                 cb(null, articles);
@@ -64,8 +61,6 @@ describe("Test articles data", () => {
             data.getAllArticles()
                 .then(actualarticles => {
                     // assert
-                    console.log("test1-2", actualarticles);
-
                     expect(actualarticles).to.eql(articles);
                     done();
                 })
@@ -134,20 +129,169 @@ describe("Test articles data", () => {
         it("Expect to return null, when no article with the id", done => {
             data.getArticleById(2)
                 .then((actualArticle => {
-                    console.log("---test2", actualArticle);
                     expect(actualArticle).to.equal(null);
                     done();
                 }));
         });
 
+        // it("Expect to throw if input is json or other", done => {
+        //     expect(1).to.eql(2);
+        // });
 
-    });
-
-    describe("editArticleById", () => {
 
     });
 
     describe("createArticle", () => {
+        afterEach(() => {
+            sinon.restore();
+        });
 
+        it("Expect to save the Article, when valid parameters", done => {
+            sinon.stub(Article.prototype, "save", cb => {
+                cb(null);
+            });
+
+            let title = "Зaглавие";
+            let imgUrl = "URL-1";
+            let content = "Съдържание";
+
+            data.createArticle(title, imgUrl, content)
+                .then(actualArticle => {
+                    expect(actualArticle.title).to.equal(title);
+                    done();
+                });
+        });
+
+        // ----------- title ----------------
+        it("Expect to fail, when title is empty", done => {
+            sinon.stub(Article.prototype, "save", cb => {
+                cb(null);
+            });
+
+            let title = "";
+            let imgUrl = "URL";
+            let content = "Съдържание";
+
+            data.createArticle(title, imgUrl, content)
+                .catch(err => {
+                    expect(err);
+                    done();
+                });
+        });
+
+        it("Expect to fail, when title length is 2 characters long", done => {
+            sinon.stub(Article.prototype, "save", cb => {
+                cb(null);
+            });
+
+            let title = "AA";
+            let imgUrl = "URL";
+            let content = "Съдържание";
+
+            data.createArticle(title, imgUrl, content)
+                .catch(err => {
+                    expect(err);
+                    done();
+                });
+        });
+
+        it("Expect to fail, when title length is 51 characters long", done => {
+            sinon.stub(Article.prototype, "save", cb => {
+                cb(null);
+            });
+
+            let title = "A".repeat(51);
+            let imgUrl = "URL";
+            let content = "Съдържание";
+
+            data.createArticle(title, imgUrl, content)
+                .catch(err => {
+                    expect(err);
+                    done();
+                });
+        });
+
+        // ------------------ imgUrl ------------------------
+
+        it("Expect to fail, when imgUrl is empty", done => {
+            sinon.stub(Article.prototype, "save", cb => {
+                cb(null);
+            });
+
+            let title = "Зaглавие";
+            let imgUrl = "";
+            let content = "Съдържание";
+            data.createArticle(title, imgUrl, content)
+                .catch(err => {
+                    expect(err);
+                    done();
+                });
+        });
+
+        it("Expect to fail, when imgUrl is 2 characters long", done => {
+            sinon.stub(Article.prototype, "save", cb => {
+                cb(null);
+            });
+
+            let title = "Зaглавие";
+            let imgUrl = "AA";
+            let content = "Съдържание";
+            data.createArticle(title, imgUrl, content)
+                .catch(err => {
+                    expect(err);
+                    done();
+                });
+        });
+
+        //------------------- content --------------------
+
+        it("Expect to fail, when content is empty", done => {
+            sinon.stub(Article.prototype, "save", cb => {
+                cb(null);
+            });
+
+            let title = "Зaглавие";
+            let imgUrl = "Url-1";
+            let content = "";
+            data.createArticle(title, imgUrl, content)
+                .catch(err => {
+                    expect(err);
+                    done();
+                });
+        });
+
+        it("Expect to fail, when imgUrl is 2 characters long", done => {
+            sinon.stub(Article.prototype, "save", cb => {
+                cb(null);
+            });
+
+            let title = "Зaглавие";
+            let imgUrl = "Url-1";
+            let content = "AA";
+            data.createArticle(title, imgUrl, content)
+                .catch(err => {
+                    expect(err);
+                    done();
+                });
+        });
+
+        it("Expect to fail, when imgUrl is 501 characters long", done => {
+            sinon.stub(Article.prototype, "save", cb => {
+                cb(null);
+            });
+
+            let title = "Зaглавие";
+            let imgUrl = "Url-1";
+            let content = "A".repeat(501);
+            data.createArticle(title, imgUrl, content)
+                .catch(err => {
+                    expect(err);
+                    done();
+                });
+        });
+
+        describe("editArticleById", () => {
+
+        });
     });
 });
