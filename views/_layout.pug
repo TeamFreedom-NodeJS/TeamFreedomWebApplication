@@ -1,4 +1,6 @@
 include _mixins/_navigation
+include _mixins/_authorizedNavigation
+
 
 doctype html
 html(lang="en")
@@ -13,7 +15,10 @@ html(lang="en")
     body
         
         header
-            +site-navigation
+            if user
+                +user-navigation
+            else
+                +site-navigation
         .container
             include partials/flash
         #content.container
