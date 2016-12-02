@@ -15,14 +15,13 @@ module.exports = function(models) {
         },
         getAllCategories() {
             return new Promise((resolve, reject) => {
-                Category.find()
-                    .exec((err, categories) => {
-                        if (err) {
-                            return reject(err);
-                        }
+                Category.find({}, (err, categories) => {
+                    if (err) {
+                        return reject(err);
+                    }
 
-                        return resolve(categories);
-                    });
+                    return resolve(categories);
+                });
             });
         },
         getCategoryByName(name) {
