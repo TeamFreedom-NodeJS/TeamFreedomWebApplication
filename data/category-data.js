@@ -11,7 +11,26 @@ module.exports = function(models) {
 
     return {
         createCategory(name, imgUrl) {
-            return dataUtils.loadOrCreateCategory(Category, name, imgUrl);
+            let category = new Category({ name, imgUrl });
+            if (3 > name.length || name.length > 20 ) {
+                console.log("--------------ïnvalid title length.", name.length);
+                return Promise.reject({ reason: "Name must be between 3 and 20 characters long." });
+            }
+            
+            if (3 > imgUrl.length) {
+                console.log("--------------ïnvalid imgUrl length.", imgUrl.length);
+                return Promise.reject({ reason: "Image url must be bigger than 3 charecters long." });
+            }
+
+            return new Promise((resolve, reject) => {
+                category.save(err => {
+                    if (err) {
+                        return reject(err);
+                    }
+
+                    return resolve(category);
+                });
+            });
         },
         getAllCategories() {
             return new Promise((resolve, reject) => {
@@ -69,7 +88,7 @@ module.exports = function(models) {
                         return reject(err);
                     }
 
-                    return resolve(category);
+                    return resolve(category || null);
                 });
             });
         },

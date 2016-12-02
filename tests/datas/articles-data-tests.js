@@ -31,6 +31,10 @@ describe("Test articles data", () => {
     });
 
     describe("getAllArticles", () => {
+        afterEach(() => {
+            sinon.restore();
+        });
+
         it("Expect to return empty array if there is not articles", done => {
             let articles = [];
             sinon.stub(Article, "find", (_, cb) => {
@@ -47,8 +51,6 @@ describe("Test articles data", () => {
                 .catch(err => {
                     console.log(err);
                 });
-
-            sinon.restore();
         });
 
         it("Expect to return 1 article", done => {
@@ -67,8 +69,6 @@ describe("Test articles data", () => {
                 .catch(err => {
                     console.log(err);
                 });
-
-            sinon.restore();
         });
 
         it("Expect to return 2 articles", done => {
@@ -88,8 +88,6 @@ describe("Test articles data", () => {
                 .catch(err => {
                     console.log(err);
                 });
-
-            sinon.restore();
         });
     });
 
@@ -142,15 +140,17 @@ describe("Test articles data", () => {
     });
 
     describe("createArticle", () => {
+        beforeEach(() => {
+            sinon.stub(Article.prototype, "save", cb => {
+                cb(null);
+            });
+        });
+
         afterEach(() => {
             sinon.restore();
         });
 
         it("Expect to save the Article, when valid parameters", done => {
-            sinon.stub(Article.prototype, "save", cb => {
-                cb(null);
-            });
-
             let title = "Зaглавие";
             let imgUrl = "URL-1";
             let content = "Съдържание";
@@ -158,16 +158,14 @@ describe("Test articles data", () => {
             data.createArticle(title, imgUrl, content)
                 .then(actualArticle => {
                     expect(actualArticle.title).to.equal(title);
+                    expect(actualArticle.imgUrl).to.equal(imgUrl);
+                    expect(actualArticle.content).to.equal(content);
                     done();
                 });
         });
 
         // ----------- title ----------------
         it("Expect to fail, when title is empty", done => {
-            sinon.stub(Article.prototype, "save", cb => {
-                cb(null);
-            });
-
             let title = "";
             let imgUrl = "URL";
             let content = "Съдържание";
@@ -180,10 +178,6 @@ describe("Test articles data", () => {
         });
 
         it("Expect to fail, when title length is 2 characters long", done => {
-            sinon.stub(Article.prototype, "save", cb => {
-                cb(null);
-            });
-
             let title = "AA";
             let imgUrl = "URL";
             let content = "Съдържание";
@@ -196,10 +190,6 @@ describe("Test articles data", () => {
         });
 
         it("Expect to fail, when title length is 51 characters long", done => {
-            sinon.stub(Article.prototype, "save", cb => {
-                cb(null);
-            });
-
             let title = "A".repeat(51);
             let imgUrl = "URL";
             let content = "Съдържание";
@@ -214,10 +204,6 @@ describe("Test articles data", () => {
         // ------------------ imgUrl ------------------------
 
         it("Expect to fail, when imgUrl is empty", done => {
-            sinon.stub(Article.prototype, "save", cb => {
-                cb(null);
-            });
-
             let title = "Зaглавие";
             let imgUrl = "";
             let content = "Съдържание";
@@ -229,10 +215,6 @@ describe("Test articles data", () => {
         });
 
         it("Expect to fail, when imgUrl is 2 characters long", done => {
-            sinon.stub(Article.prototype, "save", cb => {
-                cb(null);
-            });
-
             let title = "Зaглавие";
             let imgUrl = "AA";
             let content = "Съдържание";
@@ -246,10 +228,6 @@ describe("Test articles data", () => {
         //------------------- content --------------------
 
         it("Expect to fail, when content is empty", done => {
-            sinon.stub(Article.prototype, "save", cb => {
-                cb(null);
-            });
-
             let title = "Зaглавие";
             let imgUrl = "Url-1";
             let content = "";
@@ -261,10 +239,6 @@ describe("Test articles data", () => {
         });
 
         it("Expect to fail, when imgUrl is 2 characters long", done => {
-            sinon.stub(Article.prototype, "save", cb => {
-                cb(null);
-            });
-
             let title = "Зaглавие";
             let imgUrl = "Url-1";
             let content = "AA";
@@ -276,10 +250,6 @@ describe("Test articles data", () => {
         });
 
         it("Expect to fail, when imgUrl is 501 characters long", done => {
-            sinon.stub(Article.prototype, "save", cb => {
-                cb(null);
-            });
-
             let title = "Зaглавие";
             let imgUrl = "Url-1";
             let content = "A".repeat(501);
