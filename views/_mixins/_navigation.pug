@@ -13,35 +13,37 @@ mixin site-navigation
                     li
                         a(href="/categories/list") Categories
                     li
-                        a(href="/categories/create") Add Category
-                    li
-                        a(href="/recipes/create") Add Recipe
-                    li
                         a(href="/articles/list") Articles
-                    li
-                        a(href="/articles/create") Add Article
+
                     if user
+                        
                         li
-                            a(href="/profile/"  role="button" aria-haspopup="true" aria-expanded="false")= user.profile.name
-                            li
-                                form(action="/logout" method="get")
-                                    button.btn.btn-large.btn-lg
-                                        span.glyphicon.glyphicon-log-out
+                            a(href="/categories/create") Add Category
+                        li
+                            a(href="/articles/create") Add Article
+                        li
+                            a(href="/recipes/create") Add Recipe
+                        li
+                            a(href="/profile/")= user.profile.name
+                        li
+                            form(action="/logout" method="get")
+                                button.btn.btn-medium.btn-lg
+                                    span.glyphicon.glyphicon-log-out
                     else
-                            li
-                                a(href="/register") 
-                                        | Register
-                            li
-                                a(href="/login")
-                                        | Login
-                            li
-                                a(href="/auth/facebook")
-                                        | Fb     
-                    li
-                        a(href="status")
-                            | Status           
+                        li
+                            a(href="/register") 
+                                | Register
+                        li
+                            a(href="/login")
+                                | Login
+                        li
+                            a(href="/auth/facebook")
+                                | Fb     
+                        li
+                                 
                     li
                         form.form-inline(action="/search" method="get")
                             input.form-control(type="text" name="pattern")
                             button.btn.btn-danger
                                 span.glyphicon.glyphicon-search
+                        
