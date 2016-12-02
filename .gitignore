@@ -258,5 +258,5 @@ typings/
 prepros.*
 typings.*
 .vscode/
-.idea/
+.idea/*
 bower_components/

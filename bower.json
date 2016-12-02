@@ -1,21 +1,21 @@
 {
-  "name": "TeamFreedomWebApplication",
-  "description": "",
-  "main": "app.js",
-  "authors": [
-    "TeamFreedom"
-  ],
-  "license": "MIT",
-  "homepage": "",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
-  "dependencies": {
-    "bootstrap": "^3.3.7",
-    "jquery-modal": "^0.8.0"
-  }
+    "name": "teamfreedomwebapplication",
+    "description": "",
+    "main": "app.js",
+    "authors": [
+        "TeamFreedom"
+    ],
+    "license": "MIT",
+    "homepage": "",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ],
+    "dependencies": {
+        "bootstrap": "^3.3.7",
+        "jquery-modal": "^0.8.0"
+    }
 }
