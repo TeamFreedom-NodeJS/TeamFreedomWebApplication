@@ -1,4 +1,4 @@
-mixin site-navigation
+mixin user-navigation
     nav.navbar.navbar-default
         .container-fluid.text-center
             .navbar-header
@@ -13,20 +13,23 @@ mixin site-navigation
                     li
                         a(href="/categories/list") Categories
                     li
-                        a(href="/articles/list") Articles   
+                        a(href="/articles/list") Articles                  
+                    li
+                        a(href="/categories/create") Add Category
+                    li
+                        a(href="/articles/create") Add Article
+                    li
+                        a(href="/recipes/create") Add Recipe
                     li
                         form.form-inline(action="/search" method="get")
                             input.form-control(type="text" name="pattern")
                             button.btn.btn-danger
                                 span.glyphicon.glyphicon-search
-                                       
                     li
-                        a(href="/register") 
-                            | Register
+                        a(href="/profile/")= user.profile.name
                     li
-                        a(href="/login")
-                            | Login
-                    //- li
-                    //-     a(href="/auth/facebook")
-                    //-         | Fb     
-                    
+                        form(action="/logout" method="get")
+                            button.btn.btn-medium.btn-lg
+                                span.glyphicon.glyphicon-log-out
+                   
+                        

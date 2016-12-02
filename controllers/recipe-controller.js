@@ -49,7 +49,9 @@ function parseRecipeData(reqBody) {
 module.exports = function(data) {
     const controller = {
         getRecipeDetails(req, res) {
-            // To check if user is registered
+            if (!req.isAuthenticated()) {
+                return res.redirect("/");
+            }
             let id = req.params.id;
             data.getRecipeById(id)
                 .then(recipe => {

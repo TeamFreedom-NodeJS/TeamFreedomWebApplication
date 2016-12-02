@@ -3,6 +3,9 @@
 module.exports = function(data) {
     return {
         createCategory(req, res) {
+            if (!req.isAuthenticated()) {
+                return res.redirect("/");
+            }
             let {
                 name,
                 imgUrl
@@ -10,18 +13,20 @@ module.exports = function(data) {
 
             return data.createCategory(name, imgUrl)
                 .then(category => {
-                    return res.redirect("/categories/create");
+                    return res.redirect("categories/create");
                 })
                 .catch(err => {
                     res.status(400)
                         .send(err);
                 });
         },
+
         getAllCategories(req, res) {
             data.getAllCategories()
                 .then(categories => {
                     return res.render("category/all", {
-                        model: categories
+                        model: categories,
+                        user: req.user
                     });
                 })
                 .catch(err => {
@@ -29,6 +34,28 @@ module.exports = function(data) {
                         .send(err);
                 });
         },
+
+        // getAllCategories(req, res) {
+        //     data.getAllCategories()
+        //         .then(categories => {
+        //             if (req.isAuthenticated()) {
+        //                 return res.render("category/all", {
+        //                     categories,
+        //                     user: req.user
+        //                 });
+        //             } else {
+        //                 return res.render("category/all", {
+        //                     categories,
+        //                     user: req.user
+        //                 });
+        //             }
+
+        //         })
+        //         .catch(err => {
+        //             res.status(400)
+        //                 .send(err);
+        //         });
+        // },
         getCategoryByName(req, res) {
             let name = req.params.name;
 
@@ -47,7 +74,8 @@ module.exports = function(data) {
             return data.getCategoryById(id)
                 .then(category => {
                     return res.render("category/details", {
-                        model: category
+                        model: category,
+                        user: req.user
                     });
                 })
                 .catch(err => {
@@ -56,14 +84,14 @@ module.exports = function(data) {
                 });
         },
         getCreateCategoryForm(req, res) {
-            // if (!req.isAuthenticated()) {
-            //     return res.redirect("/");
-            // }
-
+            if (!req.isAuthenticated()) {
+                return res.redirect("/");
+            }
             return data.getAllCategories()
                 .then(categories => {
                     return res.render("category/create", {
-                        model: categories
+                        model: categories,
+                        user: req.user
                     });
                 });
         },

@@ -24,6 +24,29 @@ module.exports = function(models) {
                 });
             });
         },
+
+        // getAllCategories() {
+        //     return new Promise((resolve, reject) => {
+        //         Category.find()
+        //             .then((err, categories) => {
+
+        //                 if (err) {
+        //                     return reject(err);
+        //                 }
+
+        //                 return resolve(categories);
+        //             });
+
+
+        //         Category.find((err, categories) => {
+        //             if (err) {
+        //                 return reject(err);
+        //             }
+
+        //             return resolve(categories);
+        //         });
+        //     });
+        // },
         getCategoryByName(name) {
             return new Promise((resolve, reject) => {
                 Category.findOne({

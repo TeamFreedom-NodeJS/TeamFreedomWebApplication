@@ -3,13 +3,15 @@
 module.exports = function(data) {
     return {
         createArticle(req, res) {
+            if (!req.isAuthenticated()) {
+                return res.redirect("/");
+            }
             let {
                 title,
                 imgUrl,
                 content
             } = req.body;
 
-            console.log("createArticle-controler: ", req.body);
             return data.createArticle(title, imgUrl, content)
                 .then(article => {
                     console.log("in create controler", article);
@@ -24,7 +26,8 @@ module.exports = function(data) {
             data.getAllArticles()
                 .then(articles => {
                     return res.render("article/all", {
-                        model: articles
+                        model: articles,
+                        user: req.user
                     });
                 })
                 .catch(err => {
@@ -34,7 +37,6 @@ module.exports = function(data) {
         },
         getArticleByName(req, res) {
             let title = req.params.title;
-
             return data.getArticleByName(title)
                 .then(article => {
                     res.send(article);
@@ -50,7 +52,8 @@ module.exports = function(data) {
             return data.getArticleById(id)
                 .then(article => {
                     return res.render("article/details", {
-                        model: article
+                        model: article,
+                        user: req.user
                     });
                 })
                 .catch(err => {
@@ -66,7 +69,8 @@ module.exports = function(data) {
             return data.getAllArticles()
                 .then(articles => {
                     return res.render("article/create", {
-                        model: articles
+                        model: articles,
+                        user: req.user
                     });
                 });
         },
@@ -76,7 +80,8 @@ module.exports = function(data) {
             return data.getArticleById(id)
                 .then(article => {
                     res.render("article/edit", {
-                        model: article
+                        model: article,
+                        user: req.user
                     });
                 });
         },
@@ -90,7 +95,8 @@ module.exports = function(data) {
             return data.editArticleById(id, newName, newImgUrl)
                 .then(articles => {
                     return res.render("article/create", {
-                        model: articles
+                        model: articles,
+                        user: req.user
                     });
                 });
         }
