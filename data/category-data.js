@@ -11,7 +11,7 @@ module.exports = function(models) {
 
     return {
         createCategory(name, imgUrl) {
-            return dataUtils.loadOrCreateCategory(name, imgUrl);
+            return dataUtils.loadOrCreateCategory(Category, name, imgUrl);
         },
         getAllCategories() {
             return new Promise((resolve, reject) => {
@@ -28,8 +28,8 @@ module.exports = function(models) {
                     */
 
                 Category.find((err, categories) => {
-                   /* console.log(categories);
-                    console.log(err);*/
+                    /* console.log(categories);
+                     console.log(err);*/
 
                     if (err) {
                         return reject(err);
