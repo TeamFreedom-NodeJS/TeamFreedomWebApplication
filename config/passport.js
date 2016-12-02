@@ -1,4 +1,5 @@
 /* globals module require */
+"use strict";
 
 const passport = require("passport"),
     LocalStrategy = require("passport-local").Strategy,
@@ -10,25 +11,40 @@ module.exports = function({ app, data }) {
     app.use(passport.initialize());
     app.use(passport.session());
 
+    // passport.use(new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
+    //     User.findOne({ email: email.toLowerCase() }, (err, user) => {
+    //             if (err) {
+    //                 return done(err);
+    //             }
+    //             if (!user) {
+    //                 return done(null, false, { msg: `Email ${email} not found.` });
+    //             }
+
+    //             return user;
+    //         })
+    //         .then(user => {
+    //             if (user) { // && user.uthenticatePassword(password)
+    //                 done(null, user);
+    //             } else {
+    //                 done(null, false);
+    //             }
+    //         })
+    //         .catch(error => done(error, false));
+    // }));
     passport.use(new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
         User.findOne({ email: email.toLowerCase() }, (err, user) => {
-                if (err) {
-                    return done(err);
+            if (err) { return done(err); }
+            if (!user) {
+                return done(null, false, { msg: `Email ${email} not found.` });
+            }
+            user.comparePassword(password, (err, isMatch) => {
+                if (err) { return done(err); }
+                if (isMatch) {
+                    return done(null, user);
                 }
-                if (!user) {
-                    return done(null, false, { msg: `Email ${email} not found.` });
-                }
-
-                return user;
-            })
-            .then(user => {
-                if (user) { // && user.uthenticatePassword(password)
-                    done(null, user);
-                } else {
-                    done(null, false);
-                }
-            })
-            .catch(error => done(error, false));
+                return done(null, false, { msg: "Invalid email or password." });
+            });
+        });
     }));
 
     passport.use(new FacebookStrategy({
@@ -113,4 +129,44 @@ module.exports = function({ app, data }) {
             })
             .catch(error => done(error, false));
     });
+
+    passport.isAuthenticated = function(req, res, next) {
+        if (req.isAuthenticated()) {
+            return next();
+        }
+        res.redirect("/login");
+    };
+
+    // function isAuthorized(req, res, next) {
+    //     const provider = req.path.split("/").slice(-1)[0];
+
+    //     if (_.find(req.user.tokens, { kind: provider })) {
+    //         next();
+    //     } else {
+    //         res.redirect(`/auth/${provider}`);
+    //     }
+    // }
 };
+
+/**
+ * Login Required middleware.
+ */
+// module.exports.isAuthenticated = (req, res, next) => {
+//     if (req.isAuthenticated()) {
+//         return next();
+//     }
+//     res.redirect("/login");
+// };
+
+/**
+ * Authorization Required middleware.
+ */
+// module.exports.isAuthorized = (req, res, next) => {
+//     const provider = req.path.split("/").slice(-1)[0];
+
+//     if (_.find(req.user.tokens, { kind: provider })) {
+//         next();
+//     } else {
+//         res.redirect(`/auth/${provider}`);
+//     }
+// };

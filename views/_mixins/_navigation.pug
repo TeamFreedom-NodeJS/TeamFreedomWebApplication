@@ -24,19 +24,22 @@ mixin site-navigation
                         li
                             a(href="/profile/"  role="button" aria-haspopup="true" aria-expanded="false")= user.profile.name
                             li
-                                form(action="/auth/sign-out" method="get")
+                                form(action="/logout" method="get")
                                     button.btn.btn-large.btn-lg
                                         span.glyphicon.glyphicon-log-out
                     else
                             li
-                                a(href="/auth/sign-up") 
-                                        | Sign up
+                                a(href="/register") 
+                                        | Register
                             li
-                                a(href="/auth/sign-in")
-                                        | Sign in
+                                a(href="/login")
+                                        | Login
                             li
                                 a(href="/auth/facebook")
-                                        | Fb                
+                                        | Fb     
+                    li
+                        a(href="status")
+                            | Status           
                     li
                         form.form-inline(action="/search" method="get")
                             input.form-control(type="text" name="pattern")

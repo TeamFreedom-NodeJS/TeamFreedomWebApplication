@@ -1,4 +1,5 @@
 /* globals require module */
+"use strict";
 
 const modelRegistrator = require("./utils/model-registrator");
 const units = ["гр.", "мл.", "ч. л.", "с. л.", "щипка", "бр."];
