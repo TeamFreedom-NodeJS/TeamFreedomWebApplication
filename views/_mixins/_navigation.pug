@@ -16,6 +16,10 @@ mixin site-navigation
                         a(href="/categories/create") Add Category
                     li
                         a(href="/recipes/create") Add Recipe
+                    li
+                        a(href="/articles/list") Articles
+                    li
+                        a(href="/articles/create") Add Article
                     if user
                         li
                             a(href="/profile/"  role="button" aria-haspopup="true" aria-expanded="false")= user.profile.name

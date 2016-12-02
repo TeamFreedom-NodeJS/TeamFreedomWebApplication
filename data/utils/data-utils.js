@@ -20,6 +20,26 @@ module.exports = {
             });
         });
     },
+    loadOrCreateArticle(Article, title, imgUrl, content) {
+        return new Promise((resolve, reject) => {
+            Article.findOne({ title }, (err, dbArticle) => {
+                let article = dbArticle;
+                console.log("loadOrCreateArticle: ", article);
+                if (err) {
+                    return reject(err);
+                }
+
+                if (article) {
+                    return resolve(article);
+                }
+
+                article = new Article({ title, imgUrl, content });
+                return this.save(article)
+                    .then(resolve)
+                    .catch(reject);
+            });
+        });
+    },
     update(model) {
         return new Promise((resolve, reject) => {
             model.save(err => {

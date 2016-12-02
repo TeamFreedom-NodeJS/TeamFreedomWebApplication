@@ -1,22 +1,33 @@
 extends ../_layout
-//- include ../_mixins/_ingredient
 
 block content
     form(action="/recipes" method="post")
         input.form-control(type="text" name="title" placeholder="Title")
         input.form-control(type="text" name="cookingTimeInMinutes" placeholder="Cooking Time [in Minutes]")
-        input.form-control(type="text" name="imageUrls" placeholder="Link To ready Dish Image")
         textarea.form-control(name="preparation" placeholder="Describe Preparation")
-        select(name="categories" multiple="multiple")
+
+        h3
+            | Снимки
+        ul.image-list
+        br
+        a#btn-add-image(href="#")
+            | Добави линк към нова снимка
+
+        h3
+           | Съставки:
+        ul.ingredients-list
+        br
+        a#btn-add-ingredient(href="#")
+            | Добави нова съставка
+
+        h3
+           | Категории:
+        ul
             each category in categories
-                option(value=category.id)
-                    = category.name
-            
-        
-        // TO DO: Make ingredients in a cycle with button 'Add INgredient
-        input.ingredients-list(type="text" name="ingredientsAll")
-        a#btn-add-ingredient-option(href="#")
-            | Add ingredient
+                li
+                    label
+                        = category.name
+                        input.form-control(type="checkbox" name="categories" value=category.id)
 
         button.btn
             | Добави

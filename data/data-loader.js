@@ -13,8 +13,9 @@ module.exports = function(connectionString) {
     let User = require("../models/user-model.js");
     let Recipe = require("../models/recipe-model");
     let Category = require("../models/category-model.js");
+    let Article = require("../models/article-model");
 
-    let models = { User, Recipe, Category };
+    let models = { User, Recipe, Category, Article };
 
     let data = {};
 

@@ -1,0 +1,7 @@
+extends ../_layout
+
+block content
+    if model
+        h2= model.title
+        img(src=model.imgUrl class="article-img")
+        div= model.content

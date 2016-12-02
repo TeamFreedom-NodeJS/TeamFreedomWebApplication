@@ -1,0 +1,14 @@
+extends ../_layout
+
+    block content
+        .text-center
+            if model
+                div Edit article #{model}
+                    form.form-inline(action="/articles/edit" method="put")
+                        | New title
+                        input.form-control(type="text" name="title" placeholder="Article title")
+                        | New image url
+                        input.form-control(type="text" name="imgUrl" placeholder="Article image url.")
+                        br
+                        textarea.form-control(name="content")
+                        button.btn.btn-danger(type="submit") Edit

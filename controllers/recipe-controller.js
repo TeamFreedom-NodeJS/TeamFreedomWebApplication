@@ -1,10 +1,50 @@
 /* globals module */
 
-// const mapper = require("../utils/mapper");
-
 // const DEFAULT_PAGE = 1,
 //     PAGE_SIZE = 10,
 //     NEWEST_SUPERHEROES_COUNT = 5;
+
+function parseRecipeData(reqBody) {
+    let {
+        title,
+        categories,
+        ingredients,
+        preparation,
+        imageUrls,
+        cookingTimeInMinutes
+    } = reqBody;
+
+    if (!Array.isArray(categories)) {
+        categories = [categories];
+    }
+
+    if (!Array.isArray(imageUrls)) {
+        imageUrls = [imageUrls];
+    }
+
+    if (!Array.isArray(ingredients)) {
+        ingredients = [ingredients];
+    }
+
+    let ingreds = [];
+    for (let i = 0; i < ingredients.length; i += 1) {
+        let ingredientInfo = ingredients[i].split("-");
+        ingreds.push({
+            name: ingredientInfo[0],
+            quantity: +ingredientInfo[1],
+            unit: ingredientInfo[2]
+        });
+    }
+
+    return {
+        title,
+        categories,
+        ingreds,
+        preparation,
+        imageUrls,
+        cookingTimeInMinutes
+    };
+}
 
 module.exports = function(data) {
     const controller = {
@@ -47,7 +87,7 @@ module.exports = function(data) {
                     return res.render("recipe/create", {
                         categories,
                         user: req.user,
-                        ingredients: [{}]
+                        ingredients: []
                     });
                 });
         },
@@ -61,37 +101,16 @@ module.exports = function(data) {
             let {
                 title,
                 categories,
-                ingredientsAll,
+                ingreds,
                 preparation,
                 imageUrls,
                 cookingTimeInMinutes
-            } = req.body;
-
-            if (!Array.isArray(categories)) {
-                categories = [categories];
-            }
-
-            if (!Array.isArray(imageUrls)) {
-                imageUrls = [imageUrls];
-            }
-
-            let ingredients = [];
-            let ingredientsArr = ingredientsAll.split(",");
-
-            for (let i = 0; i < ingredientsArr.length; i += 1) {
-                let ingredientInfo = ingredientsArr[i].split("-");
-                ingredients.push({
-                    name: ingredientInfo[0],
-                    quantity: +ingredientInfo[1],
-                    unit: ingredientInfo[2]
-                });
-            }
-
+            } = parseRecipeData(req.body);
             return data.createRecipe(
                     title,
                     categories,
                     imageUrls,
-                    ingredients,
+                    ingreds,
                     preparation,
                     cookingTimeInMinutes,
                     author)
@@ -104,10 +123,54 @@ module.exports = function(data) {
                         .send(err);
                 });
         },
+        getEditRecipeForm(req, res) {
+            if (!req.isAuthenticated()) {
+                return res.redirect("/");
+            }
+
+            let id = req.params.id;
+            data.getRecipeById(id)
+                .then(recipe => {
+                    if (!recipe) {
+                        return res.redirect("/");
+                    }
+
+                    data.getAllCategories()
+                        .then(categories => {
+                            return res.render("recipe/edit", {
+                                categories,
+                                recipe,
+                                user: req.user
+                            });
+                        })
+                        .catch(err => {
+                            return err;
+                        });
+                })
+                .catch(err => {
+                    return err;
+                });
+        },
         editRecipeById(req, res) {
             let id = req.params.id;
-            data.editRecipeById(id)
-                .then(() => {
+            let {
+                title,
+                categories,
+                ingreds,
+                preparation,
+                imageUrls,
+                cookingTimeInMinutes
+            } = parseRecipeData(req.body);
+
+            data.editRecipeById(
+                    id,
+                    title,
+                    categories,
+                    imageUrls,
+                    ingreds,
+                    preparation,
+                    cookingTimeInMinutes)
+                .then(recipe => {
                     if (!recipe) {
                         return res.redirect("/");
                     }

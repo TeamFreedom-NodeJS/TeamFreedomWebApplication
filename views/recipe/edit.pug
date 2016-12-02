@@ -1,0 +1,44 @@
+extends ../_layout
+
+block content
+    form(action="/recipes/edit/"+recipe.id method="post")
+        input.form-control(type="text" name="title" value= recipe.title)
+        input.form-control(type="text" name="cookingTimeInMinutes" value= recipe.cookingTimeInMinutes)
+        textarea.form-control(name="preparation" value= recipe.preparation)
+            = recipe.preparation
+        
+        h3
+            | Снимки
+        ul.image-list
+            each imageUrl in recipe.imageUrls
+                li
+                    input.form-control(type="text" name="imageUrls" value=imageUrl)
+                    a.btn-remove-image(href="#")
+                        | Премахни снимка
+        br
+        a#btn-add-image(href="#")
+            | Добави линк към нова снимка
+
+        h3
+           | Съставки:
+        ul.ingredients-list
+            each ingredient in recipe.ingredients
+                li
+                    input.form-control(type="text" name="ingredients" value=ingredient.name+"-"+ingredient.quantity+"-"+ingredient.unit)
+                    a.btn-remove-ingredient(href="#")
+                        | Премахни съставка
+        br
+        a#btn-add-ingredient(href="#")
+            | Добави нова съставка
+
+        h3
+           | Категории:
+        ul
+            each category in categories
+                li
+                    label
+                        = category.name
+                        input.form-control(type="checkbox" name="categories" value=category._id)
+
+        button.btn
+            | Промени

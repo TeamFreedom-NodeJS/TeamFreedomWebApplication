@@ -1,0 +1,9 @@
+extends ../_layout
+
+block content
+    ul
+        each article in model
+            li.col-xs-4
+                a(href="/articles/" + article.id)= article.title
+                img(src=article.imgUrl class="article-img")
+                    

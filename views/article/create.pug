@@ -1,0 +1,31 @@
+extends ../_layout
+
+block content
+    .text-center
+        div Create new Article
+        form.form-inline(action="/articles" method="post")
+            input.form-control(type="text" name="title" placeholder="Добави заглавие на статията.")
+            input.form-control(type="text" name="imgUrl" placeholder="Добави url на снимката.")
+            br
+            textarea.form-control(name="content" placeholder="Добави съдържание на статията.")
+            button.btn.btn-danger(type="submit") Create
+    
+    h3 Categories
+    if model
+        table.table.table-hover
+            thead
+                tr
+                    th 
+                        div  Number
+                    th
+                        div  Article title
+            each article in model
+                tr
+                    td 
+                        span 1
+                    td
+                        a(href="/articles/" + article.id)= article.title
+                    td
+                        button.btn(type="submit" class="article-btn-edit") Edit
+                    td
+                        button.btn(type="submit" class="article-btn-delete") Delete
