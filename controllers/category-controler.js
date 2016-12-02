@@ -13,34 +13,49 @@ module.exports = function(data) {
 
             return data.createCategory(name, imgUrl)
                 .then(category => {
-                    return res.redirect("/categories/create");
+                    return res.redirect("categories/create");
                 })
                 .catch(err => {
                     res.status(400)
                         .send(err);
                 });
         },
+
         getAllCategories(req, res) {
             data.getAllCategories()
                 .then(categories => {
-                    if (req.isAuthenticated()) {
-                        return res.render("category/all", {
-                            categories,
-                            user: req.user
-                        });
-                    } else {
-                        return res.render("category/all", {
-                            categories,
-                            user: req.user
-                        });
-                    }
-
+                    return res.render("category/all", {
+                        model: categories,
+                        user: req.user
+                    });
                 })
                 .catch(err => {
                     res.status(400)
                         .send(err);
                 });
         },
+
+        // getAllCategories(req, res) {
+        //     data.getAllCategories()
+        //         .then(categories => {
+        //             if (req.isAuthenticated()) {
+        //                 return res.render("category/all", {
+        //                     categories,
+        //                     user: req.user
+        //                 });
+        //             } else {
+        //                 return res.render("category/all", {
+        //                     categories,
+        //                     user: req.user
+        //                 });
+        //             }
+
+        //         })
+        //         .catch(err => {
+        //             res.status(400)
+        //                 .send(err);
+        //         });
+        // },
         getCategoryByName(req, res) {
             let name = req.params.name;
 

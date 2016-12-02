@@ -11,34 +11,43 @@ module.exports = function(models) {
 
     return {
         createCategory(name, imgUrl) {
-            return dataUtils.loadOrCreateCategory(name, imgUrl);
+            return dataUtils.loadOrCreateCategory(Category, name, imgUrl);
         },
         getAllCategories() {
             return new Promise((resolve, reject) => {
-                /*Category.find()
-                    .then((err, categories) => {
-                        console.log(categories);
-
+                Category.find()
+                    .exec((err, categories) => {
                         if (err) {
                             return reject(err);
                         }
 
-                        return resolve(categories  || []);
+                        return resolve(categories);
                     });
-                    */
-
-                Category.find((err, categories) => {
-                   /* console.log(categories);
-                    console.log(err);*/
-
-                    if (err) {
-                        return reject(err);
-                    }
-
-                    return resolve(categories);
-                });
             });
         },
+
+        // getAllCategories() {
+        //     return new Promise((resolve, reject) => {
+        //         Category.find()
+        //             .then((err, categories) => {
+
+        //                 if (err) {
+        //                     return reject(err);
+        //                 }
+
+        //                 return resolve(categories);
+        //             });
+
+
+        //         Category.find((err, categories) => {
+        //             if (err) {
+        //                 return reject(err);
+        //             }
+
+        //             return resolve(categories);
+        //         });
+        //     });
+        // },
         getCategoryByName(name) {
             return new Promise((resolve, reject) => {
                 Category.findOne({
