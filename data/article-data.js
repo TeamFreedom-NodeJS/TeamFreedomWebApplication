@@ -68,35 +68,6 @@ module.exports = function(models) {
                         return reject(err);
                     });
             });
-        },
-        searchCategories({
-            pattern,
-            page,
-            pageSize
-        }) {
-            // let query = {};
-            // if (typeof pattern === "string" && pattern.length >= MIN_PATTERN_LENGTH) {
-            //     query.$or = [{
-            //         name: new RegExp(`.*${pattern}.*`, "gi")
-            //     }];
-            // }
-
-            // let skip = (page - 1) * pageSize,
-            //     limit = page * pageSize;
-
-            // return new Promise((resolve, reject) => {
-            //     Article.find()
-            //         .where(query)
-            //         .skip(skip)
-            //         .limit(limit)
-            //         .exec((err, articles) => {
-            //             if (err) {
-            //                 return reject(err);
-            //             }
-
-            //             return resolve(articles || []);
-            //         });
-            // });
         }
     };
 };

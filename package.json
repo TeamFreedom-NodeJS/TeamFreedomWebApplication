@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node app.js",
     "development": "nodemon .",
-    "test": "eslint .",
+    "test": "./node_modules/.bin/mocha tests tests/**/*.js",
     "postinstall": "bower install"
   },
   "author": "TeamFreedom",
@@ -26,8 +26,11 @@
     "stylus": "^0.54.5"
   },
   "devDependencies": {
+    "chai": "^3.5.0",
     "eslint": "^3.10.2",
-    "nodemon": "^1.11.0"
+    "mocha": "^3.2.0",
+    "nodemon": "^1.11.0",
+    "sinon": "^1.17.6"
   },
   "description": ""
 }
