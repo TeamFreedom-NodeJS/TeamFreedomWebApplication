@@ -32,7 +32,7 @@ mixin user-navigation
                             button.btn.btn-danger
                                 span.glyphicon.glyphicon-search
                     li
-                        a(href="/profile/")= user.profile.name
+                        a(href="/profile/")= user.facebook.email
                     li
                         form(action="/logout" method="get")
                             button.btn.btn-medium.btn-lg

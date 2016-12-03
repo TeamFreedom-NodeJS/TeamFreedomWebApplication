@@ -57,7 +57,7 @@ module.exports = function() {
         postSignup(req, res, next) {
             req.assert("email", "Невалиден Email адрес!!!").isEmail();
             req.assert("password", "Паролата трябва да бъде минимум 4 символа дълга!!!").len(4);
-            req.assert("confirmPassword", "Passwords do not match").equals(req.body.password);
+            req.assert("confirmPassword", "Паролите не съвпадат!!!").equals(req.body.password);
             req.sanitize("email").normalizeEmail({ remove_dots: false });
 
             const errors = req.validationErrors();
@@ -88,6 +88,7 @@ module.exports = function() {
                         if (err) {
                             return next(err);
                         }
+                        req.flash("success", { msg: "Успешна регистрация!!!" });
                         res.redirect("/profile");
                     });
                 });
