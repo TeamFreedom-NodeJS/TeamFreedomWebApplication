@@ -17,29 +17,18 @@ module.exports = function({ app, data }) {
         .post("/register", controller.postSignup)
         .post("/login", controller.postLogin)
         .get("/logout", controller.logout)
-        .get("/forgot", controller.getForgot)
-        .post("/forgot", controller.postForgot)
-        .get("/reset/:token", controller.getReset)
-        .post("/reset/:token", controller.postReset)
         .get("/profile", controller.getAccount)
         .post("/account/profile", controller.postUpdateProfile)
         .post("/account/password", controller.postUpdatePassword)
         .post("/account/delete", controller.postDeleteAccount);
 
+
     app.use("/", router);
-
-    // app.get("/auth/facebook",
-    //     passport.authenticate("facebook"));
-
-    // app.get("/auth/facebook/callback",
-    //     passport.authenticate("facebook", { failureRedirect: "/login" }),
-    //     (req, res) => {
-    //         res.redirect("/");
-    //     });
 
     app.get("/auth/facebook", passport.authenticate("facebook", { scope: ["email", "user_location"] }));
     app.get("/auth/facebook/callback", passport.authenticate("facebook", { failureRedirect: "/login" }), (req, res) => {
         res.redirect(req.session.returnTo || "/");
     });
+
     return router;
 };
