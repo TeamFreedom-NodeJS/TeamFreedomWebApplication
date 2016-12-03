@@ -2,7 +2,7 @@ extends ../_layout
 
 block content
   .page-header
-    h3 Sign in
+    h3 Логни се!
   form.form-horizontal(method="POST")
     input(type="hidden", name="_csrf", value=_csrf)
     .form-group
@@ -10,14 +10,14 @@ block content
       .col-sm-7
         input.form-control(type="email", name="email", id="email", placeholder="Email", autofocus, required)
     .form-group
-      label.col-sm-3.control-label(for="password") Password
+      label.col-sm-3.control-label(for="password") Парола
       .col-sm-7
         input.form-control(type="password", name="password", id="password", placeholder="Password", required)
     .form-group
       .col-sm-offset-3.col-sm-7
         button.col-sm-3.btn.btn-primary(type="submit")
           i.fa.fa-user
-          | Login
+          | Логни се!
     .form-group
       .col-sm-offset-3.col-sm-7
         hr
@@ -25,6 +25,6 @@ block content
       .col-sm-offset-3.col-sm-7
         a.btn.btn-block.btn-facebook.btn-social(href="/auth/facebook")
           i.fa.fa-facebook
-          | Sign in with Facebook
+          | Логни се с Facebook!
 block additionalScripts
     script(src="/static/js/user/login.js")
