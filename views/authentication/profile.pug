@@ -2,7 +2,7 @@ extends ../_layout
 
 block content
   .page-header
-    h3 Profile Information
+    h3 Информация за Профила
 
     form.form-horizontal(action="/account/profile", method="POST")
           input(type="hidden", name="_csrf", value=_csrf)
@@ -11,23 +11,23 @@ block content
             .col-sm-7
               input.form-control(type="email", name="email", id="email", value=user.email)
           .form-group
-            label.col-sm-3.control-label(for="name") Name
+            label.col-sm-3.control-label(for="name") Име
             .col-sm-7
               input.form-control(type="text", name="name", id="name", value=user.profile.name)
           .form-group
-            label.col-sm-3.control-label Gender
+            label.col-sm-3.control-label Пол
             .col-sm-6
               label.radio.col-sm-3
                 input(type="radio", checked=user.profile.gender=="male", name="gender", value="male", data-toggle="radio")
-                span Male
+                span Мъж
               label.radio.col-sm-3
                 input(type="radio", checked=user.profile.gender=="female", name="gender", value="female", data-toggle="radio")
-                span Female
+                span Жена
               label.radio.col-sm-3
                 input(type="radio", checked=user.profile.gender=="other", name="gender", value="other", data-toggle="radio")
-                span Other
+                span Друго
           .form-group
-            label.col-sm-3.control-label(for="location") Location
+            label.col-sm-3.control-label(for="location") Местоположение
             .col-sm-7
               input.form-control(type="text", name="location", id="location", value=user.profile.location)
           .form-group
@@ -38,38 +38,38 @@ block content
             .col-sm-offset-3.col-sm-4
               button.btn.btn.btn-primary(type="submit")
                 i.fa.fa-pencil
-                | Update Profile
+                | Направи Промените в профила си
 
   .page-header
-    h3 Change Password
+    h3 Смени си паролата
 
   form.form-horizontal(action="/account/password", method="POST")
       input(type="hidden", name="_csrf", value=_csrf)
       .form-group
-        label.col-sm-3.control-label(for="password") New Password
+        label.col-sm-3.control-label(for="password") Нова Парола
         .col-sm-7
           input.form-control(type="password", name="password", id="password")
       .form-group
-        label.col-sm-3.control-label(for="confirmPassword") Confirm Password
+        label.col-sm-3.control-label(for="confirmPassword") Потвърди Паролата
         .col-sm-7
           input.form-control(type="password", name="confirmPassword", id="confirmPassword")
       .form-group
         .col-sm-offset-3.col-sm-4
           button.btn.btn-primary(type="submit")
             i.fa.fa-lock
-            | Change Password
+            | Направи Промените на вашата парола
 
   .page-header
-    h3 Delete Account
+    h3 Изтрийте си акаунта!
 
   form.form-horizontal(action="/account/delete", method="POST")
     .form-group
-      p.col-sm-offset-3.col-sm-4 You can delete your account, but keep in mind this action is irreversible.
+      p.col-sm-offset-3.col-sm-4 Можете да си изтриете акаунта, но имайте в предвид че е необратимо!!!
       input(type="hidden", name="_csrf", value=_csrf)
       .col-sm-offset-3.col-sm-4
         button.btn.btn-danger(type="submit")
           i.fa.fa-trash
-          | Delete my account
+          | Изтрий моят акаунт
 
 
 

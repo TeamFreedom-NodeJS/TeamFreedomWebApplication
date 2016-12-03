@@ -25,18 +25,10 @@ module.exports = function({ app, data }) {
 
     app.use("/", router);
 
-    // app.get("/auth/facebook",
-    //     passport.authenticate("facebook"));
-
-    // app.get("/auth/facebook/callback",
-    //     passport.authenticate("facebook", { failureRedirect: "/login" }),
-    //     (req, res) => {
-    //         res.redirect("/");
-    //     });
-
     app.get("/auth/facebook", passport.authenticate("facebook", { scope: ["email", "user_location"] }));
     app.get("/auth/facebook/callback", passport.authenticate("facebook", { failureRedirect: "/login" }), (req, res) => {
         res.redirect(req.session.returnTo || "/");
     });
+
     return router;
 };
