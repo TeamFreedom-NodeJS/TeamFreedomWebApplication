@@ -137,7 +137,7 @@ module.exports = function(data) {
                 .then(recipe => {
                     // TO DO Delete Recipe
                     req.flash("success", { msg: "Успешно регистрирахте рецептата си!" });
-                    return res.redirect(`/recipes/${recipe.id}`);
+                    return res.redirect(/recipes/ + recipe.id);
                 })
                 .catch(err => {
                     req.flash("error", { msg: constants.errorMessage + err });
