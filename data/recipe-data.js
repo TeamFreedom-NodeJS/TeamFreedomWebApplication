@@ -1,4 +1,5 @@
 /* globals module require Promise */
+"use strict";
 
 const MIN_PATTERN_LENGTH = 3;
 
@@ -26,6 +27,22 @@ module.exports = function(models) {
                 });
 
             return resolve(recipe);
+        });
+    }
+
+    function findRecipeInAuthorAndDelete(recipe) {
+        return new Promise((resolve, reject) => {
+            User.findByIdAndUpdate(
+                recipe.author.id, {
+                    $pull: { addedRecipes: { id: recipe._id } },
+                }, { safe: true },
+                err => {
+                    if (err) {
+                        return reject(err);
+                    }
+                });
+
+            return resolve();
         });
     }
 
@@ -96,10 +113,11 @@ module.exports = function(models) {
     return {
         getRecipeById(id) {
             return new Promise((resolve, reject) => {
-                Recipe.findOne({ _id: id }, (err, recipe) => {
+                Recipe.findById(id, (err, recipe) => {
                     if (err) {
                         return reject(err);
                     }
+
                     return resolve(recipe);
                 });
             });
@@ -122,7 +140,6 @@ module.exports = function(models) {
         },
         createRecipe(title, categoriesIds, imageUrls, ingredients, preparation,
             cookingTimeInMinutes, autor) {
-
             return new Promise((resolve, reject) => {
                 findCategoriesByIds(categoriesIds)
                     .then(categories => {
@@ -162,10 +179,11 @@ module.exports = function(models) {
         },
         editRecipeById(id, title, categoriesIds, imageUrls, ingredients, preparation,
             cookingTimeInMinutes) {
+            let updatedRecipe;
+
             return new Promise((resolve, reject) => {
                 Recipe.findById(id, (err, recipe) => {
                         if (err) {
-                            console.log(err);
                             return err;
                         }
 
@@ -191,12 +209,17 @@ module.exports = function(models) {
                                         return reject(err);
                                     }
 
+                                    updatedRecipe = recipe;
                                     return resolve(recipe);
                                 });
                         });
                     })
                     .then(recipe => {
-                        return addRecipeToCategories(categoriesIds, recipe)
+                        return addRecipeToCategories(categoriesIds, recipe);
+                    })
+                    .then(findRecipeInAuthorAndDelete)
+                    .then(() => {
+                        return addRecipeToUser(updatedRecipe.author.id, updatedRecipe);
                     })
                     .then(recipe => {
                         return resolve(recipe);

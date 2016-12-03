@@ -1,4 +1,5 @@
 /* globals $ prompt*/
+"use strict";
 
 $(() => {
     const units = ["гр.", "мл.", "ч. л.", "с. л.", "щипка", "бр."];

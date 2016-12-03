@@ -31,26 +31,34 @@ block content
             | Начин на приготвяне:
         div= model.preparation
         div= "Време за готвене: " + model.cookingTimeInMinutes + " мин."
-        buton.btn.btn-danger
-            | Добави към любими
-        buton.btn.btn-danger
-            | Like
-        if user && model.autor.id === user.id
+        
+        if user
+            buton.btn.btn-primary
+                | Добави към любими
+            buton.btn.btn-success
+                | Like
             buton.btn.btn-danger
-            | Edit
+                | Unlike
+            if !!user.id===!!model.autor.id
+                buton.btn.btn-primary
+                    | Редактирай
+                buton.btn.btn-danger
+                    | Изтрий
+            div
 
-        div
-            h3
-                | Коментари
-            ul
-                each comment in model.comments
+                h3
+                    | Коментари
+                ul
                     li
-                        strong= comment.author.username
-                        p= "Добавен на  " + comment.created
-                        p= comment.content
+                    if model.comments.length
+                        each comment in model.comments
+                            li
+                                strong= comment.autor
+                                p= "Добавен на  " + comment.created
+                                p= comment.content
         
-        form(method="post" action="/recipes/"+model.id)
-            textarea.form-control(name="content" placeholder="Добави коментар")
-            br
-            input.btn.btn-danger(type="submit" value="Публикувай")
-        
+                form(method="post" action="/recipes/"+model.id)
+                    textarea.form-control(name="content" placeholder="Добави коментар")
+                    br
+                    input.btn.btn-danger(type="submit" value="Публикувай")
+                

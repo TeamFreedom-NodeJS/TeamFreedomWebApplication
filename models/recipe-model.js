@@ -46,7 +46,7 @@ module.exports = modelRegistrator.register("Recept", {
     },
     autor: {},
     comments: [{
-        author: {},
+        autor: {},
         created: {
             type: Date,
             required: true,
