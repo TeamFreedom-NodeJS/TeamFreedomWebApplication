@@ -61,10 +61,7 @@ module.exports = function(data) {
 
     const controller = {
         getRecipeDetails(req, res) {
-            if (!req.isAuthenticated()) {
-                req.flash("error", { msg: "Достъп до тази информация имат само регистрирани потребители!" });
-                return res.redirect("/");
-            }
+
             let id = req.params.id;
             data.getRecipeById(id)
                 .then(recipe => {
@@ -84,11 +81,16 @@ module.exports = function(data) {
                 });
         },
         addComment(req, res) {
+            if (!req.isAuthenticated()) {
+                req.flash("error", { msg: "Достъп до тази информация имат само регистрирани потребители!" });
+                return res.redirect("/");
+            }
             let id = req.params.id;
             let content = req.body.content;
 
             let autor = req.user.profile.name || parseEmail(req.user.email);
-            data.addCommentToRecipe(id, content, autor)
+            //console.log(autor);
+            data.addCommentToRecipe(content, autor)
                 .then(recipe => { // Todo to return json
                     return res.redirect(`/recipes/${id}`);
                 });
