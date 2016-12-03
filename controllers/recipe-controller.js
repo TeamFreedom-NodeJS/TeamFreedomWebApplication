@@ -89,10 +89,11 @@ module.exports = function(data) {
             let id = req.params.id;
             let content = req.body.content;
 
-            let autor = req.user.profile.name || parseEmail(req.user.email);
-            //console.log(autor);
-            data.addCommentToRecipe(content, autor)
+            let author = req.user.profile.name || parseEmail(req.user.email);
+            //console.log(author);
+            data.addCommentToRecipe(content, author)
                 .then(recipe => { // Todo to return json
+                    req.user;
                     return res.redirect(`/recipes/${id}`);
                 });
         },
@@ -115,7 +116,7 @@ module.exports = function(data) {
                 });
         },
         createRecipe(req, res) {
-            let autor = {
+            let author = {
                 id: req.user._id,
                 name: req.user.profile.name || parseEmail(req.user.email),
                 imageUrl: req.user.profile.picture || "no picture"
@@ -136,7 +137,7 @@ module.exports = function(data) {
                     ingredients,
                     preparation,
                     cookingTimeInMinutes,
-                    autor)
+                    author)
                 .then(recipe => {
                     // TO DO Delete Recipe
                     req.flash("success", { msg: "Успешно регистрирахте рецептата си!" });
