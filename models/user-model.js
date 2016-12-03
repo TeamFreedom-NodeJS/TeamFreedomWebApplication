@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
     password: String,
     passwordResetToken: String,
     passwordResetExpires: Date,
-    
+
     facebook: {
         id: String,
         token: String,
@@ -26,7 +26,11 @@ const userSchema = new mongoose.Schema({
         picture: String
     },
     favouriteRecipes: [{}],
-    addedRecipes: [{}]
+    addedRecipes: [{}],
+    role: {
+        type: String,
+        enum: ["user", "admin"]
+    }
 }, { timestamps: true });
 
 /**
