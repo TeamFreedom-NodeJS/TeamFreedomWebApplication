@@ -1,5 +1,5 @@
 /* globals console module require Promise */
-const hash = require("../models/utils/encryptor");
+"use strict";
 
 module.exports = function(models) {
     let {
@@ -7,17 +7,8 @@ module.exports = function(models) {
     } = models;
 
     return {
-        createUser(email, password) {
-            let salt;
-            return hash.generateSalt()
-                .then(sl => {
-                    salt = sl;
-                    return hash.generatePassHash(password, sl);
-                })
-                .then(passHash => {
-                    let user = new User({ email, salt, passHash });
-                    return user;
-                })
+        createUser() {
+            return new User()
                 .then(user => {
                     user.save(err => {
                         if (err) {

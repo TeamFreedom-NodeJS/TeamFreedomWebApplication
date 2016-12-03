@@ -1,13 +1,50 @@
 /* globals module require Promise */
+"use strict";
 
 const MIN_PATTERN_LENGTH = 3;
 
 module.exports = function(models) {
     let {
         Recipe,
-        //User,
+        User,
         Category
     } = models;
+
+    function addRecipeToUser(userId, recipe) {
+        return new Promise((resolve, reject) => {
+            let recipeInfo = {
+                id: recipe._id,
+                title: recipe.title,
+                imageUrl: recipe.imageUrls[0]
+            };
+
+            User.findByIdAndUpdate(
+                userId, { $push: { addedRecipes: recipeInfo } }, { safe: true },
+                err => {
+                    if (err) {
+                        return reject(err);
+                    }
+                });
+
+            return resolve(recipe);
+        });
+    }
+
+    function findRecipeInAuthorAndDelete(recipe) {
+        return new Promise((resolve, reject) => {
+            User.findByIdAndUpdate(
+                recipe.author.id, {
+                    $pull: { addedRecipes: { id: recipe._id } },
+                }, { safe: true },
+                err => {
+                    if (err) {
+                        return reject(err);
+                    }
+                });
+
+            return resolve();
+        });
+    }
 
     function findCategoriesByIds(categoriesIds) {
         return new Promise((resolve, reject) => {
@@ -47,7 +84,6 @@ module.exports = function(models) {
                         categId, { $push: { recipes: recipeInfo } }, { safe: true },
                         err => {
                             if (err) {
-                                console.log(err);
                                 return reject(err);
                             }
                         });
@@ -65,7 +101,6 @@ module.exports = function(models) {
                     categ.id, { $pull: { recipes: { id: recipe._id } } }, { safe: true, new: true },
                     (err, c) => {
                         if (err) {
-                            console.log(err);
                             return reject(err);
                         }
                     });
@@ -78,19 +113,20 @@ module.exports = function(models) {
     return {
         getRecipeById(id) {
             return new Promise((resolve, reject) => {
-                Recipe.findOne({ _id: id }, (err, recipe) => {
+                Recipe.findById(id, (err, recipe) => {
                     if (err) {
                         return reject(err);
                     }
+
                     return resolve(recipe);
                 });
             });
         },
-        addCommentToRecipe(id, content, author) {
+        addCommentToRecipe(id, content, autor) {
             return new Promise((resolve, reject) => {
                 let newComment = {
                     content,
-                    author: { username: author }
+                    autor: { name: autor.name }
                 };
 
                 Recipe.findByIdAndUpdate(id, { $push: { comments: newComment } }, { safe: true, upsert: true }, (err, recipe) => {
@@ -103,8 +139,7 @@ module.exports = function(models) {
             });
         },
         createRecipe(title, categoriesIds, imageUrls, ingredients, preparation,
-            cookingTimeInMinutes, author) {
-
+            cookingTimeInMinutes, autor) {
             return new Promise((resolve, reject) => {
                 findCategoriesByIds(categoriesIds)
                     .then(categories => {
@@ -115,7 +150,7 @@ module.exports = function(models) {
                             ingredients,
                             preparation,
                             cookingTimeInMinutes,
-                            author
+                            autor
                         });
 
                         return new Promise((resolve, reject) => {
@@ -129,9 +164,13 @@ module.exports = function(models) {
                         });
                     })
                     .then(recipe => {
-                        addRecipeToCategories(categoriesIds, recipe)
-                            .then(resolve)
-                            .catch(reject);
+                        return addRecipeToCategories(categoriesIds, recipe);
+                    })
+                    .then(recipe => {
+                        return addRecipeToUser(author.id, recipe);
+                    })
+                    .then(recipe => {
+                        return resolve(recipe);
                     })
                     .catch(err => {
                         return reject(err);
@@ -140,10 +179,11 @@ module.exports = function(models) {
         },
         editRecipeById(id, title, categoriesIds, imageUrls, ingredients, preparation,
             cookingTimeInMinutes) {
+            let updatedRecipe;
+
             return new Promise((resolve, reject) => {
                 Recipe.findById(id, (err, recipe) => {
                         if (err) {
-                            console.log(err);
                             return err;
                         }
 
@@ -151,35 +191,41 @@ module.exports = function(models) {
                     })
                     .then(removeRecipeFromItsCategories)
                     .then(() => {
-                        findCategoriesByIds(categoriesIds)
-                            .then(categories => {
-                                return new Promise((resolve, reject) => {
-                                    Recipe.findByIdAndUpdate(id, {
-                                            title,
-                                            categories,
-                                            imageUrls,
-                                            ingredients,
-                                            preparation,
-                                            cookingTimeInMinutes
-                                        }, { safe: true, new: true },
-                                        (err, recipe) => {
-                                            if (err) {
-                                                console.log(err);
-                                                return reject(err);
-                                            }
+                        return findCategoriesByIds(categoriesIds);
+                    })
+                    .then(categories => {
+                        return new Promise((resolve, reject) => {
+                            Recipe.findByIdAndUpdate(id, {
+                                    title,
+                                    categories,
+                                    imageUrls,
+                                    ingredients,
+                                    preparation,
+                                    cookingTimeInMinutes
+                                }, { safe: true, new: true },
+                                (err, recipe) => {
+                                    if (err) {
+                                        console.log(err);
+                                        return reject(err);
+                                    }
 
-                                            return resolve(recipe);
-                                        });
+                                    updatedRecipe = recipe;
+                                    return resolve(recipe);
                                 });
-                            })
-                            .then(recipe => {
-                                addRecipeToCategories(categoriesIds, recipe)
-                                    .then(resolve)
-                                    .catch(reject);
-                            })
-                            .catch(err => {
-                                return reject(err);
-                            });
+                        });
+                    })
+                    .then(recipe => {
+                        return addRecipeToCategories(categoriesIds, recipe);
+                    })
+                    .then(findRecipeInAuthorAndDelete)
+                    .then(() => {
+                        return addRecipeToUser(updatedRecipe.author.id, updatedRecipe);
+                    })
+                    .then(recipe => {
+                        return resolve(recipe);
+                    })
+                    .catch(err => {
+                        return reject(err);
                     });
             });
         },

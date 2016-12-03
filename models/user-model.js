@@ -9,7 +9,13 @@ const userSchema = new mongoose.Schema({
     passwordResetToken: String,
     passwordResetExpires: Date,
 
-    facebook: String,
+    facebook: {
+        id: String,
+        token: String,
+        name: String,
+        email: String,
+        picture: String
+    },
     tokens: Array,
 
     profile: {
@@ -20,7 +26,11 @@ const userSchema = new mongoose.Schema({
         picture: String
     },
     favouriteRecipes: [{}],
-    addedRecipes: [{}]
+    addedRecipes: [{}],
+    role: {
+        type: String,
+        enum: ["user", "admin"]
+    }
 }, { timestamps: true });
 
 /**

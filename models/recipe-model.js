@@ -1,8 +1,8 @@
 /* globals require module */
 "use strict";
 
-const modelRegistrator = require("./utils/model-registrator");
-const units = ["гр.", "мл.", "ч. л.", "с. л.", "щипка", "бр."];
+const modelRegistrator = require("./utils/model-registrator"),
+    constants = require("../config/constants.js");
 
 module.exports = modelRegistrator.register("Recept", {
     title: {
@@ -26,7 +26,7 @@ module.exports = modelRegistrator.register("Recept", {
         },
         unit: {
             type: String,
-            enum: units
+            enum: constants.units
         }
     }],
     preparation: {
@@ -44,9 +44,9 @@ module.exports = modelRegistrator.register("Recept", {
         required: true,
         default: Date.now
     },
-    author: {},
+    autor: {},
     comments: [{
-        author: {},
+        autor: {},
         created: {
             type: Date,
             required: true,

@@ -1,7 +1,6 @@
 include _mixins/_navigation
 include _mixins/_authorizedNavigation
 
-
 doctype html
 html(lang="en")
     head
@@ -16,7 +15,6 @@ html(lang="en")
         
         header
             if user
-                div= user.email
                 +user-navigation
             else
                 +site-navigation
