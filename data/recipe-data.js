@@ -122,11 +122,11 @@ module.exports = function(models) {
                 });
             });
         },
-        addCommentToRecipe(id, content, autor) {
+        addCommentToRecipe(id, content, author) {
             return new Promise((resolve, reject) => {
                 let newComment = {
                     content,
-                    autor: { name: autor.name }
+                    author: { name: author.name }
                 };
 
                 Recipe.findByIdAndUpdate(id, { $push: { comments: newComment } }, { safe: true, upsert: true }, (err, recipe) => {
@@ -139,7 +139,7 @@ module.exports = function(models) {
             });
         },
         createRecipe(title, categoriesIds, imageUrls, ingredients, preparation,
-            cookingTimeInMinutes, autor) {
+            cookingTimeInMinutes, author) {
             return new Promise((resolve, reject) => {
                 findCategoriesByIds(categoriesIds)
                     .then(categories => {
@@ -150,7 +150,7 @@ module.exports = function(models) {
                             ingredients,
                             preparation,
                             cookingTimeInMinutes,
-                            autor
+                            author
                         });
 
                         return new Promise((resolve, reject) => {

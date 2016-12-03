@@ -10,7 +10,7 @@ block content
                 li
                     a(href="/categories/" + category.id)= category.name
         
-        div.col-xs-12="Автор: " +model.autor.name
+        div.col-xs-12="Автор: " +model.author.name
         div.col-xs-12= "Добвена на " +model.created
         div.col-xs-12
             each img in model.imageUrls
@@ -39,7 +39,7 @@ block content
                 | Like
             buton.btn.btn-danger
                 | Unlike
-            if !!user.id===!!model.autor.id
+            if !!user.id===!!model.author.id
                 buton.btn.btn-primary
                     | Редактирай
                 buton.btn.btn-danger
@@ -53,7 +53,7 @@ block content
                     if model.comments.length
                         each comment in model.comments
                             li
-                                strong= comment.autor
+                                strong= comment.author
                                 p= "Добавен на  " + comment.created
                                 p= comment.content
         
