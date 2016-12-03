@@ -1,6 +1,6 @@
 /* globals module require Promise */
 
-const hash = require("../models/utils/encryptor");
+"use strict";
 
 module.exports = function(models) {
     let {
@@ -8,24 +8,14 @@ module.exports = function(models) {
     } = models;
 
     return {
-        findUserByCredentials(email, password) {
+        findUserByCredentials(email) {
             return new Promise((resolve, reject) => {
                 User.findOne({ email }, (err, user) => {
                     if (err) {
                         return reject(err);
                     }
 
-                    return hash.generatePassHash(password, user.salt)
-                        .then(passHash => {
-                            if (passHash !== user.passHash) {
-                                return resolve(null);
-                            }
-
-                            return resolve(user);
-                        })
-                        .catch(error => {
-                            return reject(error);
-                        });
+                    return resolve(user);
                 });
             });
         },
