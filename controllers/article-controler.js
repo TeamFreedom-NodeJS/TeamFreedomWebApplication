@@ -100,6 +100,5 @@ module.exports = function(data) {
                     });
                 });
         }
-        // getAllReciepsByArticle()
     };
 };
