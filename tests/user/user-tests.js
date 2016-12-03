@@ -6,7 +6,7 @@ const sinon = require("sinon");
 let expect = chai.expect;
 const User = require("../../models/user-model");
 
-describe("User Model", () => {
+describe("User Tests", () => {
     it("Should create a new user", (done) => {
         const UserMock = sinon.mock(new User({ email: "telerikAcademy@gmail.com", password: "passwordyo" }));
         const user = UserMock.object;
