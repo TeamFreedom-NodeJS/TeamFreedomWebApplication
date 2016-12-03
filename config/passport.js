@@ -54,62 +54,39 @@ module.exports = function({ app, data }) {
         profileFields: ["name", "email", "link", "locale", "timezone"],
         passReqToCallback: true
     }, (req, accessToken, refreshToken, profile, done) => {
-        if (req.user) {
-            User.findOne({ facebook: profile.id }, (err, existingUser) => {
-                if (err) {
-                    return done(err);
-                }
-                if (existingUser) {
-                    req.flash("errors", { msg: "There is already a Facebook account that belongs to you. Sign in with that account or delete it, then link it with your current account." });
-                    done(err);
-                }
-                User.findById(req.user.id, (err, user) => {
-                    if (err) {
-                        return done(err);
-                    }
-                    user.facebook = profile.id;
-                    user.tokens.push({ kind: "facebook", accessToken });
-                    user.profile.name = user.profile.name || `${profile.name.givenName} ${profile.name.familyName}`;
-                    user.profile.gender = user.profile.gender || profile.json.gender;
-                    user.profile.picture = user.profile.picture || `https://graph.facebook.com/${profile.id}/picture?type=large`;
-                    user.save((err) => {
-                        req.flash("info", { msg: "Facebook account has been linked." });
-                        done(err, user);
-                    });
-                });
 
-            });
-        } else {
-            User.findOne({ facebook: profile.id }, (err, existingUser) => {
-                if (err) {
-                    return done(err);
-                }
-                if (existingUser) {
-                    return done(null, existingUser);
-                }
-                User.findOne({ email: profile.json.email }, (err, existingEmailUser) => {
-                    if (err) {
+        User.findOne({ facebook: profile.id }, (err, existingUser) => {
+
+            process.nextTick(function() {
+                User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
+
+                    if (err){
                         return done(err);
                     }
-                    if (existingEmailUser) {
-                        req.flash("errors", { msg: "There is already an account using this email address. Sign in to that account and link it with Facebook manually from Account Settings." });
-                        done(err);
+
+                    if (user) {
+                        return done(null, user);
                     } else {
-                        const user = new User();
-                        user.email = profile.json.email;
-                        user.facebook = profile.id;
-                        user.tokens.push({ kind: "facebook", accessToken });
-                        user.profile.name = `${profile.name.givenName} ${profile.name.familyName}`;
-                        user.profile.gender = profile.json.gender;
-                        user.profile.picture = `https://graph.facebook.com/${profile.id}/picture?type=large`;
-                        user.profile.location = (profile.json.location) ? profile.json.location.name : "";
-                        user.save((err) => {
-                            done(err, user);
+                        let newUser = new User();
+
+                        newUser.email = profile.emails[0].value;
+                        newUser.facebook.id    = profile.id;
+                        newUser.facebook.token = accessToken;
+                        newUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
+                        newUser.facebook.email = profile.emails[0].value;
+                        newUser.facebook.picture = `https://graph.facebook.com/${profile.id}/picture?type=large`;
+
+                        newUser.save(function(err) {
+                            if (err){
+                                throw err;
+                            }
+
+                            return done(null, newUser);
                         });
                     }
                 });
             });
-        }
+        });
     }));
 
     passport.serializeUser((user, done) => {

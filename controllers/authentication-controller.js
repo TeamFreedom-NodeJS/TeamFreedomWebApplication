@@ -290,8 +290,8 @@ module.exports = function() {
                     const transporter = nodemailer.createTransport({
                         service: "SendGrid",
                         auth: {
-                            user: process.env.SENDGRID_USER,
-                            pass: process.env.SENDGRID_PASSWORD
+                            user: user.email,
+                            pass: user.password
                         }
                     });
                     const mailOptions = {
