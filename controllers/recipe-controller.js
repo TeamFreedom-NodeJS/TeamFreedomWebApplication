@@ -4,42 +4,47 @@
 //     PAGE_SIZE = 10,
 //     NEWEST_SUPERHEROES_COUNT = 5;
 
+const constants = require("../config/constants");
+
+function makeArray(item) {
+    if (!Array.isArray(item)) {
+        item = [item];
+    }
+
+    return item;
+}
+
 function parseRecipeData(reqBody) {
     let {
         title,
         categories,
-        ingredients,
+        ingredientsName,
+        ingredientsQuantity,
+        ingredientsUnits,
         preparation,
         imageUrls,
         cookingTimeInMinutes
     } = reqBody;
 
-    if (!Array.isArray(categories)) {
-        categories = [categories];
-    }
+    categories = makeArray(categories);
+    ingredientsName = makeArray(ingredientsName);
+    ingredientsQuantity = makeArray(ingredientsQuantity);
+    ingredientsUnits = makeArray(ingredientsUnits);
+    imageUrls = makeArray(imageUrls);
 
-    if (!Array.isArray(imageUrls)) {
-        imageUrls = [imageUrls];
-    }
-
-    if (!Array.isArray(ingredients)) {
-        ingredients = [ingredients];
-    }
-
-    let ingreds = [];
-    for (let i = 0; i < ingredients.length; i += 1) {
-        let ingredientInfo = ingredients[i].split("-");
-        ingreds.push({
-            name: ingredientInfo[0],
-            quantity: +ingredientInfo[1],
-            unit: ingredientInfo[2]
+    let ingredients = [];
+    for (let i = 0; i < ingredientsName.length; i += 1) {
+        ingredients.push({
+            name: ingredientsName[i],
+            quantity: +ingredientsQuantity[i],
+            unit: ingredientsUnits[i]
         });
     }
 
     return {
         title,
         categories,
-        ingreds,
+        ingredients,
         preparation,
         imageUrls,
         cookingTimeInMinutes
@@ -56,13 +61,15 @@ module.exports = function(data) {
 
     const controller = {
         getRecipeDetails(req, res) {
-            // if (!req.isAuthenticated()) {
-            //     return res.redirect("/");
-            // }
+            if (!req.isAuthenticated()) {
+                req.flash("error", { msg: "Достъп до тази информация имат само регистрирани потребители!" });
+                return res.redirect("/");
+            }
             let id = req.params.id;
             data.getRecipeById(id)
                 .then(recipe => {
                     if (!recipe) {
+                        req.flash("error", { msg: "Рецептата не е намерена!" });
                         return res.redirect("/");
                     }
 
@@ -72,7 +79,7 @@ module.exports = function(data) {
                     });
                 })
                 .catch(err => {
-                    console.log("Error finding recipe by ID: " + err);
+                    req.flash("error", { msg: constants.errorMessage + err });
                     return res.redirect("/");
                 });
         },
@@ -98,6 +105,10 @@ module.exports = function(data) {
                         user: req.user,
                         ingredients: []
                     });
+                })
+                .catch(err => {
+                    req.flash("error", { msg: constants.errorMessage + err });
+                    return res.redirect("/");
                 });
         },
         createRecipe(req, res) {
@@ -110,7 +121,7 @@ module.exports = function(data) {
             let {
                 title,
                 categories,
-                ingreds,
+                ingredients,
                 preparation,
                 imageUrls,
                 cookingTimeInMinutes
@@ -119,15 +130,17 @@ module.exports = function(data) {
                     title,
                     categories,
                     imageUrls,
-                    ingreds,
+                    ingredients,
                     preparation,
                     cookingTimeInMinutes,
                     autor)
                 .then(recipe => {
                     // TO DO Delete Recipe
+                    req.flash("success", { msg: "Успешно регистрирахте рецептата си!" });
                     return res.redirect(`/recipes/${recipe.id}`);
                 })
                 .catch(err => {
+                    req.flash("error", { msg: constants.errorMessage + err });
                     res.status(400)
                         .send(err);
                 });
@@ -138,25 +151,26 @@ module.exports = function(data) {
             }
 
             let id = req.params.id;
+            let recipe;
             data.getRecipeById(id)
-                .then(recipe => {
-                    if (!recipe) {
+                .then(rcp => {
+                    if (!rcp) {
                         return res.redirect("/");
                     }
 
-                    data.getAllCategories()
-                        .then(categories => {
-                            return res.render("recipe/edit", {
-                                categories,
-                                recipe,
-                                user: req.user
-                            });
-                        })
-                        .catch(err => {
-                            return err;
-                        });
+                    recipe = rcp;
+                })
+                .then(data.getAllCategories)
+                .then(categories => {
+                    return res.render("recipe/edit", {
+                        categories,
+                        recipe,
+                        user: req.user,
+                        units: constants.units
+                    });
                 })
                 .catch(err => {
+                    req.flash("error", { msg: constants.errorMessage + err });
                     return err;
                 });
         },
@@ -165,7 +179,7 @@ module.exports = function(data) {
             let {
                 title,
                 categories,
-                ingreds,
+                ingredients,
                 preparation,
                 imageUrls,
                 cookingTimeInMinutes
@@ -176,7 +190,7 @@ module.exports = function(data) {
                     title,
                     categories,
                     imageUrls,
-                    ingreds,
+                    ingredients,
                     preparation,
                     cookingTimeInMinutes)
                 .then(recipe => {
@@ -184,13 +198,14 @@ module.exports = function(data) {
                         return res.redirect("/");
                     }
 
+                    req.flash("success", { msg: "Успешно редактирахте рецептата!" });
                     return res.render("recipe/details", {
                         model: recipe,
                         user: req.user
                     });
                 })
                 .catch(err => {
-                    console.log("Error finding and editing recipe by ID: " + err);
+                    req.flash("error", { msg: constants.errorMessage + err });
                     return res.redirect("/");
                 });
         }
