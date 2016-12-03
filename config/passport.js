@@ -11,26 +11,6 @@ module.exports = function({ app, data }) {
     app.use(passport.initialize());
     app.use(passport.session());
 
-    // passport.use(new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
-    //     User.findOne({ email: email.toLowerCase() }, (err, user) => {
-    //             if (err) {
-    //                 return done(err);
-    //             }
-    //             if (!user) {
-    //                 return done(null, false, { msg: `Email ${email} not found.` });
-    //             }
-
-    //             return user;
-    //         })
-    //         .then(user => {
-    //             if (user) { // && user.uthenticatePassword(password)
-    //                 done(null, user);
-    //             } else {
-    //                 done(null, false);
-    //             }
-    //         })
-    //         .catch(error => done(error, false));
-    // }));
     passport.use(new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
         User.findOne({ email: email.toLowerCase() }, (err, user) => {
             if (err) { return done(err); }
@@ -58,9 +38,9 @@ module.exports = function({ app, data }) {
         User.findOne({ facebook: profile.id }, (err, existingUser) => {
 
             process.nextTick(function() {
-                User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
+                User.findOne({ "facebook.id": profile.id }, function(err, user) {
 
-                    if (err){
+                    if (err) {
                         return done(err);
                     }
 
@@ -70,14 +50,14 @@ module.exports = function({ app, data }) {
                         let newUser = new User();
 
                         newUser.email = profile.emails[0].value;
-                        newUser.facebook.id    = profile.id;
+                        newUser.facebook.id = profile.id;
                         newUser.facebook.token = accessToken;
-                        newUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
+                        newUser.facebook.name = profile.name.givenName + " " + profile.name.familyName;
                         newUser.facebook.email = profile.emails[0].value;
                         newUser.facebook.picture = `https://graph.facebook.com/${profile.id}/picture?type=large`;
 
                         newUser.save(function(err) {
-                            if (err){
+                            if (err) {
                                 throw err;
                             }
 
@@ -124,26 +104,3 @@ module.exports = function({ app, data }) {
     //     }
     // }
 };
-
-/**
- * Login Required middleware.
- */
-// module.exports.isAuthenticated = (req, res, next) => {
-//     if (req.isAuthenticated()) {
-//         return next();
-//     }
-//     res.redirect("/login");
-// };
-
-/**
- * Authorization Required middleware.
- */
-// module.exports.isAuthorized = (req, res, next) => {
-//     const provider = req.path.split("/").slice(-1)[0];
-
-//     if (_.find(req.user.tokens, { kind: provider })) {
-//         next();
-//     } else {
-//         res.redirect(`/auth/${provider}`);
-//     }
-// };

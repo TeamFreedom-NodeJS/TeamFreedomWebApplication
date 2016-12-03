@@ -52,13 +52,17 @@ function parseRecipeData(reqBody) {
     };
 }
 
+function parseEmail(email) {
+    let index = email.indexOf("@");
+    let parsed = email.substring(0, index);
+    return parsed;
+}
+
 module.exports = function(data) {
+
     const controller = {
         getRecipeDetails(req, res) {
-            if (!req.isAuthenticated()) {
-                req.flash("error", { msg: "Достъп до тази информация имат само регистрирани потребители!" });
-                return res.redirect("/");
-            }
+
             let id = req.params.id;
             data.getRecipeById(id)
                 .then(recipe => {
@@ -78,12 +82,17 @@ module.exports = function(data) {
                 });
         },
         addComment(req, res) {
+            if (!req.isAuthenticated()) {
+                req.flash("error", { msg: "Достъп до тази информация имат само регистрирани потребители!" });
+                return res.redirect("/");
+            }
             let id = req.params.id;
             let content = req.body.content;
-            console.log(content);
-            let author = "Anonimus";
-            data.addCommentToRecipe(id, content, author)
-                .then(recipe => {
+
+            let autor = req.user.profile.name || parseEmail(req.user.email);
+            //console.log(autor);
+            data.addCommentToRecipe(content, autor)
+                .then(recipe => { // Todo to return json
                     return res.redirect(`/recipes/${id}`);
                 });
         },
@@ -106,9 +115,9 @@ module.exports = function(data) {
                 });
         },
         createRecipe(req, res) {
-            let author = {
+            let autor = {
                 id: req.user._id,
-                name: req.user.email || req.user.profile.name,
+                name: req.user.profile.name || parseEmail(req.user.email),
                 imageUrl: req.user.profile.picture || "no picture"
             };
 
@@ -127,11 +136,11 @@ module.exports = function(data) {
                     ingredients,
                     preparation,
                     cookingTimeInMinutes,
-                    author)
+                    autor)
                 .then(recipe => {
                     // TO DO Delete Recipe
                     req.flash("success", { msg: "Успешно регистрирахте рецептата си!" });
-                    return res.redirect(`/recipes/${recipe.id}`);
+                    return res.redirect(/recipes/ + recipe.id);
                 })
                 .catch(err => {
                     req.flash("error", { msg: constants.errorMessage + err });

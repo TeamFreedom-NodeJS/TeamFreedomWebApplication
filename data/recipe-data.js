@@ -101,7 +101,6 @@ module.exports = function(models) {
                     categ.id, { $pull: { recipes: { id: recipe._id } } }, { safe: true, new: true },
                     (err, c) => {
                         if (err) {
-                            console.log(err);
                             return reject(err);
                         }
                     });
@@ -123,11 +122,11 @@ module.exports = function(models) {
                 });
             });
         },
-        addCommentToRecipe(id, content, author) {
+        addCommentToRecipe(id, content, autor) {
             return new Promise((resolve, reject) => {
                 let newComment = {
                     content,
-                    author: { username: author }
+                    autor: { name: autor.name }
                 };
 
                 Recipe.findByIdAndUpdate(id, { $push: { comments: newComment } }, { safe: true, upsert: true }, (err, recipe) => {
@@ -140,7 +139,7 @@ module.exports = function(models) {
             });
         },
         createRecipe(title, categoriesIds, imageUrls, ingredients, preparation,
-            cookingTimeInMinutes, author) {
+            cookingTimeInMinutes, autor) {
             return new Promise((resolve, reject) => {
                 findCategoriesByIds(categoriesIds)
                     .then(categories => {
@@ -151,7 +150,7 @@ module.exports = function(models) {
                             ingredients,
                             preparation,
                             cookingTimeInMinutes,
-                            author
+                            autor
                         });
 
                         return new Promise((resolve, reject) => {

@@ -7,20 +7,26 @@ mixin user-navigation
                     span.icon-bar
                     span.icon-bar
                     span.icon-bar
-                a.navbar-brand(href="/") Cooking Recipes 
+                a.navbar-brand(href="/") Вкусно
             
                 ul.nav.navbar-nav
                     li
-                        a(href="/categories/list") Categories
+                        a(href="/categories/list") Категории
                     li
-                        a(href="/articles/list") Articles                  
+                        a(href="/articles/list") Статии                  
                     li
-                        a(href="/categories/create") Add Category
+                        a(href="/categories/create") Добаи Категория
                     li
-                        a(href="/articles/create") Add Article
+                        a(href="/articles/create") Добави Статия
                     li
-                        a(href="/recipes/create") Add Recipe
+                        a(href="/recipes/create") Добави Рецепта
                     li
+                        a(href="/articles/create") Моите Рецепти
+                    li
+                        a(href="/recipes/create") Любими Рецепти
+                    li
+                        a(href="/status") Статус Приложение
+
                         form.form-inline(action="/search" method="get")
                             input.form-control(type="text" name="pattern")
                             button.btn.btn-danger
