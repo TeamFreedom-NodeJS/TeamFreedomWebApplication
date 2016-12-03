@@ -58,9 +58,9 @@ module.exports = function({ app, data }) {
         User.findOne({ facebook: profile.id }, (err, existingUser) => {
 
             process.nextTick(function() {
-                User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
+                User.findOne({ "facebook.id": profile.id }, function(err, user) {
 
-                    if (err){
+                    if (err) {
                         return done(err);
                     }
 
@@ -70,14 +70,14 @@ module.exports = function({ app, data }) {
                         let newUser = new User();
 
                         newUser.email = profile.emails[0].value;
-                        newUser.facebook.id    = profile.id;
+                        newUser.facebook.id = profile.id;
                         newUser.facebook.token = accessToken;
-                        newUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
+                        newUser.facebook.name = profile.name.givenName + " " + profile.name.familyName;
                         newUser.facebook.email = profile.emails[0].value;
                         newUser.facebook.picture = `https://graph.facebook.com/${profile.id}/picture?type=large`;
 
                         newUser.save(function(err) {
-                            if (err){
+                            if (err) {
                                 throw err;
                             }
 
