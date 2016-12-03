@@ -44,6 +44,7 @@ module.exports = function() {
         },
         logout(req, res) {
             req.logout();
+            req.flash("success", { msg: "Успешно отписване от системата!!!" });
             res.redirect("/");
         },
         getSignup(req, res) {
@@ -78,7 +79,7 @@ module.exports = function() {
                 }
                 if (existingUser) {
                     req.flash("errors", { msg: "Акаунт с този Email адрес вече съществува!!!." });
-                    return res.redirect("/profile");
+                    return res.redirect("/register");
                 }
                 user.save((err) => {
                     if (err) {
