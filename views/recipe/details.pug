@@ -10,7 +10,7 @@ block content
                 li
                     a(href="/categories/" + category.id)= category.name
         
-        div.col-xs-12="Автор: " +model.author
+        div.col-xs-12="Автор: " +model.autor.name
         div.col-xs-12= "Добвена на " +model.created
         div.col-xs-12
             each img in model.imageUrls
@@ -31,8 +31,14 @@ block content
             | Начин на приготвяне:
         div= model.preparation
         div= "Време за готвене: " + model.cookingTimeInMinutes + " мин."
-        a.btn.btn-danger
+        buton.btn.btn-danger
             | Добави към любими
+        buton.btn.btn-danger
+            | Like
+        if user && model.autor.id === user.id
+            buton.btn.btn-danger
+            | Edit
+
         div
             h3
                 | Коментари
@@ -47,3 +53,4 @@ block content
             textarea.form-control(name="content" placeholder="Добави коментар")
             br
             input.btn.btn-danger(type="submit" value="Публикувай")
+        
