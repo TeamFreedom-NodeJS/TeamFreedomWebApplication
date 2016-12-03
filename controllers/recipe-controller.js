@@ -1,4 +1,5 @@
 /* globals module */
+"use strict";
 
 // const DEFAULT_PAGE = 1,
 //     PAGE_SIZE = 10,
