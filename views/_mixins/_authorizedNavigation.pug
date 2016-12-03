@@ -1,41 +1,35 @@
 mixin user-navigation
-    nav.navbar.navbar-default
-        .container-fluid.text-center
-            .navbar-header
-                button.navbar-toggle.collapsed(type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false")
-                    span.sr-only Toggle navigation
-                    span.icon-bar
-                    span.icon-bar
-                    span.icon-bar
-                a.navbar-brand(href="/") Вкусно
-            
+    nav.navbar.navbar-dark.warning-color-dark
+            button.navbar-toggle.hidden-md-up(type="button" data-toggle="collapse" data-target="main-navbar-collapse")
+                i.fa.fa-bars
+            a.navbar-brand(href="/") Вкусно
+            .collapse.navbar-toggleable-xs(id="main-navbar-collapse")
                 ul.nav.navbar-nav
-                    li
+                    li.nav-item.nav-link
                         a(href="/categories/list") Категории
-                    li
+                    li.nav-item.nav-link
                         a(href="/articles/list") Статии                  
-                    li
-                        a(href="/categories/create") Добаи Категория
-                    li
-                        a(href="/articles/create") Добави Статия
-                    li
-                        a(href="/recipes/create") Добави Рецепта
-                    li
-                        a(href="/articles/create") Моите Рецепти
-                    li
-                        a(href="/recipes/create") Любими Рецепти
-                    li
-                        a(href="/status") Статус Приложение
-
+                    li.nav-item.dropdown
+                        a.nav-link.dropdown-toggle(data-toggle="dropdown" role="button") Добави
+                        div.dropdown-menu.dropdown-primary(aria-labelledby="dropdownMenu1" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut")
+                            a.dropdown-item(href="/categories/create") Добаи Категория
+                            a.dropdown-item(href="/recipes/create") Добави Рецепта
+                            a.dropdown-item(href="/articles/create") Добави Статия
+                ul.nav.navbar-nav.navbar-right                         
+                    li.nav-item.dropdown
+                        a.nav-link.dropdown-toggle(data-toggle="dropdown" role="button")= user.facebook.email || user.email
+                        div.dropdown-menu.dropdown-primary(aria-labelledby="dropdownMenu1" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut")
+                            a.dropdown-item(href="/articles/create") Моите Рецепти
+                            a.dropdown-item(href="/recipes/create") Любими Рецепти
+                            a.dropdown-item(href="/status") Статус Приложение
+                            a.dropdown-item(href="/profile/")= user.facebook.email || user.email
+                            form(action="/logout" method="get")
+                                button.btn.btn-warning.btn-sm
+                                    i.fa.fa-sign-out
+                                        | Logout
+                    li.nav-item
                         form.form-inline(action="/search" method="get")
-                            input.form-control(type="text" name="pattern")
-                            button.btn.btn-danger
-                                span.glyphicon.glyphicon-search
-                    li
-                        a(href="/profile/")= user.facebook.email || user.email
-                    li
-                        form(action="/logout" method="get")
-                            button.btn.btn-medium.btn-lg
-                                span.glyphicon.glyphicon-log-out
+                            input.form-control(type="text" name="pattern" placeholder="Search")
+                        
                    
                         
