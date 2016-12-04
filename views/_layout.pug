@@ -21,12 +21,16 @@ html(lang="en")
                 +user-navigation
             else
                 +site-navigation
-        .container
-            include partials/flash
-        #content.container
-            block content        
-        footer.text-center
-            p TeamFreedom 2016(NodeJS)
+        main.pt-3
+            .container
+                include partials/flash
+            #content
+                block content        
+        footer.text-center.page-footer.navbar-fixed-bottom.navbar-dark.warning-color-dark
+            .footer-copyright
+                .container-fluid © 2015 Copyright: TeamFreedom 2016
+
+
 
     //- script(src="/static/bower_components/jquery/dist/jquery.js")
     //- script(src="/static/bower_components/bootstrap/dist/js/bootstrap.js")

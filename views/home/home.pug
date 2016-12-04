@@ -1,6 +1,29 @@
 extends ../_layout
 
 block content
-    h1 Вкусните Рецепти Бързо Споделете
+    .carousel.slide.carousel-fade(id="carousel-main" data-ride="carousel")
+        ol.carousel-indicators
+            li(data-target="#carousel-main" data-slide-to="0" class="active")
+            li(data-target="#carousel-main" data-slide-to="1")
+            li(data-target="#carousel-main" data-slide-to="2")
+            li(data-target="#carousel-main" data-slide-to="3")
+        .carousel-inner(role="listbox")
+            .carousel-item.active
+                img(src="/static/css/images/salat.jpg" alt="First slide")
+            .carousel-item
+                img(src="/static/css/images/schnitzel2.jpg" alt="Second slide")
+            .carousel-item
+                img(src="/static/css/images/soup.jpg" alt="Third slide")
+            .carousel-item
+                img(src="/static/css/images/dessert.jpg" alt="Third slide")
+        a.left.carousel-control(href="#carousel-main" role="button" data-slide="prev")
+            span.icon-prev(aria-hidden="true")
+            span.sr-only Previous
+        a.right.carousel-control(href="#carousel-main" role="button" data-slide="next")
+            span.icon-next(aria-hidden="true")
+            span.sr-only Next
+    //- img(src="/static/css/images/salat.jpg")
+    .container
+        h1 Вкусните Рецепти Бързо Споделете
 
     
