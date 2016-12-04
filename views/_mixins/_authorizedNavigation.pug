@@ -23,7 +23,7 @@ mixin user-navigation
                             a.dropdown-item(href="/articles/create") Моите Рецепти
                             a.dropdown-item(href="/recipes/create") Любими Рецепти
                             a.dropdown-item(href="/status") Статус Приложение
-                            a.dropdown-item(href="/profile/")= user.facebook.email || user.email
+                            a.dropdown-item(href="/profile/")= user.facebook.name || user.email
                             form(action="/logout" method="get")
                                 button.btn.btn-warning.btn-sm
                                     i.fa.fa-sign-out
