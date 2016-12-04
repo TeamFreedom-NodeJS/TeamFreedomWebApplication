@@ -43,8 +43,15 @@ block content
                 li
                     label
                         = category.name
-                        - let checked = recipe.categories.find(c => c.name == category.name)
+                        - let checked = recipe.categories.find(c => c.name === category.name)
                         input.form-control(type="checkbox" name="categories" value=category._id checked=checked)
+
+        - let isAdmin = user.role === "admin"
+        if isAdmin
+            label
+                | Delete
+                input(id="delete-check-box" type="checkbox" name="deleted")
+        br
 
         button.btn
             | Промени

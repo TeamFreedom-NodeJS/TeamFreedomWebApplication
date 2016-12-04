@@ -24,7 +24,8 @@ function parseRecipeData(reqBody) {
         ingredientsUnits,
         preparation,
         imageUrls,
-        cookingTimeInMinutes
+        cookingTimeInMinutes,
+        deleted
     } = reqBody;
 
     categories = makeArray(categories);
@@ -32,6 +33,7 @@ function parseRecipeData(reqBody) {
     ingredientsQuantity = makeArray(ingredientsQuantity);
     ingredientsUnits = makeArray(ingredientsUnits);
     imageUrls = makeArray(imageUrls);
+    let isDeleted = !!deleted;
 
     let ingredients = [];
     for (let i = 0; i < ingredientsName.length; i += 1) {
@@ -48,7 +50,8 @@ function parseRecipeData(reqBody) {
         ingredients,
         preparation,
         imageUrls,
-        cookingTimeInMinutes
+        cookingTimeInMinutes,
+        isDeleted
     };
 }
 
@@ -139,7 +142,6 @@ module.exports = function(data) {
                     cookingTimeInMinutes,
                     author)
                 .then(recipe => {
-                    // TO DO Delete Recipe
                     req.flash("success", { msg: "Успешно регистрирахте рецептата си!" });
                     return res.redirect(/recipes/ + recipe.id);
                 })
@@ -155,11 +157,11 @@ module.exports = function(data) {
             }
 
             let id = req.params.id;
-            let recipe;
+            let recipe = null;
             data.getRecipeById(id)
                 .then(rcp => {
-                    if (!rcp) {
-                        return res.redirect("/");
+                    if (!rcp || !(req.user.role === "admin" || req.user._id.equals(rcp.author.id))) {
+                        throw "Recipe was not found";
                     }
 
                     recipe = rcp;
@@ -175,6 +177,8 @@ module.exports = function(data) {
                 })
                 .catch(err => {
                     req.flash("error", { msg: constants.errorMessage + err });
+                    res.redirect("/");
+
                     return err;
                 });
         },
@@ -186,7 +190,8 @@ module.exports = function(data) {
                 ingredients,
                 preparation,
                 imageUrls,
-                cookingTimeInMinutes
+                cookingTimeInMinutes,
+                isDeleted
             } = parseRecipeData(req.body);
 
             data.editRecipeById(
@@ -196,7 +201,8 @@ module.exports = function(data) {
                     imageUrls,
                     ingredients,
                     preparation,
-                    cookingTimeInMinutes)
+                    cookingTimeInMinutes,
+                    isDeleted)
                 .then(recipe => {
                     if (!recipe) {
                         return res.redirect("/");
