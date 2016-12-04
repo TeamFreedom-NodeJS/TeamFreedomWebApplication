@@ -86,6 +86,7 @@ module.exports = function(data) {
                 });
         },
         getNewestCategoriesAjax(req, res) {
+            console.log("getNewestCategoriesAjax");
             data.getNewestCategories(NEWEST_CATEGORIES_COUNT)
                 .then(categories => {
                     res.send({

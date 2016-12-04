@@ -12,7 +12,7 @@ main {
 }
 
 .dropdown .dropdown-menu .dropdown-item:hover {
-    box-shadow: 0 8px 17px 0 rgba(0,0,0,.2),0 6px 20px 0 rgba(0,0,0,.19);
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, .2), 0 6px 20px 0 rgba(0, 0, 0, .19);
 }
 
 .dropdown .dropdown-menu form {
@@ -162,4 +162,8 @@ h3 {
     .overlay {
         height: 300px;
     }
+=======
+.rounded.float-xs-left {
+    width: 15%
+>>>>>>> 6f433389a85caaaa4a63b16b48f68437c8818bdc
 }

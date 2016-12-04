@@ -4,7 +4,7 @@ const dataUtils = require("./utils/data-utils");
 
 const MIN_PATTERN_LENGTH = 3;
 
-module.exports = function(models) {
+module.exports = function (models) {
     let {
         Category
     } = models;
@@ -12,11 +12,11 @@ module.exports = function(models) {
     return {
         createCategory(name, imgUrl) {
             let category = new Category({ name, imgUrl });
-            if (3 > name.length || name.length > 20 ) {
+            if (3 > name.length || name.length > 20) {
                 console.log("--------------ïnvalid title length.", name.length);
                 return Promise.reject({ reason: "Name must be between 3 and 20 characters long." });
             }
-            
+
             if (3 > imgUrl.length) {
                 console.log("--------------ïnvalid imgUrl length.", imgUrl.length);
                 return Promise.reject({ reason: "Image url must be bigger than 3 charecters long." });
@@ -93,15 +93,19 @@ module.exports = function(models) {
             });
         },
         getNewestCategories(count) {
+            console.log("-----------getNewestCategories", count);
             return new Promise((resolve, reject) => {
                 Category.find({})
                     .sort({ createdAt: -1 })
                     .limit(count)
                     .exec((err, categories) => {
                         if (err) {
+                            console.log("getNewestCategories errrrrrr");
+
                             return reject(err);
                         }
-                        
+
+                        console.log("getNewestCategories: ", categories);
                         return resolve(categories);
                     });
             });
