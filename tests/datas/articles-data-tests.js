@@ -1,4 +1,5 @@
 /* globals require describe it beforeEach afterEach*/
+"use strict";
 
 const chai = require("chai");
 const sinonModule = require("sinon");
@@ -131,12 +132,6 @@ describe("Test articles data", () => {
                     done();
                 }));
         });
-
-        // it("Expect to throw if input is json or other", done => {
-        //     expect(1).to.eql(2);
-        // });
-
-
     });
 
     describe("createArticle", () => {
@@ -249,10 +244,10 @@ describe("Test articles data", () => {
                 });
         });
 
-        it("Expect to fail, when imgUrl is 501 characters long", done => {
+        it("Expect to fail, when imgUrl is 10001 characters long", done => {
             let title = "Зaглавие";
             let imgUrl = "Url-1";
-            let content = "A".repeat(501);
+            let content = "A".repeat(10001);
             data.createArticle(title, imgUrl, content)
                 .catch(err => {
                     expect(err);
@@ -261,7 +256,53 @@ describe("Test articles data", () => {
         });
 
         describe("editArticleById", () => {
+            let existingArticleId = 1;
+            let existingArticleTitle = "Предястие-1";
+            let existingArticleImgUrl = "ImgUrl-1";
+            let existingArticleContent = "Content-1";
 
+            let article = {
+                _id: existingArticleId,
+                title: existingArticleTitle,
+                imgUrl: existingArticleImgUrl,
+                content: existingArticleContent
+            };
+
+            let articles = [article];
+
+            beforeEach(() => {
+                sinon.stub(Article, "findOne", (query, cb) => {
+                    let id = query._id;
+                    let foundArticle = articles.find(fr => fr._id === id);
+                    cb(null, foundArticle);
+                });
+            });
+
+            afterEach(() => {
+                sinon.restore();
+            });
+
+            it("Expect to edit this article, when valid parameters", done => {
+                let newArticleId = 1;
+                let newArticleTitle = "Предястие-1";
+                let newArticleImgUrl = "ImgUrl-1";
+                let newArticleContent = "Content-1";
+
+                data.editArticleById(
+                        newArticleId,
+                        newArticleTitle,
+                        newArticleImgUrl,
+                        newArticleContent)
+                    .then(editedArticle => {
+                        expect(editedArticle._id).to.equal(article._id);
+                        expect(editedArticle.title).to.equal(newArticleTitle);
+                        expect(editedArticle.imgUrl).to.equal(newArticleImgUrl);
+                        expect(editedArticle.content).to.equal(newArticleContent);
+                        done();
+                    });
+            });
+
+            // err if invalid parameters
         });
     });
 });
