@@ -1,8 +1,10 @@
 /* globals module */
+"use strict";
+
 module.exports = {
     connectionString: {
-        dev: "mongodb://localhost/cookingRecipesDB"
-            // prod: "mongodb://Admin:123456q@ds159747.mlab.com:59747/cooking-recipes"
+        development: "mongodb://localhost/cookingRecipesDB",
+        production: "mongodb://Azonic89:TEAMfreedom2016@ds119548.mlab.com:19548/teamfreedomwebapp"
     },
     port: process.env.PORT || 3001,
     units: ["гр.", "мл.", "ч. л.", "с. л.", "щипка", "бр."],
