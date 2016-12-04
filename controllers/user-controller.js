@@ -2,7 +2,7 @@
 
 const User = require("../models/user-model");
 
-module.exports = function() {
+module.exports = function(data) {
     return {
         getAccount(req, res) {
             return Promise.resolve()
@@ -76,6 +76,45 @@ module.exports = function() {
                 req.flash("info", { msg: "Вашият акаунт е вече изтрит!!!" });
                 res.redirect("/");
             });
+        },
+        allAddedRecipes(req, res) {
+            let id = req.params.id;
+            return data.getUserById(id)
+                .then(currentUser => {
+                    return res.render("user/my-recipes", {
+                        model: currentUser,
+                        user: req.user
+                    });
+                })
+                .catch(err => {
+                    res.status(400)
+                        .send(err);
+                });
+        },
+        allFavoritesRecipes(req, res) {
+            let id = req.params.id;
+            return data.getUserById(id)
+                .then(currentUser => {
+                    return res.render("user/my-favorites", {
+                        model: currentUser,
+                        user: req.user
+                    });
+
+                })
+                .catch(err => {
+                    res.status(400)
+                        .send(err);
+                });
+        },
+        addToFavorites(req, res) {
+            let userId = req.user._id;
+            let recipe = JSON.parse(req.body.recipe);
+            return data.addToFavorites(userId, recipe)
+                .then(res.status(203))
+                .catch(err => {
+                    res.status(400)
+                        .send(err);
+                });
         }
     };
 };

@@ -20,8 +20,8 @@ mixin user-navigation
                         a.nav-link.dropdown-toggle(data-toggle="dropdown" role="button")
                             i.fa.fa-user.fa-lg(aria-hidden="true")
                         div.dropdown-menu.dropdown-primary(aria-labelledby="dropdownMenu1" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut")
-                            a.dropdown-item(href="/articles/create") Моите Рецепти
-                            a.dropdown-item(href="/recipes/create") Любими Рецепти
+                            a.dropdown-item(href="/profile/"+user.id+"/myrecipes") Моите Рецепти
+                            a.dropdown-item(href="/profile/"+user.id+"/favorites") Любими Рецепти
                             a.dropdown-item(href="/status") Статус Приложение
                             a.dropdown-item(href="/profile/")= user.facebook.name || user.email
                             form(action="/logout" method="get")
