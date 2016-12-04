@@ -18,7 +18,10 @@ mixin user-navigation
                 ul.nav.navbar-nav.navbar-right                         
                     li.nav-item.dropdown
                         a.nav-link.dropdown-toggle(data-toggle="dropdown" role="button")
-                            i.fa.fa-user.fa-lg(aria-hidden="true")
+                            if user.facebook.picture
+                                img.rounded.float-xs-left(src= user.facebook.picture)
+                            else
+                                i.fa.fa-user.fa-lg(aria-hidden="true")                            
                         div.dropdown-menu.dropdown-primary(aria-labelledby="dropdownMenu1" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut")
                             a.dropdown-item(href="/articles/create") Моите Рецепти
                             a.dropdown-item(href="/recipes/create") Любими Рецепти
