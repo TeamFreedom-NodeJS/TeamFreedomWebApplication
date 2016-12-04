@@ -3,8 +3,15 @@
 const bcrypt = require("bcrypt-nodejs");
 const mongoose = require("mongoose");
 
+const EMAIL_REGEX_PATTERN =
+    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
 const userSchema = new mongoose.Schema({
-    email: { type: String, unique: true },
+    email: {
+        type: String,
+        unique: true,
+        match: EMAIL_REGEX_PATTERN
+    },
     password: String,
     passwordResetToken: String,
     passwordResetExpires: Date,
@@ -33,9 +40,6 @@ const userSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
-/**
- * Password hash middleware.
- */
 userSchema.pre("save", function save(next) {
     const user = this;
     if (!user.isModified("password")) { return next(); }
@@ -49,9 +53,6 @@ userSchema.pre("save", function save(next) {
     });
 });
 
-/**
- * Helper method for validating user"s password.
- */
 userSchema.methods.comparePassword = function comparePassword(candidatePassword, cb) {
     bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
         cb(err, isMatch);
