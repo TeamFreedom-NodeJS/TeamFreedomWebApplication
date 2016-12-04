@@ -10,10 +10,10 @@ module.exports = function({ app, data }) {
     let router = new Router();
 
     router
-    // .get("/newest", controller.getNewestRecipesAjax)
         .get("/create", controller.getCreateRecipeForm)
         .get("/edit/:id", controller.getEditRecipeForm)
         .get("/", controller.getAllRecipes)
+        .get("/newest", controller.getNewestRecipesAjax)
         .get("/:id", controller.getRecipeDetails)
         .post("/", controller.createRecipe)
         .post("/edit/:id", controller.editRecipeById)

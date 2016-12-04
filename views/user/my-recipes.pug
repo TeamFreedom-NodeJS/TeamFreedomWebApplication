@@ -1,0 +1,17 @@
+extends ../_layout
+
+block content
+    h1 Моите Рецепти
+
+    if model.addedRecipes.length
+        ul
+            each recipe in model.addedRecipes
+                li
+                    a(href="/recipes/" + recipe.id)= recipe.title
+                        p
+                            img(src=recipe.imageUrl)
+                    p
+                        a(href="/recipes/edit/"+recipe.id) Редактирай
+
+    else
+        h3 Все още нямaте добавени рецепти

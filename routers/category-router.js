@@ -14,6 +14,7 @@ module.exports = function({
     router
         .get("/list", controller.getAllCategories)
         .get("/create", controller.getCreateCategoryForm)
+        .get("/newest", controller.getNewestCategoriesAjax)
         .post("/", controller.createCategory)
         .get("/:id", controller.getCategoryById);
 

@@ -3,7 +3,7 @@
 
 const DEFAULT_PAGE = 1,
     PAGE_SIZE = 10;
-//     NEWEST_SUPERHEROES_COUNT = 5;
+const NEWEST_RECIPES_COUNT = 4;
 
 const constants = require("../config/constants");
 
@@ -149,6 +149,16 @@ module.exports = function(data) {
                     req.flash("error", { msg: constants.errorMessage + err });
                     res.status(400)
                         .send(err);
+                });
+        },
+        getNewestRecipesAjax(req, res) {
+            console.log("----------- recipes ajax");
+            data.getNewestRecipesAjax(NEWEST_RECIPES_COUNT)
+                .then(recipes => {
+                    res.send({
+                        result: recipes
+                            // .map(superhero => mapper.map(superhero, "_id", "name", "imageUrl"))
+                    });
                 });
         },
         getEditRecipeForm(req, res) {

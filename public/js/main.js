@@ -71,6 +71,90 @@ $(() => {
     });
 
     //--------------------- Articles -----------------------//
+    $.getJSON("/articles/newest", resp => {
+        let $list = $("<ul/>")
+            .addClass("list-newest-articles")
+            .addClass("list");
+
+        resp.result.forEach(article => {
+            $("<li/>")
+                .addClass("text-center")
+                .append(
+                    $("<a/>")
+                    .attr("href", "/articles/" + article._id)
+                    .html(article.title)
+                )
+                .append("<br/>")
+                .append(
+                    $("<img/>")
+                    .attr("src", article.imgUrl)
+                )
+                .append(
+                    $("<div/>")
+                    .html(article.content)
+                )
+                .appendTo($list);
+        });
+        $list.appendTo(".newest-articles-container");
+    });
+
+    //----------------- Categories----------------------- //
+    $.getJSON("/categories/newest", resp => {
+        let $list = $("<ul/>")
+            .addClass("list-newest-categories")
+            .addClass("list");
+
+        resp.result.forEach(category => {
+            $("<li/>")
+                .addClass("text-center")
+                .append(
+                    $("<a/>")
+                    .attr("href", "/categories/" + category._id)
+                    .html(category.name)
+                )
+                .append("<br/>")
+                .append(
+                    $("<img/>")
+                    .attr("src", category.imgUrl)
+                )
+                // .append(
+                //     $("<div/>")
+                //     .html(category.desctription)
+                // )
+                .appendTo($list);
+        });
+        $list.appendTo(".newest-categories-container");
+    });
+
+    //----------------- Recipes----------------------- //
+    $.getJSON("/recipes/newest", resp => {
+        let $list = $("<ul/>")
+            .addClass("list-newest-recipes")
+            .addClass("list");
+
+        resp.result.forEach(recipe => {
+            $("<li/>")
+                .addClass("text-center")
+                .append(
+                    $("<a/>")
+                    .attr("href", "/recipes/" + recipe._id)
+                    .html(recipe.title)
+                )
+                .append("<br/>")
+                .append(
+                    $("<img/>")
+                    .attr("src", recipe.imageUrls[0])
+                )
+                .append(
+                    $("<p/>")
+                    .attr("src", recipe.author.name)
+                )
+                .appendTo($list);
+        });
+        $list.appendTo(".newest-recipes-container");
+    });
+
+
 
 
 

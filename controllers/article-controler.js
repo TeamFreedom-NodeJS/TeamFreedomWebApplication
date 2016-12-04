@@ -1,5 +1,7 @@
 /* globals module */
 
+const NEWEST_ARTICLES_COUNT = 4;
+
 module.exports = function(data) {
     return {
         createArticle(req, res) {
@@ -59,6 +61,15 @@ module.exports = function(data) {
                 .catch(err => {
                     res.status(400)
                         .send(err);
+                });
+        },
+        getNewestArticlesAjax(req, res) {
+            data.getNewestArticles(NEWEST_ARTICLES_COUNT)
+                .then(articles => {
+                    res.send({
+                        result: articles
+                        // .map(superhero => mapper.map(superhero, "_id", "name", "imageUrl"))
+                    });
                 });
         },
         getCreateArticleForm(req, res) {

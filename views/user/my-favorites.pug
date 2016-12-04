@@ -1,0 +1,14 @@
+extends ../_layout
+
+block content
+    h2 Любими Рецепти
+
+    if model.favouriteRecipes.length
+        ul
+            each recipe in model.favouriteRecipes
+                li
+                    a(href="/recipes/" + recipe.id)= recipe.title
+                        p
+                            img(src=recipe.imageUrl)
+    else
+        h3 Все още нямaте любими рецепти
