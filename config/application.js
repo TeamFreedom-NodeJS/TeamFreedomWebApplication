@@ -7,12 +7,16 @@ const express = require("express"),
     session = require("express-session"),
     validator = require("express-validator"),
     flash = require("express-flash"),
-    expressStatusMonitor = require("express-status-monitor");
+    expressStatusMonitor = require("express-status-monitor"),
+    path = require("path");
 
 module.exports = function({ data }) {
     let app = express();
 
     app.set("view engine", "pug");
+    app.set("views", path.join(__dirname, "../views"));
+    app.use("/static", express.static(path.join(__dirname, "../public")));
+
     app.use(expressStatusMonitor());
     app.use(validator());
     app.use("/static", express.static("public"));
