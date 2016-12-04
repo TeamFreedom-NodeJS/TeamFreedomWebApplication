@@ -1,4 +1,5 @@
 /* globals module require Promise */
+"use strict";
 
 const dataUtils = require("./utils/data-utils");
 
@@ -22,9 +23,9 @@ module.exports = function(models) {
                 return Promise.reject({ reason: "Image url must be bigger than 3 charecters long." });
             }
 
-            if (3 > content.length || content.length > 500) {
+            if (3 > content.length || content.length > 10000) {
                 console.log("--------------ïnvalid content length.", content.length);
-                return Promise.reject({ reason: "Content length must be between 3 and 500 characters long." });
+                return Promise.reject({ reason: "Content length must be between 3 and 10000 characters long." });
             }
 
             return new Promise((resolve, reject) => {
