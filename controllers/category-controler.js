@@ -1,5 +1,7 @@
 /* globals module */
 
+const NEWEST_CATEGORIES_COUNT = 4;
+
 module.exports = function(data) {
     return {
         createCategory(req, res) {
@@ -83,6 +85,15 @@ module.exports = function(data) {
                         .send(err);
                 });
         },
+        getNewestCategoriesAjax(req, res) {
+            data.getNewestCategories(NEWEST_CATEGORIES_COUNT)
+                .then(categories => {
+                    res.send({
+                        result: categories
+                            // .map(superhero => mapper.map(superhero, "_id", "name", "imageUrl"))
+                    });
+                });
+        },
         getCreateCategoryForm(req, res) {
             if (!req.isAuthenticated()) {
                 return res.redirect("/");
@@ -95,12 +106,12 @@ module.exports = function(data) {
                     });
                 });
         },
-        updateCategory(req, res) {
+        // updateCategory(req, res) {
 
-        },
-        deleteCategory(req, res) {
+        // },
+        // deleteCategory(req, res) {
 
-        }
+        // }
         // getAllReciepsByCategory()
     };
 };

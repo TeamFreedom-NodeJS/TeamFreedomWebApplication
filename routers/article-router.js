@@ -14,6 +14,7 @@ module.exports = function({
     router
         .get("/list", controller.getAllArticles)
         .get("/create", controller.getCreateArticleForm)
+        .get("/newest", controller.getNewestArticlesAjax)
         .post("/", controller.createArticle)
         .put("/edit", controller.getEditArticleForm)
         .put("/edit/:id", controller.editArticleById)

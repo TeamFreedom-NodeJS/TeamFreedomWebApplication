@@ -74,6 +74,20 @@ module.exports = function(models) {
                 });
             });
         },
+        getNewestArticles(count) {
+            return new Promise((resolve, reject) => {
+                Article.find({})
+                    .sort({ createdAt: -1 })
+                    .limit(count)
+                    .exec((err, articles) => {
+                        if (err) {
+                            return reject(err);
+                        }
+
+                        return resolve(articles);
+                    });
+            });
+        },
         editArticleById(id, newName, newImgUrl) {
             return new Promise((resolve, reject) => {
                 this.getArticleById(id)
@@ -90,17 +104,6 @@ module.exports = function(models) {
                     .catch(err => {
                         return reject(err);
                     });
-            });
-        },
-        save(model) {
-            return new Promise((resolve, reject) => {
-                model.save(err => {
-                    if (err) {
-                        return reject(err);
-                    }
-
-                    return resolve(model);
-                });
             });
         }
     };

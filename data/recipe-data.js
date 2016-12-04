@@ -12,6 +12,11 @@ module.exports = function(models) {
 
     function addRecipeToUser(userId, recipe) {
         return new Promise((resolve, reject) => {
+            if (!recipe || recipe.isDeleted) {
+                console.log("isDeleted recipe NOT added to author");
+                return resolve(recipe);
+            }
+
             let recipeInfo = {
                 id: recipe._id,
                 title: recipe.title,
@@ -19,13 +24,20 @@ module.exports = function(models) {
             };
 
             User.findByIdAndUpdate(
-                userId, { $push: { addedRecipes: recipeInfo } }, { safe: true },
+                userId, {
+                    $push: {
+                        addedRecipes: recipeInfo
+                    }
+                }, {
+                    safe: true
+                },
                 err => {
                     if (err) {
                         return reject(err);
                     }
                 });
 
+            console.log("added to author");
             return resolve(recipe);
         });
     }
@@ -34,21 +46,32 @@ module.exports = function(models) {
         return new Promise((resolve, reject) => {
             User.findByIdAndUpdate(
                 recipe.author.id, {
-                    $pull: { addedRecipes: { id: recipe._id } },
-                }, { safe: true },
+                    $pull: {
+                        addedRecipes: {
+                            id: recipe._id
+                        }
+                    },
+                }, {
+                    safe: true
+                },
                 err => {
                     if (err) {
                         return reject(err);
                     }
                 });
 
-            return resolve();
+            console.log("deleted from author");
+            return resolve(recipe);
         });
     }
 
     function findCategoriesByIds(categoriesIds) {
         return new Promise((resolve, reject) => {
-            Category.find({ _id: { $in: categoriesIds } })
+            Category.find({
+                    _id: {
+                        $in: categoriesIds
+                    }
+                })
                 .select("name")
                 .then(categories => {
                     let recipeCategories = [];
@@ -72,6 +95,11 @@ module.exports = function(models) {
 
     function addRecipeToCategories(categoriesIds, recipe) {
         return new Promise((resolve, reject) => {
+            if (!recipe || recipe.isDeleted) {
+                console.log("isDeleted recipe NOT added to categs");
+                return resolve(recipe);
+            }
+
             if (categoriesIds[0]) {
                 let recipeInfo = {
                     id: recipe._id,
@@ -81,7 +109,13 @@ module.exports = function(models) {
 
                 categoriesIds.forEach(categId => {
                     Category.findByIdAndUpdate(
-                        categId, { $push: { recipes: recipeInfo } }, { safe: true },
+                        categId, {
+                            $push: {
+                                recipes: recipeInfo
+                            }
+                        }, {
+                            safe: true
+                        },
                         err => {
                             if (err) {
                                 return reject(err);
@@ -90,6 +124,7 @@ module.exports = function(models) {
                 });
             }
 
+            console.log("added to categs");
             return resolve(recipe);
         });
     }
@@ -98,14 +133,24 @@ module.exports = function(models) {
         return new Promise((resolve, reject) => {
             recipe.categories.forEach(categ => {
                 Category.findByIdAndUpdate(
-                    categ.id, { $pull: { recipes: { id: recipe._id } } }, { safe: true, new: true },
-                    (err, c) => {
+                    categ.id, {
+                        $pull: {
+                            recipes: {
+                                id: recipe._id
+                            }
+                        }
+                    }, {
+                        safe: true,
+                        new: true
+                    },
+                    err => {
                         if (err) {
                             return reject(err);
                         }
                     });
             });
 
+            console.log("deleted from categs");
             return resolve(recipe);
         });
     }
@@ -118,6 +163,10 @@ module.exports = function(models) {
                         return reject(err);
                     }
 
+                    if (!recipe || recipe.isDeleted) {
+                        return resolve(null);
+                    }
+
                     return resolve(recipe);
                 });
             });
@@ -126,10 +175,19 @@ module.exports = function(models) {
             return new Promise((resolve, reject) => {
                 let newComment = {
                     content,
-                    author: { name: author.name }
+                    author: {
+                        name: author.name
+                    }
                 };
 
-                Recipe.findByIdAndUpdate(id, { $push: { comments: newComment } }, { safe: true, upsert: true }, (err, recipe) => {
+                Recipe.findByIdAndUpdate(id, {
+                    $push: {
+                        comments: newComment
+                    }
+                }, {
+                    safe: true,
+                    upsert: true
+                }, (err, recipe) => {
                     if (err) {
                         reject(err);
                     }
@@ -177,8 +235,24 @@ module.exports = function(models) {
                     });
             });
         },
+        getNewestRecipesAjax(count) {
+            return new Promise((resolve, reject) => {
+                Recipe.find({})
+                    .sort({
+                        createdAt: -1
+                    })
+                    .limit(count)
+                    .exec((err, recipes) => {
+                        if (err) {
+                            return reject(err);
+                        }
+
+                        return resolve(recipes);
+                    });
+            });
+        },
         editRecipeById(id, title, categoriesIds, imageUrls, ingredients, preparation,
-            cookingTimeInMinutes) {
+            cookingTimeInMinutes, isDeleted) {
             let updatedRecipe;
 
             return new Promise((resolve, reject) => {
@@ -201,11 +275,14 @@ module.exports = function(models) {
                                     imageUrls,
                                     ingredients,
                                     preparation,
-                                    cookingTimeInMinutes
-                                }, { safe: true, new: true },
+                                    cookingTimeInMinutes,
+                                    isDeleted
+                                }, {
+                                    safe: true,
+                                    new: true
+                                },
                                 (err, recipe) => {
                                     if (err) {
-                                        console.log(err);
                                         return reject(err);
                                     }
 
@@ -229,7 +306,11 @@ module.exports = function(models) {
                     });
             });
         },
-        searchRecipes({ pattern, page, pageSize }) {
+        searchRecipes({
+            pattern,
+            page,
+            pageSize
+        }) {
             let query = {};
             if (typeof pattern === "string" && pattern.length >= MIN_PATTERN_LENGTH) {
                 query.$or = [{

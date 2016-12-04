@@ -92,6 +92,20 @@ module.exports = function(models) {
                 });
             });
         },
+        getNewestCategories(count) {
+            return new Promise((resolve, reject) => {
+                Category.find({})
+                    .sort({ createdAt: -1 })
+                    .limit(count)
+                    .exec((err, categories) => {
+                        if (err) {
+                            return reject(err);
+                        }
+                        
+                        return resolve(categories);
+                    });
+            });
+        },
         // updateCategory(categoryName, newName, imgUrl) {
         //     return new Promise((resolve, reject) => {
         //         Category.findOne({
