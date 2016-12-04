@@ -31,6 +31,12 @@ mixin user-navigation
                     li.nav-item
                         form.form-inline(action="/search" method="get")
                             input.form-control(type="text" name="pattern" placeholder="Search")
+             
+                    - let admin = user.role==="admin"
+                        if admin
+                            li.nav-item.nav-link
+                                a(href="/recipes") Админ
+
                         
                    
                         
