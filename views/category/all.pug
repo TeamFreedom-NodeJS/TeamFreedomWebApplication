@@ -3,6 +3,10 @@ extends ../_layout
 block content
     ul
         each category in model
-            li.col-xs-4
-                a(href="/categories/" + category.id)= category.name
-                img(src=category.imgUrl)
+            li.col-lg-3.col-sm-6.col-xs-12
+                .card
+                    img(src=category.imgUrl)
+                    .card-block
+                        a(href="/categories/" + category.id)
+                            h4.card-title= category.name
+                        a.btn.mdb-color-text.text-darken-4(href="#") Button

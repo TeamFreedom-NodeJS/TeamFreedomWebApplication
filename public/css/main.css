@@ -1,3 +1,25 @@
 .article-img {
     width: 150px;
 }
+
+.dropdown .dropdown-menu {
+    overflow: hidden;
+    width: 200px;
+}
+
+.dropdown .dropdown-menu .dropdown-item:hover {
+    box-shadow: 0 8px 17px 0 rgba(0,0,0,.2),0 6px 20px 0 rgba(0,0,0,.19);
+}
+
+.dropdown .dropdown-menu form {
+    float: none;
+    text-align: center;
+}
+
+.dropdown .dropdown-menu form .btn {
+    margin-top: 10px;
+}
+
+.pt-3 {
+    padding-top: 3.4rem !important;
+}
