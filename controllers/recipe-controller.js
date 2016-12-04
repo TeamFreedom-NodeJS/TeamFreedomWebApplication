@@ -1,6 +1,8 @@
 /* globals module */
 "use strict";
 
+const DEFAULT_PAGE = 1,
+    PAGE_SIZE = 10;
 const NEWEST_RECIPES_COUNT = 4;
 
 const constants = require("../config/constants");
@@ -225,6 +227,56 @@ module.exports = function(data) {
                 .catch(err => {
                     req.flash("error", { msg: constants.errorMessage + err });
                     return res.redirect("/");
+                });
+        },
+        getAllRecipes(req, res) {
+            let user = req.user;
+
+            if (!req.isAuthenticated() || user.role !== "admin") {
+                return res.redirect("/");
+            }
+
+            let pattern = req.query.pattern || "";
+            let page = Number(req.query.page || DEFAULT_PAGE);
+
+            data.getRecipes({ pattern, page, pageSize: PAGE_SIZE })
+                .then((result => {
+                    let {
+                        recipes,
+                        count
+                    } = result;
+
+                    if (count === 0) {
+                        return res.render("recipe/recipes-list", {
+                            recipes,
+                            user,
+                            params: { pattern, page, pages: 0 }
+                        });
+                    }
+
+                    if (page < 1) {
+                        return res.redirect("/recipes?page=1");
+                    }
+
+                    let pages = count / PAGE_SIZE;
+                    if (parseInt(pages, 10) < pages) {
+                        pages += 1;
+                        pages = parseInt(pages, 10);
+                    }
+                    if (page > pages) {
+                        page = pages;
+                        return res.redirect(`/recipes?page=${page}`);
+                    }
+
+                    return res.render("recipe/recipes-list", {
+                        recipes,
+                        user,
+                        params: { pattern, page, pages }
+                    });
+                }))
+                .catch(err => {
+                    res.status(404)
+                        .send(err);
                 });
         }
     };

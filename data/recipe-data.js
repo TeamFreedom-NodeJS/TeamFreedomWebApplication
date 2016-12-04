@@ -306,6 +306,38 @@ module.exports = function(models) {
                     });
             });
         },
+        getRecipes({ page, pageSize }) {
+            let skip = (page - 1) * pageSize,
+                limit = page * pageSize;
+
+            return Promise.all([
+                new Promise((resolve, reject) => {
+                    Recipe.find()
+                        .sort({ title: 1 })
+                        .skip(skip)
+                        .limit(limit)
+                        .exec((err, recipes) => {
+                            if (err) {
+                                return reject(err);
+                            }
+
+                            return resolve(recipes);
+                        });
+                }), new Promise((resolve, reject) => {
+                    Recipe.count({})
+                        .exec((err, count) => {
+                            if (err) {
+                                return reject(err);
+                            }
+
+                            return resolve(count);
+                        });
+                })
+            ]).then(results => {
+                let [recipes, count] = results;
+                return { recipes, count };
+            });
+        },
         searchRecipes({
             pattern,
             page,
