@@ -58,5 +58,9 @@ module.exports = modelRegistrator.register("Recept", {
             min: 10,
             max: 200
         }
-    }]
+    }],
+    isDeleted: {
+        type: Boolean,
+        default: false
+    }
 });

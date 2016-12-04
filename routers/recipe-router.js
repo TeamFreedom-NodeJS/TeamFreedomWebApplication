@@ -13,9 +13,11 @@ module.exports = function({ app, data }) {
     // .get("/newest", controller.getNewestRecipesAjax)
         .get("/create", controller.getCreateRecipeForm)
         .get("/edit/:id", controller.getEditRecipeForm)
+        // .get("/delete/:id", controller.deleteRecipeByIdForm)
         .get("/:id", controller.getRecipeDetails)
         .post("/", controller.createRecipe)
         .post("/edit/:id", controller.editRecipeById)
+        // .post("/delete/:id", controller.deleteRecipeById)
         .post("/:id", controller.addComment);
 
     app.use("/recipes", router);
