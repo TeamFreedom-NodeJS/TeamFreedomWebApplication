@@ -1,0 +1,10 @@
+mixin recipe-info-admin(recipe)
+    .recipe-info-container.text-center
+        img(src=recipe.imageUrls[0])
+        .recipe-info
+            strong
+                = recipe.title
+            br
+
+            a.btn.btn-danger(href="recipes/edit/"+recipe._id)
+                | Edit/Delete

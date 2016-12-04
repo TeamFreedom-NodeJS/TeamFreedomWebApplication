@@ -1,0 +1,9 @@
+extends ../_layout
+include ../_mixins/_recipes-list-admin
+
+block content
+    .text-center
+        if user
+            a.btn.btn-danger(href="/recipes/create")
+                | Add recipe
+        +recipes-list-admin(recipes, params.page, params.pages)
