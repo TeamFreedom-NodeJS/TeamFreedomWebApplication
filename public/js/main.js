@@ -78,20 +78,44 @@ $(() => {
 
         resp.result.forEach(article => {
             $("<li/>")
-                .addClass("text-center")
-                .append(
-                    $("<a/>")
-                    .attr("href", "/articles/" + article._id)
-                    .html(article.title)
-                )
-                .append("<br/>")
-                .append(
-                    $("<img/>")
-                    .attr("src", article.imgUrl)
-                )
+                .addClass("col-lg-3 col-sm-6 col-xs-12 text-xs-center")
                 .append(
                     $("<div/>")
-                    .html(article.content)
+                    .addClass("card")
+                    .append(
+                        $("<div/>")
+                        .addClass("view overlay hm-white-slight")
+                        .append(
+                            $("<img/>")
+                            .attr("src", article.imgUrl)
+                        )
+                        .append(
+                            $("<a/>")
+                            .attr("href", "/articles/" + article._id)
+                            .append(
+                                $("<div/>")
+                                .addClass("mask")
+                            )
+                        )
+                    )
+                    .append(
+                        $("<div/>")
+                        .addClass("card-block.text-xs-center")
+                        // .append(
+                        //     $("<span/>")
+                        //     .addClass("description-header")
+                        //     .html("статия")
+                        // )
+                        .append(
+                            $("<a/>")
+                            .attr("href", "/articles/" + article._id)
+                            .append(
+                                $("<h3>")
+                                .addClass("card-title")
+                                .html(article.title)
+                            )
+                        )
+                    )
                 )
                 .appendTo($list);
         });
@@ -103,24 +127,48 @@ $(() => {
         let $list = $("<ul/>")
             .addClass("list-newest-categories")
             .addClass("list");
-
+            
         resp.result.forEach(category => {
             $("<li/>")
-                .addClass("text-center")
+                .addClass("col-lg-4 col-sm-6 col-xs-12 text-xs-center")
                 .append(
-                    $("<a/>")
-                    .attr("href", "/categories/" + category._id)
-                    .html(category.name)
+                    $("<div/>")
+                    .addClass("card")
+                    .append(
+                        $("<div/>")
+                        .addClass("view overlay hm-white-slight")
+                        .append(
+                            $("<img/>")
+                            .attr("src", category.imgUrl)
+                        )
+                        .append(
+                            $("<a/>")
+                            .attr("href", "/categories/" + category._id)
+                            .append(
+                                $("<div/>")
+                                .addClass("mask")
+                            )
+                        )
+                    )
+                    .append(
+                        $("<div/>")
+                        .addClass("card-block.text-xs-center")
+                        .append(
+                            $("<span/>")
+                            .addClass("description-header")
+                            .html("категория")
+                        )
+                        .append(
+                            $("<a/>")
+                            .attr("href", "/categories/" + category._id)
+                            .append(
+                                $("<h3>")
+                                .addClass("card-title")
+                                .html(category.name)
+                            )
+                        )
+                    )
                 )
-                .append("<br/>")
-                .append(
-                    $("<img/>")
-                    .attr("src", category.imgUrl)
-                )
-                // .append(
-                //     $("<div/>")
-                //     .html(category.desctription)
-                // )
                 .appendTo($list);
         });
         $list.appendTo(".newest-categories-container");
@@ -134,32 +182,48 @@ $(() => {
 
         resp.result.forEach(recipe => {
             $("<li/>")
-                .addClass("text-center")
+                .addClass("col-lg-4 col-sm-6 col-xs-12 text-xs-center")
                 .append(
-                    $("<a/>")
-                    .attr("href", "/recipes/" + recipe._id)
-                    .html(recipe.title)
-                )
-                .append("<br/>")
-                .append(
-                    $("<img/>")
-                    .attr("src", recipe.imageUrls[0])
-                )
-                .append(
-                    $("<p/>")
-                    .attr("src", recipe.author.name)
+                    $("<div/>")
+                    .addClass("card")
+                    .append(
+                        $("<div/>")
+                        .addClass("view overlay hm-white-slight")
+                        .append(
+                            $("<img/>")
+                            .attr("src", recipe.imageUrls[0])
+                        )
+                        .append(
+                            $("<a/>")
+                            .attr("href", "/recipes/" + recipe._id)
+                            .append(
+                                $("<div/>")
+                                .addClass("mask")
+                            )
+                        )
+                    )
+                    .append(
+                        $("<div/>")
+                        .addClass("card-block.text-xs-center")
+                        .append(
+                            $("<a/>")
+                            .attr("href", "/recipes/" + recipe._id)
+                            .append(
+                                $("<h3>")
+                                .addClass("card-title")
+                                .html(recipe.title)
+                            )
+                        )
+                        // .append(
+                        //     $("<span/>")
+                        //     .addClass("description-header")
+                        //     .html("автор")
+                        // )
+                    )
                 )
                 .appendTo($list);
         });
         $list.appendTo(".newest-recipes-container");
     });
-
-
-
-
-
-
-
-
 
 });

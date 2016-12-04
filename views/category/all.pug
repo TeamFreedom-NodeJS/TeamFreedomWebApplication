@@ -1,12 +1,16 @@
 extends ../_layout
 
 block content
-    ul
-        each category in model
-            li.col-lg-3.col-sm-6.col-xs-12
-                .card
-                    img(src=category.imgUrl)
-                    .card-block
-                        a(href="/categories/" + category.id)
-                            h4.card-title= category.name
-                        a.btn.mdb-color-text.text-darken-4(href="#") Button
+    .container
+        ul
+            each category in model
+                li.col-lg-4.col-sm-6.col-xs-12
+                    .card
+                        .view.overlay.hm-white-slight
+                            img(src=category.imgUrl)
+                            a(href="/categories/" + category.id)
+                                .mask
+                        .card-block.text-xs-center
+                            a(href="/categories/" + category.id)
+                                h3.h3-responsive= category.name
+

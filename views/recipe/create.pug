@@ -1,33 +1,34 @@
 extends ../_layout
 
 block content
-    form(action="/recipes" method="post")
-        input.form-control(type="text" name="title" placeholder="Title")
-        input.form-control(type="text" name="cookingTimeInMinutes" placeholder="Cooking Time [in Minutes]")
-        textarea.form-control(name="preparation" placeholder="Describe Preparation")
+    .container
+        form(action="/recipes" method="post")
+            input.form-control(type="text" name="title" placeholder="Title")
+            input.form-control(type="text" name="cookingTimeInMinutes" placeholder="Cooking Time [in Minutes]")
+            textarea.form-control(name="preparation" placeholder="Describe Preparation")
 
-        h3
-            | Снимки
-        ul.image-list
-        br
-        a#btn-add-image(href="#")
-            | Добави линк към нова снимка
+            h3
+                | Снимки
+            ul.image-list
+            br
+            a#btn-add-image(href="#")
+                | Добави линк към нова снимка
 
-        h3
-           | Съставки:
-        ul.ingredients-list
-        br
-        a#btn-add-ingredient(href="#")
-            | Добави нова съставка
+            h3
+            | Съставки:
+            ul.ingredients-list
+            br
+            a#btn-add-ingredient(href="#")
+                | Добави нова съставка
 
-        h3
-           | Категории:
-        ul
-            each category in categories
-                li
-                    label
-                        = category.name
-                        input.form-control(type="checkbox" name="categories" value=category.id)
+            h3
+            | Категории:
+            ul
+                each category in categories
+                    li
+                        label
+                            = category.name
+                            input.form-control(type="checkbox" name="categories" value=category.id)
 
-        button.btn
-            | Добави
+            button.btn
+                | Добави

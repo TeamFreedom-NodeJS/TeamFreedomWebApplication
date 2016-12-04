@@ -1,9 +1,18 @@
 extends ../_layout
 
 block content
-    ul
-        each article in model
-            li.col-xs-4
-                a(href="/articles/" + article.id)= article.title
-                img(src=article.imgUrl class="article-img")
+    .container
+        h2.h2-responsive.text-capitalize Статии
+        ul.articles-list
+            each article in model
+                li.col-xs-12
+                    .card.card-block
+                        .article-img-wrapper.rounded-circle.crop.z-depth-2
+                            img.article-img.img-fluid(src=article.imgUrl)
+                        div
+                            a(href="/articles/" + article.id)
+                                h4.card-title= article.title
+                            hr
+                            p.card-text= article.content
+
                     

@@ -1,6 +1,6 @@
 /* globals module */
 
-const NEWEST_CATEGORIES_COUNT = 4;
+const NEWEST_CATEGORIES_COUNT = 3;
 
 module.exports = function(data) {
     return {

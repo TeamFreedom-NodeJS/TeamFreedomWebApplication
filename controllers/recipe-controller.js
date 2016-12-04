@@ -1,7 +1,7 @@
 /* globals module */
 "use strict";
 
-const NEWEST_RECIPES_COUNT = 4;
+const NEWEST_RECIPES_COUNT = 3;
 
 const constants = require("../config/constants");
 

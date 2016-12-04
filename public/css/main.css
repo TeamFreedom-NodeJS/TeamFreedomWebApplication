@@ -1,3 +1,7 @@
+main {
+    margin-bottom: 150px;
+}
+
 .article-img {
     width: 150px;
 }
@@ -22,4 +26,140 @@
 
 .pt-3 {
     padding-top: 3.4rem !important;
+}
+
+.main-content .main-container {
+    padding: 30px 0;
+}
+
+h1 {
+    padding: 50px 0;
+    text-transform: uppercase;
+}
+
+.h2-responsive {
+    margin: 40px 20px;
+}
+
+h3 {
+    text-transform: capitalize;
+}
+
+.card a {
+    color: inherit;
+}
+
+.crop {
+    overflow: hidden;
+}
+
+.no-padding li {
+    padding: 0;
+}
+
+.articles-list .card-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 100px;
+}
+
+.card .article-img-wrapper {
+    height: 150px;
+    margin-bottom: 20px;
+}
+
+.card .article-img {
+    width: auto;
+}
+
+.card .btn {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;   
+}
+
+.card .img-wrap {
+    float: left;
+    height: 200px;
+}
+
+.description-header {
+    color: #aaa;
+    font-family: Roboto,sans-serif;
+    text-transform: uppercase;
+}
+
+.main-container .card {
+    box-shadow: none;
+}
+.main-container .view {
+    margin-bottom: 20px;
+}
+
+.main-container h2 {
+    margin: 20px 0 70px;
+}
+
+.grey .card {
+    background: transparent;
+}
+.grey .card img {
+    width: auto;
+    max-width: none;
+    height: 100%;
+}
+.grey .card .view.overlay {
+    border-radius: 50%;
+    width: 200px;
+    margin: auto;
+}
+
+@media (min-width: 576px) {
+    .overlay {
+        height: 150px;
+    }
+}
+@media (min-width: 768px) {
+    .overlay {
+        height: 200px;
+    }
+}
+@media (max-width: 991px) {
+    .card .article-img-wrapper {
+        border-radius: 0;
+    }
+}
+@media (min-width: 992px) {
+    .overlay {
+        height: 150px;
+    }
+    
+    .articles-list .article-img-wrapper {
+        height: 250px;
+        width: 250px;
+        float: left;
+        margin-right: 50px;
+        margin-bottom: 0;
+        
+    }
+    .articles-list .article-img {
+        height: 100%;
+        max-width: none;
+    }
+    .articles-list .card-text {
+        height: 180px;
+    }
+
+    
+}
+@media (min-width: 1200px) {
+    .overlay {
+        height: 200px;
+    }
+}
+@media (max-width: 576px) {
+    .overlay {
+        height: 300px;
+    }
 }

@@ -2,13 +2,18 @@ extends ../_layout
 
 block content
     if model
-        h2= model.name
-
-        ul
-            each recipe in model.recipes
-                li
-                    a(href="/recipes/" + recipe.id)= recipe.title
-                        img(src= recipe.imageUrl)
-                li
-                    p Автор:
-                       
+        .container
+                | Рецепти от категория
+                h2.h2-responsive.text-capitalize= model.name
+                ul
+                    each recipe in model.recipes
+                        li.col-lg-4.col-sm-6.col-xs-12
+                            .card
+                                .view.overlay.hm-white-slight
+                                    img(src= recipe.imageUrl)
+                                    a(href="/recipes/" + recipe.id)
+                                        .mask
+                                .card-block.text-xs-center
+                                    a(href="/recipes/" + recipe.id)
+                                        h3.h3-responsive= recipe.title
+                                p.card-text.text-xs-center= recipe.author
