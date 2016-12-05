@@ -118,55 +118,6 @@ h3 {
     margin: auto;
 }
 
-@media (min-width: 576px) {
-    .overlay {
-        height: 150px;
-    }
-}
-
-@media (min-width: 768px) {
-    .overlay {
-        height: 200px;
-    }
-}
-
-@media (max-width: 991px) {
-    .card .article-img-wrapper {
-        border-radius: 0;
-    }
-}
-
-@media (min-width: 992px) {
-    .overlay {
-        height: 150px;
-    }
-    .articles-list .article-img-wrapper {
-        height: 250px;
-        width: 250px;
-        float: left;
-        margin-right: 50px;
-        margin-bottom: 0;
-    }
-    .articles-list .article-img {
-        height: 100%;
-        max-width: none;
-    }
-    .articles-list .card-text {
-        height: 180px;
-    }
-}
-
-@media (min-width: 1200px) {
-    .overlay {
-        height: 200px;
-    }
-}
-
-@media (max-width: 576px) {
-    .overlay {
-        height: 300px;
-    }
-}
 
 .rounded.float-xs-left {
     width: 35px
@@ -193,4 +144,62 @@ h3 {
 .btn-primary {
     margin-left: 500px;
     width: 60%
+}
+
+@media (min-width: 576px) {
+    .overlay {
+        height: 150px;
+    }
+}
+@media (min-width: 768px) {
+    .overlay {
+        height: 200px;
+    }
+}
+@media (min-width: 992px) {
+    .overlay {
+        height: 150px;
+    }
+    
+    .articles-list .article-img-wrapper {
+        height: 250px;
+        width: 250px;
+        float: left;
+        margin-right: 50px;
+        margin-bottom: 0;
+        
+    }
+    .articles-list .article-img {
+        height: 100%;
+        max-width: none;
+    }
+    .articles-list .card-text {
+        height: 180px;
+    }
+
+    
+}
+@media (min-width: 1200px) {
+    .overlay {
+        height: 200px;
+    }
+}
+@media (max-width: 991px) {
+    .card .article-img-wrapper {
+        border-radius: 0;
+    }
+    h1 {
+        padding: 20px 0;
+    }
+    .main-container h2 {
+        margin: 0px 0 30px
+    }
+}
+@media (max-width: 576px) {
+    .overlay {
+        height: 300px;
+    }
+    .navbar-brand {
+        float: none;
+    }
 }
