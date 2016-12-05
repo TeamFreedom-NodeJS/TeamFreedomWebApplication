@@ -110,7 +110,8 @@ module.exports = function(data) {
             let userId = req.user._id;
             let recipe = JSON.parse(req.body.recipe);
             return data.addToFavorites(userId, recipe)
-                .then(res.status(203))
+                .then(res.status(203)
+                    .redirect("/profile/" + userId + "/favorites"))
                 .catch(err => {
                     res.status(400)
                         .send(err);

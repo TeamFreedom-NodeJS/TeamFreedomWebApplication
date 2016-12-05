@@ -1,17 +1,22 @@
 extends ../_layout
 
+
 block content
+    .container
     h1 Моите Рецепти
 
     if model.addedRecipes.length
+
         ul
             each recipe in model.addedRecipes
-                li
-                    a(href="/recipes/" + recipe.id)= recipe.title
-                        p
+                li.col-lg-4.col-sm-6.col-xs-12
+                    .card
+                        .view.overlay.hm-white-slight
                             img(src=recipe.imageUrl)
-                    p
-                        a(href="/recipes/edit/"+recipe.id) Редактирай
-
+                            a(href="/recipes/" + recipe.id)
+                                .mask
+                        .card-block.text-xs-center
+                            a(href="/recipes/edit/"+recipe.id)
+                                h3.h3-responsive=recipe.title
     else
         h3 Все още нямaте добавени рецепти
