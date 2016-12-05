@@ -83,7 +83,7 @@ Technologies, frameworks and development techniques used in the "Cooking e-Web A
 ### Application front-end (client)
 
 - **Twitter Bootstrap** and **Materialize** are used as UI frameworks for the front-end responsive design.
-- Use at least **one AJAX form and/or WebSockets communication**
+- **AJAX form communication** was implemented.
 - **More than 10 different unit tests** were written for the controllers and data logics
 - In order to avoid crashes when invalid data is entered, **error handling** and **data validation** were implemented 
 - Special strategies are applied to prevent the application from **security** holes (XSS, XSRF, Parameter Tampering)
@@ -92,11 +92,13 @@ Technologies, frameworks and development techniques used in the "Cooking e-Web A
 ##  General Requirements
 
 - Used Git repository:
+
   https://github.com/TeamFreedom-NodeJS/TeamFreedomWebApplication
 
 - "Cooking e-Web Application" uploaded in the cloud: 
 
-
+ https://teamfreedomwebapp.herokuapp.com/
+ 
 ### Implementation of Optional Requirements
 
 - Team **Freedom** have made special efforts to achieve nice looking UI supporting of all modern and old Web browsers.
