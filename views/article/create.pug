@@ -16,9 +16,9 @@ block content
             thead
                 tr
                     th 
-                        div  Number
+                        div  №
                     th
-                        div  Article title
+                        div  Заглавие
             each article in model
                 tr
                     td 
@@ -26,6 +26,6 @@ block content
                     td
                         a(href="/articles/" + article.id)= article.title
                     td
-                        button.btn(type="submit" class="article-btn-edit") Edit
+                        button.btn(type="submit" class="article-btn-edit") Редактирай
                     td
-                        button.btn(type="submit" class="article-btn-delete") Delete
+                        button.btn(type="submit" class="article-btn-delete") Изтрий

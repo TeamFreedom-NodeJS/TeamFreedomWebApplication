@@ -5,9 +5,9 @@ block content
         form.form-inline(action="/categories" method="post")
             input.form-control(type="text" name="name" placeholder="Category name")
             input.form-control(type="text" name="imgUrl" placeholder="Category image url.")
-            button.btn.btn-danger(type="submit") Create
+            button.btn.btn-danger(type="submit") Добави
 
-    h3 Categories
+    h3 Категории
     if model
         ol
             each category in model

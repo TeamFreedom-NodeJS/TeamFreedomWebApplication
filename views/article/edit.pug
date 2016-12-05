@@ -3,12 +3,12 @@ extends ../_layout
     block content
         .text-center
             if model
-                div Edit article #{model}
+                div Редактирай #{model}
                     form.form-inline(action="/articles/edit" method="put")
-                        | New title
+                        | Ново Заглавие
                         input.form-control(type="text" name="title" placeholder="Article title")
-                        | New image url
+                        | Нов линк
                         input.form-control(type="text" name="imgUrl" placeholder="Article image url.")
                         br
                         textarea.form-control(name="content")
-                        button.btn.btn-danger(type="submit") Edit
+                        button.btn.btn-danger(type="submit") Редактирай
