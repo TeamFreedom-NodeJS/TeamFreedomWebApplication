@@ -85,20 +85,15 @@ module.exports = function(data) {
                 });
         },
         addComment(req, res) {
-            if (!req.isAuthenticated()) {
-                req.flash("error", { msg: "Достъп до тази информация имат само регистрирани потребители!" });
-                return res.redirect("/");
-            }
+            // if (!req.isAuthenticated()) {
+            //     req.flash("error", { msg: "Достъп до тази информация имат само регистрирани потребители!" });
+            //     return res.redirect("/");
+            // }
             let id = req.params.id;
             let content = req.body.content;
-
             let author = req.user.profile.name || parseEmail(req.user.email);
-            //console.log(author);
-            data.addCommentToRecipe(content, author)
-                .then(recipe => { // Todo to return json
-                    req.user;
-                    return res.redirect(`/recipes/${id}`);
-                });
+            data.addCommentToRecipe(content, author, id)
+                .then(res.redirect(`/recipes/${id}`));
         },
         getCreateRecipeForm(req, res) {
             if (!req.isAuthenticated()) {

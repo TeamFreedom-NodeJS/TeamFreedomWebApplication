@@ -171,23 +171,14 @@ module.exports = function(models) {
                 });
             });
         },
-        addCommentToRecipe(id, content, author) {
+        addCommentToRecipe(content, author, id) {
             return new Promise((resolve, reject) => {
                 let newComment = {
-                    content,
-                    author: {
-                        name: author.name
-                    }
+                    content: content,
+                    author: author
                 };
 
-                Recipe.findByIdAndUpdate(id, {
-                    $push: {
-                        comments: newComment
-                    }
-                }, {
-                    safe: true,
-                    upsert: true
-                }, (err, recipe) => {
+                Recipe.findByIdAndUpdate(id, { $push: { comments: newComment } }, { safe: true, upsert: true }, (err, recipe) => {
                     if (err) {
                         reject(err);
                     }
