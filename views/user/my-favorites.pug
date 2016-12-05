@@ -2,20 +2,20 @@ extends ../_layout
 
 block content
     .container
-    h2 Любими Рецепти
+        h1 Любими Рецепти
 
-    if model.favouriteRecipes.length
-        ul
-            each recipe in model.favouriteRecipes
-                li.col-lg-4.col-sm-6.col-xs-12
-                    .card
-                        .view.overlay.hm-white-slight
-                            img(src=recipe.imageUrl)
-                            a(href="/recipes/" + recipe.id)
-                            .mask
-                        .card-block.text-xs-center
-                            a(href="/recipes/" + recipe.id)
-                                h3.h3-responsive= recipe.title
-                        
-    else
-        h3 Все още нямaте любими рецепти
+        if model.favouriteRecipes.length
+            ul
+                each recipe in model.favouriteRecipes
+                    li.col-lg-4.col-sm-6.col-xs-12
+                        .card
+                            .view.overlay.hm-white-slight
+                                img(src=recipe.imageUrl)
+                                a(href="/recipes/" + recipe.id)
+                                .mask
+                            .card-block.text-xs-center
+                                a(href="/recipes/" + recipe.id)
+                                    h3.h3-responsive= recipe.title
+                            
+        else
+            h3 Все още нямaте любими рецепти
