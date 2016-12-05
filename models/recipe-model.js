@@ -7,7 +7,6 @@ const modelRegistrator = require("./utils/model-registrator"),
 module.exports = modelRegistrator.register("Recept", {
     title: {
         type: String,
-        validate: /[а-яА-Я ]+\w /,
         required: true
     },
     categories: [{}],
@@ -19,7 +18,6 @@ module.exports = modelRegistrator.register("Recept", {
     ingredients: [{
         name: {
             type: String,
-            validate: /[а-яА-Я ]+\w /,
             required: true
         },
         quantity: {
