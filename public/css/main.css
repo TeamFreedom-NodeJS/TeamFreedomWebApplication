@@ -169,19 +169,28 @@ h3 {
 }
 
 .rounded.float-xs-left {
-    width: 30px
+    width: 35px
 }
 
 .form-group {
     display: flex;
 }
 
+.col-sm-3.control-label {
+    font-weight: bold;
+    font-size: 15px;
+    margin-top: 34px
+}
 
-/*.fa.fa-trash {
-    float: left;
-}*/
+.page-header {
+    margin-top: 20px
+}
 
+.col-sm-7 {
+    width: 550px
+}
 
-/*.fa.fa-pencil {
-    display: ruby-base-container
-}*/
+.btn-primary {
+    margin-left: 500px;
+    width: 60%
+}
