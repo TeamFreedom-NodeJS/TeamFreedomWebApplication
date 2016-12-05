@@ -76,7 +76,7 @@ h3 {
     position: absolute;
     bottom: 20px;
     left: 20px;
-    right: 20px;   
+    right: 20px;
 }
 
 .card .img-wrap {
@@ -86,13 +86,14 @@ h3 {
 
 .description-header {
     color: #aaa;
-    font-family: Roboto,sans-serif;
+    font-family: Roboto, sans-serif;
     text-transform: uppercase;
 }
 
 .main-container .card {
     box-shadow: none;
 }
+
 .main-container .view {
     margin-bottom: 20px;
 }
@@ -104,11 +105,13 @@ h3 {
 .grey .card {
     background: transparent;
 }
+
 .grey .card img {
     width: auto;
     max-width: none;
     height: 100%;
 }
+
 .grey .card .view.overlay {
     border-radius: 50%;
     width: 200px;
@@ -120,28 +123,29 @@ h3 {
         height: 150px;
     }
 }
+
 @media (min-width: 768px) {
     .overlay {
         height: 200px;
     }
 }
+
 @media (max-width: 991px) {
     .card .article-img-wrapper {
         border-radius: 0;
     }
 }
+
 @media (min-width: 992px) {
     .overlay {
         height: 150px;
     }
-    
     .articles-list .article-img-wrapper {
         height: 250px;
         width: 250px;
         float: left;
         margin-right: 50px;
         margin-bottom: 0;
-        
     }
     .articles-list .article-img {
         height: 100%;
@@ -150,20 +154,34 @@ h3 {
     .articles-list .card-text {
         height: 180px;
     }
-
-    
 }
+
 @media (min-width: 1200px) {
     .overlay {
         height: 200px;
     }
 }
+
 @media (max-width: 576px) {
     .overlay {
         height: 300px;
     }
-=======
-.rounded.float-xs-left {
-    width: 15%
->>>>>>> 6f433389a85caaaa4a63b16b48f68437c8818bdc
 }
+
+.rounded.float-xs-left {
+    width: 30px
+}
+
+.form-group {
+    display: flex;
+}
+
+
+/*.fa.fa-trash {
+    float: left;
+}*/
+
+
+/*.fa.fa-pencil {
+    display: ruby-base-container
+}*/

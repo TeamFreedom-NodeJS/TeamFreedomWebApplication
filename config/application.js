@@ -18,10 +18,10 @@ module.exports = function({ data }) {
     app.use("/static", express.static(path.join(__dirname, "../public")));
 
     app.use(expressStatusMonitor());
-    app.use(validator());
     app.use("/static", express.static("public"));
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
+    app.use(validator());
     app.use(cookieParser());
     app.use(session({ secret: "TeamFreedom Secretirino Yo", saveUninitialized: true, resave: true }));
     app.use(flash());
