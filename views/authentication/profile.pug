@@ -18,13 +18,13 @@ block content
             label.col-sm-3.control-label Пол
             .col-sm-6
               label.radio.col-sm-3
-                input(type="radio", checked=user.profile.gender=="male", name="gender", value="male", data-toggle="radio")
+                input(type="radio", checked=user.profile.gender=="male", name="gender", value="male", data-toggle="radio" class="checkbox")
                 span Мъж
               label.radio.col-sm-3
-                input(type="radio", checked=user.profile.gender=="female", name="gender", value="female", data-toggle="radio")
+                input(type="radio", checked=user.profile.gender=="female", name="gender", value="female", data-toggle="radio" class="checkbox")
                 span Жена
               label.radio.col-sm-3
-                input(type="radio", checked=user.profile.gender=="other", name="gender", value="other", data-toggle="radio")
+                input(type="radio", checked=user.profile.gender=="other", name="gender", value="other", data-toggle="radio" class="checkbox")
                 span Друго
           .form-group
             label.col-sm-3.control-label(for="location") Местоположение
