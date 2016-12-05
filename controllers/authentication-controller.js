@@ -90,7 +90,7 @@ module.exports = function() {
                             return next(err);
                         }
                         req.flash("success", { msg: "Успешна регистрация!!!" });
-                        res.redirect("/profile");
+                        res.redirect("/");
                     });
                 });
             });

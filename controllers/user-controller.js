@@ -25,7 +25,9 @@ module.exports = function(data) {
                 return res.redirect("/profile");
             }
             User.findById(req.user.id, (err, user) => {
-                if (err) { return next(err); }
+                if (err) {
+                    return next(err);
+                }
                 user.email = req.body.email || "";
                 user.profile.name = req.body.name || "";
                 user.profile.gender = req.body.gender || "";

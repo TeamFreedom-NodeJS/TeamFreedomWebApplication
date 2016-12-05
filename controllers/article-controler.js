@@ -1,4 +1,5 @@
 /* globals module */
+"use strict";
 
 const NEWEST_ARTICLES_COUNT = 4;
 
@@ -68,7 +69,6 @@ module.exports = function(data) {
                 .then(articles => {
                     res.send({
                         result: articles
-                        // .map(superhero => mapper.map(superhero, "_id", "name", "imageUrl"))
                     });
                 });
         },
