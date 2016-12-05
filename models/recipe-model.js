@@ -7,10 +7,10 @@ const modelRegistrator = require("./utils/model-registrator"),
 module.exports = modelRegistrator.register("Recept", {
     title: {
         type: String,
+        validate: /[а-яА-Я ]+\w /,
         required: true
     },
     categories: [{}],
-    // to do custom validator
     imageUrls: {
         type: [{}],
         limit: 3,
@@ -19,10 +19,13 @@ module.exports = modelRegistrator.register("Recept", {
     ingredients: [{
         name: {
             type: String,
+            validate: /[а-яА-Я ]+\w /,
             required: true
         },
         quantity: {
-            type: Number
+            type: Number,
+            require: true,
+            min: 1
         },
         unit: {
             type: String,
@@ -37,6 +40,8 @@ module.exports = modelRegistrator.register("Recept", {
     },
     cookingTimeInMinutes: {
         type: Number,
+        min: 1,
+        max: 600,
         required: true
     },
     created: {
