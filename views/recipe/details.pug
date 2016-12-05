@@ -31,10 +31,10 @@ block content
         div= "Време за готвене: " + model.cookingTimeInMinutes + " мин."
         
         if user
-            div
+            div(id="favorite-block")
                 form(method="post" action="/profile/" +user.id)
                     input(type="hidden" value = model name="recipe")
-                    input(type="submit" value="Добави")
+                    input(id ="favourite" type="submit" value="Добави")
             div
 
                 h3
@@ -47,7 +47,8 @@ block content
                                 strong= comment.author
                                 p= "Добавен на  " + comment.created
                                 p= comment.content
-            form(method="post" action="/recipes/"+model.id)
-                textarea.form-control(name="content" placeholder="Добави коментар")
-                br
-                input.btn.btn-danger(type="submit" value="Публикувай")
+            div(id="comment-block")
+                form(method="post" action="/recipes/"+model.id)
+                    textarea.form-control(name="content" placeholder="Добави коментар")
+                    br
+                    input.btn.btn-danger(id="comment" type="submit" value="Публикувай")

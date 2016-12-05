@@ -70,6 +70,7 @@ $(() => {
             .appendTo($imageUrlsList);
     });
 
+
     //--------------------- Articles -----------------------//
     $.getJSON("/articles/newest", resp => {
         let $list = $("<ul/>")
@@ -127,7 +128,7 @@ $(() => {
         let $list = $("<ul/>")
             .addClass("list-newest-categories")
             .addClass("list");
-            
+
         resp.result.forEach(category => {
             $("<li/>")
                 .addClass("col-lg-4 col-sm-6 col-xs-12 text-xs-center")
