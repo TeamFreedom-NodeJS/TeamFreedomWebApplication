@@ -1,0 +1,12 @@
+mixin recipe-info(recipe)
+    .recipe-info-container.text-center
+        img(src=recipe.imageUrls[0])
+        .recipe-info
+            strong
+                =   recipe.title
+            br
+           
+           
+            if user
+                a.btn.btn-danger
+                    | Add to favorites
